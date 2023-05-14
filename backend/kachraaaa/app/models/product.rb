@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
 	belongs_to :user
+	has_many :comments
+	has_many :commenting_users, through: :comments, source: :user
 	has_many_attached :images
     # has_many :product_images, dependent: :destroy
     validates :description, presence: true

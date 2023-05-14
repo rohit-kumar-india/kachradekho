@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   post '/signup', to: 'users#create'
   # get '/*a', to: 'application#not_found'
 
-  resources :products
+  # resources :products
+  resources :products do
+    resources :comments, only: [:create]
+  end
 
 end

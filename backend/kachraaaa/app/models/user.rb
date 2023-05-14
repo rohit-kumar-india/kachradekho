@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :products
+  has_many :comments
+  has_many :commented_products, through: :comments, source: :product
   # mount_uploader :avatar, AvatarUploader
   validates :email, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
