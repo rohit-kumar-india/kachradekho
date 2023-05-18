@@ -4,6 +4,7 @@ class LikesController < ApplicationController
   def create
     @like = current_user.likes.build(like_params)
     if @like.save
+      create_notification(@like.product.user, current_user, @like.product)
       render json: { status: :created, message: 'Like created successfully' }
     else
       render json: { errors: @like.errors.full_messages }, status: :unprocessable_entity
@@ -29,5 +30,9 @@ class LikesController < ApplicationController
 
   def like_params
     params.permit(:product_id, :like_type)
+  end
+
+  def create_notification(user, liked_by_user, product)
+    Notification.create(user: user, message: "#{liked_by_user.username} likes your product: #{product.title}")
   end
 end

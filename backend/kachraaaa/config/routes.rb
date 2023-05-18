@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # get '/*a', to: 'application#not_found'
 
   # resources :products
+  resources :notifications, only: [:index, :destroy]
+  put '/notifications/:id/mark_as_read', to: 'notifications#mark_as_read'
   resources :products do
     resources :comments, only: [:create]
   end
