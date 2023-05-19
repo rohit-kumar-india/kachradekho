@@ -1,17 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;800&display=swap');
 
-*{
+* {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
+
 :root {
   --border-radius: 5px;
-  --primary-color:#2874f0;
-  --mob-font-size:16px;
-  --web-font-size:18px;
-  --menu-font-size:14px;
-  --small-font:12px;
+  --primary-color: #2874f0;
+  --mob-font-size: 16px;
+  --web-font-size: 18px;
+  --menu-font-size: 14px;
+  --small-font: 12px;
+  --success_color: #35A953;
+  --primary_color: #292DF2;
+  --danger_color: #D93025;
+  --btn_primary: #1967D2;
+  --btn_primary_hover: #1b52a0;
 }
 
 /* for chrome, webkit browser */
@@ -25,39 +31,77 @@ html {
 }
 
 
-input:focus{
+input:focus {
   outline: none;
   color: dimgray;
 }
-ul{
-  list-style-type:none ;
+
+ul {
+  list-style-type: none;
 }
 
-h4{
+h4 {
   font-weight: 600;
   font-size: var(--web-font-size);
 }
-p{
+
+p {
   font-size: var(--menu-font-size);
   font-weight: 400;
+  color: gray;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+h5 {
+  font-weight: 600;
+}
+
+hr {
+  opacity: 0.4;
 }
 
 /* swiper for post */
-#post_images .swiper{
+#post_images .swiper {
   height: 400px;
   width: 100%;
 }
-#post_images .swiper-wrapper{
- height: 100%; 
- width: 100%;
+
+#post_images .swiper-wrapper {
+  height: 100%;
+  width: 100%;
 }
-#post_images .swiper-slide{
-height: 100%;
-width: 100%;
+
+#post_images .swiper-slide {
+  height: 100%;
+  width: 100%;
 }
-#post_images .swiper-slide img{
+
+#post_images .swiper-slide img {
   height: 100% !important;
   object-fit: cover;
+}
+
+
+@media screen and (max-width: 700px) {
+  h1 {
+    font-size: 26px;
   }
 
-  
+  p {
+    font-size: 12px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+}

@@ -79,18 +79,16 @@
     transition: .3s ease-in-out;
 }
 
-.create_post_popup {
+.create_post_popup,
+.login_popup,
+.signup_popup {
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     width: 100%;
     position: fixed;
     z-index: 2;
     transition: all 1s ease-in-out;
-    /*padding-top: 80px;
-  */
     background-color: rgba(0, 0, 0, 0.7);
     height: 100vh;
-    /* top: -100px; */
-  
 }

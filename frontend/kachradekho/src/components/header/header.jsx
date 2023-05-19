@@ -24,11 +24,26 @@ const header = () => {
 
 
     useEffect(() => {
-       
+
     }, [showCreatePost])
 
     return (
         <>
+
+            {/* create post popup */}
+            {showCreatePost === "true" && <div className={styles.create_post_popup}>
+                <CreatePost />
+            </div>}
+
+            {/* show login signup pages */}
+            {showLogin === "true" && <div className={styles.login_popup}>
+                <Login />
+            </div>}
+            {showRegister === "true" && <div className={styles.signup_popup}>
+                <Signup />
+            </div>}
+
+
             <div className={styles.container}>
 
                 {/* logo */}
@@ -68,21 +83,6 @@ const header = () => {
                     </div>}
                 </div>
             </div>
-
-
-            {/* create post popup */}
-            {showCreatePost === "true" && <div className={styles.create_post_popup}>
-                <CreatePost />
-            </div>}
-
-            {/* show login signup pages */}
-            {showLogin === "false" && <div className={styles.create_post_popup}>
-                <Login />
-            </div>}
-            {/* {showLogin === "true" && <div className={styles.create_post_popup}>
-                <Login />
-            </div>} */}
-             {/* <Login /> */}
         </>
     )
 }

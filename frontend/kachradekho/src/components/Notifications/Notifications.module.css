@@ -19,9 +19,11 @@
     gap: 10px;
     align-items: center;
 }
-.like{
+.like,
+.like p{
     color: yellow;
 }
-.comment{
+.comment,
+.comment p{
     color: rgb(6, 242, 191);
 }

@@ -6,8 +6,13 @@ import { AiOutlineGoogle } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from 'react-redux'
+import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
 
 const Login = () => {
+
+  const dispatch = useDispatch()
+
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -59,10 +64,10 @@ const Login = () => {
  
  
   return (
-    <section id={styles.login_page}>
+    <section className={styles.login_page}>
       <div className={styles.login_container}>
         <div className={styles.login_close}>
-          <span ><RxCross2 size={20} /></span>
+          <span ><RxCross2 size={20} onClick={()=> dispatch(setShowLogin())}/></span>
         </div>
         <form >
 
@@ -75,7 +80,7 @@ const Login = () => {
               name="email"
               value={values.email}
               onChange={handleChange}
-              placeholder="Username"
+              placeholder="user@gmail.com"
 
             />
           </div>
@@ -108,8 +113,8 @@ const Login = () => {
         <div className={styles.call_to_action}>
           <p>Don't have an account?</p>
           <span className={styles.btn_secondary} onClick={()=>{
-            // setshowLoginForm(!showLoginForm)
-            // setshowSignupForm(!showSignupForm)
+           dispatch(setShowLogin())
+           dispatch(setShowRegister())
           }}>
             Signup
           </span>
