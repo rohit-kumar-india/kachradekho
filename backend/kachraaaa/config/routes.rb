@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   post '/signup', to: 'users#create'
   # get '/*a', to: 'application#not_found'
 
-  resources :products
+  # resources :products
+  resources :notifications, only: [:index, :destroy]
+  put '/notifications/:id/mark_as_read', to: 'notifications#mark_as_read'
+  resources :products do
+    resources :comments, only: [:create]
+  end
 
 end
