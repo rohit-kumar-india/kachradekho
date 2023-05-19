@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  /* background-color: rgb(151, 145, 145); */
+  background-image: url('../assets/background.png');
+  height: 100%;
+}
+
+
+
+/* .swiper_slide {
+  height: 300px !important;
+}
+
+.swiper_slide Image {
+  height: 300px !important;
+} */
+
+.profile_post_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  padding: 20px ;
+}
+
+.profile {
+  width: 15%;
+}
+
+.post {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 85vh;
+  overflow-y: scroll;
+}
+
+.notifications{
+  width: 20%;
+}
