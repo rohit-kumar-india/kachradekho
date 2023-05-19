@@ -22,7 +22,7 @@ const Notifications = () => {
         },
         {
             "id": "3",
-            "notification": "gaurav liked your post",
+            "notification": "gaurav commented your post",
             "mode": "comment",
             "userId":""
         }

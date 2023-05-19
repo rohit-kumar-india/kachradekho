@@ -5,13 +5,10 @@ import { BiBookmarkPlus } from 'react-icons/bi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsChat } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
-import { IoPaperPlaneSharp } from 'react-icons/io5';
+import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Navigation } from "swiper";
 import "swiper/css";
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
-// import 'swiper/css/scrollbar';
 import kachra1 from '../../assets/kachra1.jpeg'
 import kachra2 from '../../assets/kachra2.jpeg'
 import kachra3 from '../../assets/kachra3.jpeg'
@@ -28,12 +25,16 @@ const Card = () => {
           <div className={styles.photo}></div>
           {/* <Image src="" width={20} height={20} />     */}
           <div className={styles.name_address}>
-            <h2>Umesh Bhatiya</h2>
+            <div className={styles.name}>
+              <h3>Umesh Bhatiya</h3>
+              <div className={styles.dot}></div>
+              <p>2d ago</p>
+            </div>
             <p>indore</p>
           </div>
         </div>
         <div className={styles.addToFavourite}>
-          <BiBookmarkPlus size={30} />
+          <BiBookmarkPlus size={25} />
         </div>
       </div>
       {/* image */}
@@ -56,9 +57,9 @@ const Card = () => {
           {images.map((image) => {
             return (
               <SwiperSlide >
-                <div className={styles.swiper_slide}>
-                  <Image src={image} alt="poster1" layout='responsive' width={300} height={300} />
-                </div>
+
+                <Image src={image} alt="poster1" layout='responsive' width="100%" height="100%" />
+
               </SwiperSlide>
             )
           })}
@@ -71,11 +72,11 @@ const Card = () => {
       {/* bottom data part */}
       <div className={styles.contact_action}>
         <div className={styles.like_comment}>
-          <AiOutlineHeart size={25} />
+          <AiOutlineHeart size={30} />
           <BsChat size={25} />
-          <IoPaperPlaneSharp size={25} />
+          <IoPaperPlaneOutline size={25} />
         </div>
-        <div className={styles.contact}><IoIosCall size={20}/>0123456789</div>
+        <div className={styles.contact}><IoIosCall size={20} />0123456789</div>
       </div>
     </div>
   )

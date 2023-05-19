@@ -21,9 +21,11 @@
 }
 .like,
 .like p{
-    color: yellow;
+    color: var(--logo-color);
+    font-size: 14px;
 }
 .comment,
 .comment p{
     color: rgb(6, 242, 191);
+    font-size: 14px;
 }

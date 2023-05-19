@@ -20,6 +20,7 @@
 .share_icon{
     float: right;
     transform: translate(-10px,10px);
+    cursor: pointer;
 }
 .below_cover {
     /* background-color: rgb(114, 39, 39); */

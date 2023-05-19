@@ -6,13 +6,13 @@ import { BsCloudUpload } from 'react-icons/bs';
 import Login from '../loginSignup/Login';
 import Signup from '../loginSignup/Signup';
 import CreatePost from '../CreatePost/CreatePost';
-// import { Link } from 'react-router-dom';
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
 import { setShowCreatePost, setShowLogin, setShowRegister } from '../../store/popUpSlice'
+import KDL from '../../assets/KDL1.png'
+import Image from 'next/image';
 
 const header = () => {
-    const [showLoginForm, setshowLoginForm] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -48,14 +48,15 @@ const header = () => {
 
                 {/* logo */}
                 <div className={styles.logo}>
-                    Logo
-                    {showLogin}
+                    <Image src={KDL} layout='responsive' width="100%" height="100%" />
                 </div>
 
                 {/* search bar */}
                 <div className={styles.search_bar}>
                     <input type="search" name="" id="" placeholder='search here...' />
-                    <AiOutlineSearch size={25} />
+                    <div className={styles.search_icon}>
+                        <AiOutlineSearch size={25} />
+                    </div>
                 </div>
 
                 {/* profile section */}

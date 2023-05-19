@@ -15,6 +15,8 @@
 .create_post_left .photo{
     width: 35px;
     height: 35px;
+    border-radius: 50%;
+    background-color: rgb(216, 224, 230);
 }
 
 

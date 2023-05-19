@@ -8,16 +8,17 @@
 
 :root {
   --border-radius: 5px;
-  --primary-color: #2874f0;
   --mob-font-size: 16px;
   --web-font-size: 18px;
   --menu-font-size: 14px;
   --small-font: 12px;
+  --primary-color: #0000FF;
   --success-color: #35A953;
-  --primary-color: #292DF2;
   --danger-color: #D93025;
   --btn-primary: #1967D2;
   --btn-primary-hover: #1b52a0;
+  --logo-color:#FDC735;
+  --swiper-navigation-size: 15px !important;
 }
 
 /* for chrome, webkit browser */
@@ -46,10 +47,9 @@ h4 {
 }
 
 p {
-  font-size: var(--menu-font-size);
+  font-size: var(--small-font);
   font-weight: 400;
   color: gray;
-  font-size: 14px;
 }
 
 h1 {
@@ -74,6 +74,7 @@ hr {
 #post_images .swiper {
   height: 400px;
   width: 100%;
+  border-radius: var(--border-radius);
 }
 
 #post_images .swiper-wrapper {
@@ -88,7 +89,17 @@ hr {
 
 #post_images .swiper-slide img {
   height: 100% !important;
-  object-fit: cover;
+  object-fit: cover !important;
+}
+#post_images .swiper-button-prev,
+#post_images .swiper-button-next {
+width: 20px;
+height: 20px;
+background-color: rgba(255, 255, 255, 0.7);
+border-radius: 50%;
+padding: 5px;
+color:rgba(0, 0, 0, 0.8) ;
+font-weight: 900;
 }
 
 

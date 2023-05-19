@@ -24,6 +24,11 @@ const Post = () => {
           
             {/* show post */}
             <PostCard/>
+            <PostCard/>
+            <PostCard/>
+            <PostCard/>
+            <PostCard/>
+            <PostCard/>
         </>
     )
 }
