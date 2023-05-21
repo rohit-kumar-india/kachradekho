@@ -36,7 +36,7 @@
 .search_icon{
     display: flex;
     align-items: center;
-    border-left: 1px solid rgba(255, 255, 255, 0.7);
+    /* border-left: 1px solid rgba(255, 255, 255, 0.7); */
 }
 .profile_auth {
     display: flex;

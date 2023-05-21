@@ -1,0 +1,128 @@
+.login_page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s ease-in-out;
+    padding: 20px;
+    /* margin: 20px; */
+}
+
+.login_container {
+    width: 60%;
+    /* max-width: 420px; */
+    /* height: 90vh; */
+    background-color: #fff;
+    padding: 0 40px 30px 40px;
+    margin: 0 10px 0 10px;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid lightgray;
+    justify-content: center;
+    overflow-y: scroll;
+}
+
+.login_close {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+
+}
+
+.login_close span:hover {
+    background-color: #1b52a0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.login_close span {
+    margin-right: -25px;
+    margin-top: 15px;
+    width: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    transition: all .3s ease-in-out;
+    background-color: #F0F5F7;
+}
+
+.login_container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    margin-top: -40px;
+}
+
+.login_container form h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.login_container .form_group {
+    display: flex;
+    /* flex-direction: column; */
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+
+.login_container h3 {
+    text-align: center;
+
+}
+
+.login_container input,
+.login_container select {
+    width: 100%;
+    background-color: #F0F5F7;
+    border: none;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    color: dimgray;
+}
+
+.login_container select:focus{
+    outline: none;
+}
+/* input[type="checkbox"] {
+     cursor: pointer;
+ } */
+
+.login_container label {
+    font-size: 14px;
+    width: 110px;
+}
+
+
+.btn_primary {
+    background-color: #1967D2;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 20px;
+    color: #fff;
+    transition: all .3s;
+}
+
+.btn_primary:hover {
+    background-color: #1b52a0;
+    cursor: pointer;
+}
+
+@media screen and (max-width:600px) {
+    .login_container {
+        width: 100%;
+        padding: 0 20px 20px 20px;
+    }
+
+
+    .login_close span {
+        margin-right: -10px;
+        margin-top: 10px;
+    }
+}

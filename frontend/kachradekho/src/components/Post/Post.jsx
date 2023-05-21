@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styles from './Post.module.css'
 import { IoImage } from 'react-icons/io5';
 import CreatePost from '../CreatePost/CreatePost';
-import PostCard from '../Card/postCard'
+import PostCard from '../PostCard/postCard'
 import { useDispatch } from 'react-redux'
 import { setShowCreatePost } from '../../store/popUpSlice'
 
