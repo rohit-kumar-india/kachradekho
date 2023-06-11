@@ -38,7 +38,7 @@ const Signup = () => {
         if (password === "") {
             toast.error("Email and Password is required", toastOptions);
             return false;
-        } else if (username.length === "") {
+        } else if (username === "") {
             toast.error("Email and Password is required", toastOptions);
             return false;
         }
@@ -51,8 +51,10 @@ const Signup = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        handleValidation();
-        console.log(values);
+        if(handleValidation()){
+
+            console.log(values);
+        }
         // TODO: Handle login logic here
     };
 

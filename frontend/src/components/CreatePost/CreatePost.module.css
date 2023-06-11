@@ -6,7 +6,7 @@
 }
 
 /* user profile */
-.create_post_btn {
+.create_post_header {
     background-color: white;
     border-radius: var(--border-radius);
     display: flex;
@@ -27,6 +27,28 @@
     height: 35px;
     border-radius: 50%;
     background-color: rgb(216, 224, 230);
+}
+
+
+.create_post_header span:hover {
+    background-color: #1b52a0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.create_post_header span {
+    width: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    transition: all .3s ease-in-out;
+    background-color: #F0F5F7;
+}
+
+.create_post_header p{
+    color: #000;
 }
 
 .data_part {

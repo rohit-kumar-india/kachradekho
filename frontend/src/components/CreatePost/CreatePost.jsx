@@ -3,6 +3,7 @@ import styles from './CreatePost.module.css'
 import { IoImage } from 'react-icons/io5';
 import { BsCloudUpload } from 'react-icons/bs';
 import { RxCrossCircled } from 'react-icons/rx';
+import { RxCross2 } from 'react-icons/rx';
 import { setShowCreatePost } from '../../store/popUpSlice'
 import { useDispatch } from 'react-redux'
 
@@ -51,12 +52,12 @@ const CreatePost = () => {
         <div className={styles.create_post_container}>
 
             {/* user profile */}
-            <div className={styles.create_post_btn}>
+            <div className={styles.create_post_header}>
                 <div className={styles.create_post_left}>
                     <div className={styles.photo}></div>
-                    <p>Umesh Kumar Bhatiya</p>
+                    <h5>Umesh Kumar Bhatiya</h5>
                 </div>
-                <RxCrossCircled size={30} onClick={() => dispatch(setShowCreatePost())} />
+               <span> <RxCross2 size={20} onClick={() => dispatch(setShowCreatePost())} /></span>
             </div>
 
             <form>

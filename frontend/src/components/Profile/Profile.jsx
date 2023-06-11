@@ -16,6 +16,7 @@ const Profile = () => {
                     <img src="" alt="" />
                 </div>
                 <h4>Umesh Kumar Bhatiya</h4>
+                <p>bio</p>
             </div>
         </div>
     )

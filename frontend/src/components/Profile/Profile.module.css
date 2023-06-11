@@ -32,6 +32,8 @@
     align-items: center;
     position: relative;
     flex-direction: column;
+    /* justify-content: center; */
+    text-align: center;
 }
 
 .photo {
@@ -41,4 +43,7 @@
     border-radius: 50%;
     position: relative;
     top: -40px;
+}
+.below_cover h4{
+    margin-top: -20px;
 }
