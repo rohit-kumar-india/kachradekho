@@ -1,7 +1,9 @@
 import React from 'react'
+import Image from 'next/image';
 import styles from './Profile.module.css'
 import { CiShare1 } from 'react-icons/ci';
 import { useRouter } from 'next/router';
+import user from '../../assets/user.jpg'
 
 const Profile = () => {
     const router = useRouter();
@@ -13,7 +15,15 @@ const Profile = () => {
             </div>
             <div className={styles.below_cover}>
                 <div className={styles.photo}>
-                    <img src="" alt="" />
+                    <Image
+                        alt='user_photo'
+                        src={user}
+                        layout='responsive'
+                        objectFit='cover'
+                        width={'100%'}
+                        height={'100%'}
+
+                    />
                 </div>
                 <h4>Umesh Kumar Bhatiya</h4>
                 <p>bio</p>

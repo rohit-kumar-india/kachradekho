@@ -43,6 +43,7 @@
     border-radius: 50%;
     position: relative;
     top: -40px;
+    overflow: hidden;
 }
 .below_cover h4{
     margin-top: -20px;

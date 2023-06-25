@@ -46,6 +46,7 @@
     height: 50px;
     border-radius: 50%;
     background-color: rgb(216, 224, 230);
+    overflow: hidden;
 }
 
 .post_images {
@@ -67,11 +68,18 @@
 .contact {
     padding: 5px 10px;
     color: white;
-    background-color: var(--logo-color);
+    background-color: dimgray;
     border-radius: var(--border-radius);
     font-size: var(--mob-font-size);
     display: flex;
     align-items: center;
     gap: 10px;
     font-weight: 600;
+}
+
+@media screen and (max-width:600px) {
+    .contact{
+        font-size: 12px;
+        
+    }
 }

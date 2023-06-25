@@ -7,37 +7,55 @@
     align-items: center;
     font-size: var(--mob-font-size);
     padding: 0 50px;
+    /* gap: 20px; */
 }
-.logo{
+
+.mobile_logo {
+    display: none;
+}
+
+.logo {
     width: 300px;
-    /* height: 200px; */
+    height: 200px;
+    overflow: hidden;
+    margin-left: -50px;
 }
+
 .search_bar {
-    width: 50%;
+    width: fit-content;
     max-width: 600px;
     height: 20px;
     display: flex;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 40px;
+    border-radius: 5px;
     color: black;
     padding: 10px;
     gap: 10px;
+    /* margin-left: -400px; */
 }
 
 .search_bar input[type="search"] {
     border: none;
-    width: 100%;
+    width: 300px;
     height: 30px;
     font-size: var(--mob-font-size);
     background-color: rgba(255, 255, 255, 0.2);
     border-right: 1px solid rgba(0, 0, 0, 0.2);
+    transition: all .5s ease-in-out;
 }
-.search_icon{
+
+.search_icon {
     display: flex;
     align-items: center;
+    /* background-color: #fff; */
     /* border-left: 1px solid rgba(255, 255, 255, 0.7); */
 }
+
+.search_bar input[type="search"]:focus {
+    width: 600px;
+}
+
 .profile_auth {
     display: flex;
     gap: 40px;
@@ -64,15 +82,26 @@
 
 .profile_menu {
     position: absolute;
-    padding: 20px 10px;
+    padding: 20px;
     /* border: 1px solid #000; */
     border-radius: var(--border-radius);
+    border-top-right-radius: 0;
     background-color: #fff;
     color: #000;
     right: 60px;
-    top: 90px;
+    z-index: 2;
+    top: 80px;
     font-size: var(--menu-font-size);
     transition: .3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.profile_menu::before {
+    content: '\25B2';
+    position: absolute;
+    top: -34px;
+    right: -4px;
+    font-size: 30px;
+    color: #fff;
 }
 
 .profile_menu ul {
@@ -100,4 +129,89 @@
     transition: all 1s ease-in-out;
     background-color: rgba(0, 0, 0, 0.7);
     height: 100vh;
+}
+
+.mobile_notification {
+    display: none;
+}
+
+@media screen and (max-width:1200px) {
+    .upload {
+        display: none;
+    }
+
+    .search_bar input[type="search"]:focus {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .mobile_logo {
+        display: block;
+        /* mix-blend-mode: color-burn; */
+        width: 60px;
+        margin-left: -10px;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .container {
+        padding: 0 10px;
+        gap: 10px;
+    }
+
+    .search_bar {
+        width: 65%;
+        margin-left: -10px;
+    }
+
+    .search_bar input[type="search"] {
+        width: 100%;
+    }
+
+    .search_bar input[type="search"]:focus {
+        width: 100%;
+    }
+
+    .profile_menu {
+        right: 20px;
+    }
+
+    .mobile_notification {
+        display: block;
+        position: relative;
+        z-index: 2;
+    }
+
+    .notification_light {
+        position: absolute;
+        background-color: red;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        top: -5px;
+        right: -2px;
+    }
+
+    .notification_container {
+        width: 280px;
+        position: absolute;
+        top: 70px;
+        right: -20px;
+        background-color: #000;
+        color: #000;
+        padding: 20px;
+        z-index: 2;
+    }
+
+    .notification_container::after {
+        content: '\25B2';
+        position: absolute;
+        top: -60px;
+        right: 9px;
+        font-size: 50px;
+        color: #000;
+    }
 }

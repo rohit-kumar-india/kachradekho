@@ -121,4 +121,7 @@ font-weight: 900;
   h3 {
     font-size: 16px;
   }
+  .swiper{
+    height: 300px;
+  }
 }

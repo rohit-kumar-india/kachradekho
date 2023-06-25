@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import styles from "./LoginSignup.module.css"; // Import your own CSS styles
 import { FaFacebookF } from 'react-icons/fa';
 import { AiOutlineGoogle } from 'react-icons/ai';
@@ -14,15 +14,16 @@ import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
 const Signup = () => {
 
     const dispatch = useDispatch()
+    const router = useRouter()
 
     const [values, setValues] = useState({
         name: "",
-        email: "",
+        username: "",
         password: "",
-        contact: "",
+        confirmPassword: ""
     });
-    const [usertType, setusertType] = useState("candidate")
 
+    const [isMatch, setIsMatch] = useState(true)
 
     // toastify
     const toastOptions = {
@@ -51,11 +52,38 @@ const Signup = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if(handleValidation()){
+        if (handleValidation()) {
 
-            console.log(values);
+            const data = {
+                name: values.name,
+                username: values.username,
+                password: values.password
+            }
+            let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            let response = await res.json()
+            setValues({
+                name: "",
+                username: "",
+                password: "",
+                confirmPassword: "",
+            });
+
+            if (response.success) {
+                toast.success('Your account has been created', toastOptions);
+                dispatch(setShowRegister());
+                dispatch(setShowLogin());
+            }
+            else {
+                toast.error(response, toastOptions)
+            }
         }
-        // TODO: Handle login logic here
+
     };
 
     const handleGoogleLoginSuccess = (response) => {
@@ -69,6 +97,16 @@ const Signup = () => {
     const handleLoginFailure = (error) => {
         // TODO: Handle login failure here
     };
+
+
+    useEffect(() => {
+        if (values.confirmPassword !== "" && values.password !== values.confirmPassword) {
+            setIsMatch(false);
+        }
+        else {
+            setIsMatch(true);
+        }
+    }, [values])
 
     return (
         <section className={styles.login_page}>
@@ -89,8 +127,8 @@ const Signup = () => {
                             <BiBriefcase />Employer
                         </div>
                     </div> */}
-                     <div className={styles.form_group}>
-                        <label htmlFor="name">Username:</label>
+                    <div className={styles.form_group}>
+                        <label htmlFor="name">Name:</label>
                         <input
                             type="text"
                             id="name"
@@ -102,12 +140,12 @@ const Signup = () => {
                         />
                     </div>
                     <div className={styles.form_group}>
-                        <label htmlFor="email">Username:</label>
+                        <label htmlFor="username">Username:</label>
                         <input
                             type="email"
-                            id="email"
-                            name="email"
-                            value={values.email}
+                            id="username"
+                            name="username"
+                            value={values.username}
                             onChange={handleChange}
                             placeholder="user@gmail.com"
 
@@ -121,22 +159,24 @@ const Signup = () => {
                             name="password"
                             value={values.password}
                             onChange={handleChange}
-                            placeholder="Password"
+                            placeholder="********"
 
                         />
                     </div>
                     <div className={styles.form_group}>
-                        <label htmlFor="contact">Contact No:</label>
+                        <label htmlFor="contact">Confirm Password:</label>
                         <input
-                            type="number"
-                            id="contact"
-                            name="contact"
-                            value={values.contact}
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            value={values.confirmPassword}
                             onChange={handleChange}
-                            placeholder="0123456789"
+                            placeholder="********"
 
                         />
+                        {isMatch === false && <p style={{ color: 'red' }}>password and confirm password not matched</p>}
                     </div>
+
                     <button type="submit" className={styles.btn_primary}>
                         Register
                     </button>

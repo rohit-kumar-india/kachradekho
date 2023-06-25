@@ -15,8 +15,6 @@ const HomePage = () => {
     <div className={styles.container}>
       <Header />
 
-   
-
       {/* post profile container */}
       <div className={styles.profile_post_container}>
         {/* profile */}
@@ -30,12 +28,17 @@ const HomePage = () => {
         {/* notifications */}
         <div className={styles.notifications}>
           <Notifications />
+
+          {/* copyright */}
+          <div className={styles.copyright}>
+            <p>Copyright &copy; 2023, All Right Reserved <br /> Developed by Bugide.</p>
+          </div>
         </div>
       </div>
 
       {/*  */}
     </div>
-    
+
   )
 }
 

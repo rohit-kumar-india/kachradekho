@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image';
 import styles from '@/styles/ProfileDashboard.module.css'
 import Head from 'next/head'
 import { IoMdSettings } from 'react-icons/io';
+import { BsBoxArrowLeft } from 'react-icons/bs';
+import { BsFillPencilFill } from 'react-icons/bs';
 import PostCard from '../components/PostCard/postCard'
 import EditProfile from '../components/EditProfile/EditProfile'
 import { useRouter } from 'next/router';
+import user from '../assets/user.jpg'
 
 const Profile = () => {
 
@@ -40,13 +44,30 @@ const Profile = () => {
       {/* profile details */}
       <div className={styles.container}>
 
+        <button
+          className={styles.back_button}
+          onClick={() => router.push('/HomePage')}
+        ><BsBoxArrowLeft /> Back</button>
+
         <div className={styles.inner_container}>
 
           {/* upper part for basic details */}
           <div className={styles.details_hld}>
             <div className={styles.photo}>
-              <img src="https://images.unsplash.com/photo-1502685104226-ee32379fe3f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx" />
+              <Image
+                alt='user_photo'
+                src={user}
+                layout='responsive'
+                objectFit='cover'
+                width={'100%'}
+                height={'100%'}
+
+              />
             </div>
+              <div className={styles.change_image}>
+                <BsFillPencilFill />
+                {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
+              </div>
             <div className={styles.name_post_hld}>
               <div className={styles.name_bio_hld}>
                 <div className={styles.name}>
@@ -61,7 +82,7 @@ const Profile = () => {
                   {showSettings && <div className={styles.settings}>
                     <ul>
                       <li
-                      onClick={()=> router.push("/ChangePassword")}
+                        onClick={() => router.push("/ChangePassword")}
                       >Change Password</li>
                       <li>Logout</li>
                     </ul>

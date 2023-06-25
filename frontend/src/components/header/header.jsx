@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styles from './header.module.css'
 import { AiOutlineSearch } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
+import { FiBell } from 'react-icons/fi';
 import { BsCloudUpload } from 'react-icons/bs';
 import Login from '../loginSignup/Login';
 import Signup from '../loginSignup/Signup';
@@ -11,11 +12,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setShowCreatePost, setShowLogin, setShowRegister } from '../../store/popUpSlice'
 import KDL from '../../assets/KDL1.png'
 import Image from 'next/image';
+import trash from "../../assets/trash2.png";
+import Notifications from '../Notifications/Notifications';
 
 const header = () => {
     const [showMenu, setShowMenu] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+    const [isNotification, setIsNotification] = useState(false)
     const router = useRouter();
     const showCreatePost = useSelector((state) => state.createPost.value)
     const showLogin = useSelector((state) => state.logIn.value)
@@ -24,8 +27,15 @@ const header = () => {
 
 
     useEffect(() => {
+if(localStorage.getItem("token")){
+    setIsLoggedIn(true)
+}
+    }, [showCreatePost, isNotification])
 
-    }, [showCreatePost])
+    const shoNotification = useCallback(() => {
+
+        setIsNotification(!isNotification);
+    }, [isNotification])
 
     return (
         <>
@@ -47,17 +57,37 @@ const header = () => {
             <div className={styles.container}>
 
                 {/* logo */}
+                <div className={styles.mobile_logo}>
+                    <Image src={trash} layout='responsive' width="100%" height="100%" objectFit='contain' />
+                </div>
                 <div className={styles.logo}>
-                    <Image src={KDL} layout='responsive' width="100%" height="100%" />
+                    <Image src={KDL} layout='responsive' width="100%" height="100%" objectFit='cover' />
                 </div>
 
                 {/* search bar */}
-                <div className={styles.search_bar}>
-                    <input type="search" name="" id="" placeholder='search here...' />
+                {isLoggedIn && <div className={styles.search_bar}>
+                    <input type="search" name="" id="" placeholder='search products...' />
                     <div className={styles.search_icon}>
                         <AiOutlineSearch size={25} />
                     </div>
-                </div>
+                </div>}
+
+                {/* mobile notification */}
+                {isLoggedIn && <div className={styles.mobile_notification}
+                    onClick={() => {
+                        shoNotification();
+                        if (showMenu) {
+                            setShowMenu(!showMenu);
+                        }
+                    }}
+                >
+                    <FiBell size={25} />
+                    <div className={styles.notification_light}></div>
+
+                    {isNotification && isLoggedIn && <div className={styles.notification_container}>
+                        <Notifications />
+                    </div>}
+                </div>}
 
                 {/* profile section */}
                 <div className={styles.profile_auth}>
@@ -65,12 +95,18 @@ const header = () => {
                         Login / Register
                     </div>}
 
-                    {isLoggedIn && <div className={styles.btn} onClick={() => dispatch(setShowCreatePost())}>
+                    {isLoggedIn && <div className={`${styles.btn} ${styles.upload}`} onClick={() => dispatch(setShowCreatePost())}>
                         <BsCloudUpload />
                         Upload Kachra
                     </div>}
                     {isLoggedIn && <div className="profile-icon">
-                        <CgProfile onClick={() => setShowMenu(!showMenu)} size={40} style={{ cursor: "pointer" }} />
+                        <CgProfile onClick={() => {
+                            if (isNotification) {
+                                shoNotification();
+                            }
+                            setShowMenu(!showMenu)
+                        }}
+                            size={35} style={{ cursor: "pointer" }} />
 
                         {/* profile menu */}
                         {showMenu && <div className={styles.profile_menu}>
@@ -78,7 +114,10 @@ const header = () => {
                                 <li onClick={() => router.push('/ProfileDashboard')}>View Profile</li>
                                 <li>Change Password</li>
                                 <li>Uppload Kachra</li>
-                                <li>Logout</li>
+                                <li onClick = {() => {
+                                    localStorage.removeItem("token")
+                                    window.location.reload()
+                                 }} > Logout</li>
                             </ul>
                         </div>}
                     </div>}

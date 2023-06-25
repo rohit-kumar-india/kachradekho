@@ -25,7 +25,7 @@
     width: 100%;
     display: flex;
     justify-content: end;
-
+    z-index: 2;
 }
 
 .login_close span:hover {

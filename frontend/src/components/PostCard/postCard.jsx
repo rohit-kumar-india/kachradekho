@@ -12,6 +12,7 @@ import "swiper/css";
 import kachra1 from '../../assets/kachra1.jpeg'
 import kachra2 from '../../assets/kachra2.jpeg'
 import kachra3 from '../../assets/kachra3.jpeg'
+import user from '../../assets/user.jpg'
 
 const Card = () => {
 
@@ -22,7 +23,17 @@ const Card = () => {
       {/* upper data part */}
       <div className={styles.post_info}>
         <div className={styles.name_photo_hld}>
-          <div className={styles.photo}></div>
+          <div className={styles.photo}>
+            <Image
+              alt='user'
+              src={user}
+              layout='responsive'
+              objectFit='cover'
+              width={'100%'}
+              height={'100%'}
+
+            />
+          </div>
           {/* <Image src="" width={20} height={20} />     */}
           <div className={styles.name_address}>
             <div className={styles.name}>
@@ -58,7 +69,10 @@ const Card = () => {
             return (
               <SwiperSlide >
 
-                <Image src={image} alt="poster1" layout='responsive' width="100%" height="100%" />
+                <Image src={image} alt="poster1" layout='responsive'
+                  objectFit='cover'
+                  width={'100%'}
+                  height={'100%'} />
 
               </SwiperSlide>
             )

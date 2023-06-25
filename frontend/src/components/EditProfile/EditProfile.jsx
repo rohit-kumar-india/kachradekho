@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-
+import jwt from 'jsonwebtoken';
 import styles from "./EditProfile.module.css"; // Import your own CSS styles
-import { FaFacebookF } from 'react-icons/fa';
-import { AiOutlineGoogle } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
-import { AiOutlineUser } from 'react-icons/ai';
-import { BiBriefcase } from 'react-icons/bi';
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,11 +11,27 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
 
     const dispatch = useDispatch()
 
+    // const token = localStorage.getItem("token");
+    // const decodedToken = jwt.decode(token);
+    // // console.log(decodedToken.username);
+    // const { username} = decodedToken;
+
+    // console.log(username)
+
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODc3MTM4OTZ9._4aGZs5qRCWsGV3qGWyJmsV7GRt3TPdVYMzIfJuKQB0';
+
+    try {
+        const decodedToken = jwt.verify(token, 'sabchorhai');
+        const userId = decodedToken.username;
+        console.log('User ID:', userId);
+    } catch (error) {
+        console.error('Token verification failed:', error.message);
+    }
+
     const [values, setValues] = useState({
         name: "",
         bio: "",
-        email: "",
-        date_of_birth: "",
+        username: "",
         gender: "",
         contact: "",
         country: "",
@@ -39,54 +51,67 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
         theme: "dark",
     }
 
-    const handleValidation = () => {
-        const { password, username } = values;
-        if (password === "") {
-            toast.error("Email and Password is required", toastOptions);
-            return false;
-        } else if (username.length === "") {
-            toast.error("Email and Password is required", toastOptions);
-            return false;
-        }
-        return true;
-    };
-
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        handleValidation();
-        console.log(values);
-        // TODO: Handle login logic here
-    };
 
-    const handleGoogleLoginSuccess = (response) => {
-        // TODO: Handle Google login success here
-    };
+        console.log(values)
+        const data = {
+            name: values.name,
+            bio: values.bio,
+            username: values.username,
+            gender: values.gender,
+            contact: values.contact,
+            country: values.country,
+            state: values.state,
+            city: values.city,
+            address: values.address,
+        }
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/editProfile`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        let response = await res.json()
+        setValues({
+            name: "",
+            bio: "",
+            username: "",
+            gender: "",
+            contact: "",
+            country: "",
+            state: "",
+            city: "",
+            address: "",
+        });
 
-    const handleFacebookLoginSuccess = (response) => {
-        // TODO: Handle Facebook login success here
-    };
-
-    const handleLoginFailure = (error) => {
-        // TODO: Handle login failure here
+        if (response.success) {
+            toast.success('Your Profile has been updated', toastOptions);
+            setShowEditPopup(!showEditPopup);
+        }
+        else {
+            toast.error(response, toastOptions)
+        }
     };
 
     return (
-        <section className={styles.login_page}>
+        <section className={styles.edit_page}>
             <div data-aos="fade-down"
                 data-aos-easing="ease"
-                className={styles.login_container}>
-                <div className={styles.login_close}>
+                className={styles.edit_container}>
+                <div className={styles.edit_close}>
                     <span onClick={() => setShowEditPopup(!showEditPopup)}><RxCross2 size={20} /></span>
                 </div>
                 <form action="" onSubmit={(e) => handleRegister(e)}>
                     <h3>Edit Profile</h3>
 
                     <div className={styles.form_group}>
-                        <label htmlFor="name">Username:</label>
+                        <label htmlFor="name">Name:</label>
                         <input
                             type="text"
                             id="name"
@@ -110,19 +135,19 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                         />
                     </div>
                     <div className={styles.form_group}>
-                        <label htmlFor="email">Email:</label>
+                        <label htmlFor="username">Username:</label>
                         <input
                             type="email"
-                            id="email"
-                            name="email"
-                            value={values.email}
+                            id="username"
+                            name="username"
+                            value={values.username}
                             onChange={handleChange}
                             placeholder="user@gmail.com"
 
                         />
                     </div>
 
-                    <div className={styles.form_group}>
+                    {/* <div className={styles.form_group}>
                         <label htmlFor="date_of_birth">Date of Birth:</label>
                         <input
                             type="date"
@@ -132,11 +157,11 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             onChange={handleChange}
 
                         />
-                    </div>
+                    </div> */}
 
                     <div className={styles.form_group}>
                         <label htmlFor="gender">Gender:</label>
-                        <select name="gender" id="gender">
+                        <select name="gender" id="gender" onChange={handleChange}>
                             <option value="">Select a category</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>

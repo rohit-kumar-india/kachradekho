@@ -8,20 +8,22 @@ import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux'
 import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
+import { useRouter } from "next/router";
 
 const Login = () => {
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const [values, setValues] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
   // toastify
   const toastOptions = {
     position: "bottom-right",
-    autoClose: 1000,
+    autoClose: 2000,
     pauseOnHover: true,
     draggable: true,
     theme: "dark",
@@ -30,10 +32,10 @@ const Login = () => {
   const handleValidation = () => {
     const { password, username } = values;
     if (password === "") {
-      toast.error("Email and Password is required", toastOptions);
+      toast.error("Password is required", toastOptions);
       return false;
-    } else if (username.length === "") {
-      toast.error("Email and Password is required", toastOptions);
+    } else if (username === "") {
+      toast.error("Username is required", toastOptions);
       return false;
     }
     return true;
@@ -45,9 +47,39 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    handleValidation();
-    // console.log(values);
-    // TODO: Handle login logic here
+    if(handleValidation()){
+      const data = {
+        username : values.username, 
+        password : values.password
+      }
+
+      let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      let response = await res.json()
+  
+      setValues({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    if (response.success) {
+      localStorage.setItem("token", response.token)
+      toast.success('You are successfully logged in', toastOptions);
+
+      dispatch(setShowLogin())
+      router.push('/')
+
+    } else {
+      toast.error('User not found!', toastOptions);
+    }
+    }
+   
   };
 
   const handleGoogleLoginSuccess = (response) => {
@@ -62,6 +94,12 @@ const Login = () => {
     // TODO: Handle login failure here
   };
  
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      dispatch(setShowLogin())
+      router.push('/HomePage')
+    }
+  }, [])
  
   return (
     <section className={styles.login_page}>
@@ -69,16 +107,16 @@ const Login = () => {
         <div className={styles.login_close}>
           <span ><RxCross2 size={20} onClick={()=> dispatch(setShowLogin())}/></span>
         </div>
-        <form >
+        <form onSubmit={handleLogin}>
 
           <h3>Welcome to KachraDekho</h3>
           <div className={styles.form_group}>
-            <label htmlFor="email">Username:</label>
+            <label htmlFor="username">Username:</label>
             <input
-              type="text"
-              id="email"
-              name="email"
-              value={values.email}
+              type="email"
+              id="username"
+              name="username"
+              value={values.username}
               onChange={handleChange}
               placeholder="user@gmail.com"
 

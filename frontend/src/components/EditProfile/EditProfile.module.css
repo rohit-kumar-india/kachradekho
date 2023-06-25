@@ -1,4 +1,4 @@
-.login_page {
+.edit_page {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -8,8 +8,8 @@
     /* margin: 20px; */
 }
 
-.login_container {
-    width: 60%;
+.edit_container {
+    width: 50%;
     /* max-width: 420px; */
     /* height: 90vh; */
     background-color: #fff;
@@ -25,20 +25,20 @@
     overflow-y: scroll;
 }
 
-.login_close {
+.edit_close {
     width: 100%;
     display: flex;
     justify-content: end;
 
 }
 
-.login_close span:hover {
+.edit_close span:hover {
     background-color: #1b52a0;
     color: #fff;
     cursor: pointer;
 }
 
-.login_close span {
+.edit_close span {
     margin-right: -25px;
     margin-top: 15px;
     width: 20px;
@@ -51,7 +51,7 @@
     background-color: #F0F5F7;
 }
 
-.login_container form {
+.edit_container form {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -59,12 +59,12 @@
     margin-top: -40px;
 }
 
-.login_container form h3 {
+.edit_container form h3 {
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-.login_container .form_group {
+.edit_container .form_group {
     display: flex;
     /* flex-direction: column; */
     width: 100%;
@@ -72,13 +72,13 @@
     align-items: center;
 }
 
-.login_container h3 {
+.edit_container h3 {
     text-align: center;
 
 }
 
-.login_container input,
-.login_container select {
+.edit_container input,
+.edit_container select {
     width: 100%;
     background-color: #F0F5F7;
     border: none;
@@ -87,14 +87,14 @@
     color: dimgray;
 }
 
-.login_container select:focus{
+.edit_container select:focus{
     outline: none;
 }
 /* input[type="checkbox"] {
      cursor: pointer;
  } */
 
-.login_container label {
+.edit_container label {
     font-size: 14px;
     width: 110px;
 }
@@ -115,14 +115,18 @@
 }
 
 @media screen and (max-width:600px) {
-    .login_container {
+    .edit_page{
+        padding: 0;
+    }
+    .edit_container {
         width: 100%;
         padding: 0 20px 20px 20px;
     }
 
 
-    .login_close span {
+    .edit_close span {
         margin-right: -10px;
         margin-top: 10px;
+        z-index: 2;
     }
 }

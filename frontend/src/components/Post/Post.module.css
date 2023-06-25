@@ -17,6 +17,7 @@
     height: 35px;
     border-radius: 50%;
     background-color: rgb(216, 224, 230);
+    overflow: hidden;
 }
 
 
