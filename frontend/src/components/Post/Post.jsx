@@ -5,7 +5,7 @@ import { IoImage } from 'react-icons/io5';
 import CreatePost from '../CreatePost/CreatePost';
 import PostCard from '../PostCard/postCard'
 import { useDispatch } from 'react-redux'
-import { setShowCreatePost } from '../../store/popUpSlice'
+import { setShowCreatePost } from '../../store/slices'
 import user from '../../assets/user.jpg'
 
 const Post = () => {

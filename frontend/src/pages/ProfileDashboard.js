@@ -9,21 +9,26 @@ import PostCard from '../components/PostCard/postCard'
 import EditProfile from '../components/EditProfile/EditProfile'
 import { useRouter } from 'next/router';
 import user from '../assets/user.jpg'
+import { useSelector, useDispatch } from 'react-redux';
+import { setShowEditPopup, logout } from '@/store/slices';
 
 const Profile = () => {
 
   const [activeComponent, setActiveComponent] = useState('posts');
-  const [showEditPopup, setShowEditPopup] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
 
+  const showEditPopup = useSelector((state) => state.editPopup.value)
+  const currentUser = useSelector((state) => state.currentUser.userData)
+
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleComponentChange = (componentName) => {
     setActiveComponent(componentName);
   };
 
   useEffect(() => {
-
+    console.log(currentUser)
   }, [activeComponent])
   return (
     <>
@@ -35,10 +40,8 @@ const Profile = () => {
       </Head>
 
       {/* edit profile */}
-      {showEditPopup && <div className={styles.edit_popup}>
-        <EditProfile
-          showEditPopup={showEditPopup}
-          setShowEditPopup={setShowEditPopup} />
+      {showEditPopup === 'true' && <div className={styles.edit_popup}>
+        <EditProfile />
       </div>}
 
       {/* profile details */}
@@ -46,7 +49,7 @@ const Profile = () => {
 
         <button
           className={styles.back_button}
-          onClick={() => router.push('/HomePage')}
+          onClick={() => router.push('/')}
         ><BsBoxArrowLeft /> Back</button>
 
         <div className={styles.inner_container}>
@@ -64,15 +67,15 @@ const Profile = () => {
 
               />
             </div>
-              <div className={styles.change_image}>
-                <BsFillPencilFill />
-                {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
-              </div>
+            <div className={styles.change_image}>
+              <BsFillPencilFill />
+              {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
+            </div>
             <div className={styles.name_post_hld}>
               <div className={styles.name_bio_hld}>
                 <div className={styles.name}>
-                  <span>Umesh Kumar Bhatiya</span>
-                  <button onClick={() => setShowEditPopup(!showEditPopup)}>Edit Profile</button>
+                  <span>{currentUser.name}</span>
+                  <button onClick={() => dispatch(setShowEditPopup())}>Edit Profile</button>
                   <IoMdSettings size={30}
                     onClick={() => setShowSettings(!showSettings)}
                     style={{ cursor: "pointer" }}
@@ -84,15 +87,20 @@ const Profile = () => {
                       <li
                         onClick={() => router.push("/ChangePassword")}
                       >Change Password</li>
-                      <li>Logout</li>
+                      <li
+                        onClick={() => {
+                          dispatch(logout())
+                          router.push('/')
+                          // window.location.reload()
+                        }}>Logout</li>
                     </ul>
                   </div>}
                 </div>
-                <span>bio</span>
-                <span>date of birth</span>
-                <span>gender</span>
-                <span>contact</span>
-                <span>address</span>
+                <span>{currentUser.bio}</span>
+                {/* <span>date of birth</span> */}
+                <span>{currentUser.gender}</span>
+                <span>{currentUser.contactNo}</span>
+                <span>{currentUser.address}, {currentUser.city}, {currentUser.state}, {currentUser.country}</span>
               </div>
               <div className={styles.post}>
                 <span>100 posts</span>

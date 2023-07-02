@@ -1,7 +1,6 @@
 import connectDb from "@/middleware/mongoose";
 import User from "@/models/user";
-var AES = require("crypto-js/aes");
-var CryptoJS = require("crypto-js");
+
 var jwt = require('jsonwebtoken');
 
 const handler = async (req, res) => {
@@ -13,21 +12,7 @@ const handler = async (req, res) => {
         console.log(originalText)
         if (user) {
             if (user.username === req.body.username && originalText === req.body.password) {
-                var token = jwt.sign({
-                    userId: user._id,
-                    name: user.name,
-                    username: user.username,
-                    gender: user.gender,
-                    contactNo: user.contactNo,
-                    bio: user.bio,
-                    country: user.country,
-                    state: user.state,
-                    city: user.city,
-                    address: user.address,
-                    post: user.post,
-                },
-                    process.env.JWT_SECRET);
-
+                var token = jwt.sign({ username: user.username, userId: user._id }, process.env.JWT_SECRET);
                 res.status(200).json({ success: "true", token: token })
             }
             else {

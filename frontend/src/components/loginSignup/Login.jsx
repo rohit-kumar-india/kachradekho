@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import styles from "./LoginSignup.module.css"; // Import your own CSS styles
 import { FaFacebookF } from 'react-icons/fa';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { RxCross2 } from 'react-icons/rx';
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
-import { useSelector, useDispatch } from 'react-redux'
-import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
+import { useDispatch } from 'react-redux'
+import { setShowLogin, setShowRegister, login, setUserData } from '../../store/slices'
+// import { setUserData } from "@/store/currentUserData";
 import { useRouter } from "next/router";
+import Loader from '../../assets/loader.gif'
+import Image from "next/image";
+import getConfig from "next/config";
+import jwt from 'jsonwebtoken';
 
 const Login = () => {
 
   const dispatch = useDispatch()
   const router = useRouter()
+  const { publicRuntimeConfig } = getConfig();
+  const jwtsecret = publicRuntimeConfig.JWT_SECRET;
+
 
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false)
 
   // toastify
   const toastOptions = {
@@ -47,39 +55,55 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if(handleValidation()){
-      const data = {
-        username : values.username, 
-        password : values.password
-      }
+    setIsLoading(true)
 
+    if (handleValidation()) {
       let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(values),
       })
       let response = await res.json()
-  
-      setValues({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
-    if (response.success) {
-      localStorage.setItem("token", response.token)
-      toast.success('You are successfully logged in', toastOptions);
 
-      dispatch(setShowLogin())
-      router.push('/')
+      // setValues({
+      //   name: "",
+      //   email: "",
+      //   password: "",
+      //   confirmPassword: "",
+      // });
 
-    } else {
-      toast.error('User not found!', toastOptions);
+      if (response.success) {
+        toast.success('You are successfully logged in', toastOptions);
+
+        //set token into the redux store and make it logged in
+        // dispatch(setIsLoggedIn(response.token))
+        dispatch(login())
+
+        //decode token data and store in the redux store
+        try {
+          const decodedToken = jwt.verify(response.token, jwtsecret);
+          dispatch(setUserData(decodedToken))
+          // console.log(decodedToken)
+        } catch (error) {
+          console.error('Token verification failed:', error.message);
+        }
+
+        router.push('/')
+        setTimeout(() => {
+          // window.location.reload()
+
+          // dispatch(setShowLogin())
+        }, 3000)
+
+      } else {
+        toast.error('User not found!', toastOptions);
+      }
     }
-    }
-   
+
+    dispatch(setShowLogin())
+    setIsLoading(false)
   };
 
   const handleGoogleLoginSuccess = (response) => {
@@ -93,19 +117,12 @@ const Login = () => {
   const handleLoginFailure = (error) => {
     // TODO: Handle login failure here
   };
- 
-  useEffect(() => {
-    if(localStorage.getItem("token")){
-      dispatch(setShowLogin())
-      router.push('/HomePage')
-    }
-  }, [])
- 
+
   return (
     <section className={styles.login_page}>
       <div className={styles.login_container}>
         <div className={styles.login_close}>
-          <span ><RxCross2 size={20} onClick={()=> dispatch(setShowLogin())}/></span>
+          <span ><RxCross2 size={20} onClick={() => dispatch(setShowLogin())} /></span>
         </div>
         <form onSubmit={handleLogin}>
 
@@ -140,19 +157,30 @@ const Login = () => {
               <label htmlFor="remember-me"><p>Remember me</p></label>
             </div>
             <div className={styles.forgot_password}>
-              <p>Forgot Password?</p> 
+              <p>Forgot Password?</p>
             </div>
           </div>
-          <button type="submit" className={styles.btn_primary}>
+          {isLoading === false ? <button type="submit" className={styles.btn_primary}>
             Login
           </button>
-         
+            :
+            <div className={styles.loader}>
+              <Image
+                alt='loader'
+                src={Loader}
+                layout='responsive'
+                objectFit='contain'
+                width={'100%'}
+                height={'100%'}
+              />
+            </div>}
+
         </form>
         <div className={styles.call_to_action}>
           <p>Don't have an account?</p>
-          <span className={styles.btn_secondary} onClick={()=>{
-           dispatch(setShowLogin())
-           dispatch(setShowRegister())
+          <span className={styles.btn_secondary} onClick={() => {
+            dispatch(setShowLogin())
+            dispatch(setShowRegister())
           }}>
             Signup
           </span>
@@ -168,7 +196,7 @@ const Login = () => {
         </div>
       </div>
       <ToastContainer />
-    </section> 
+    </section>
   );
 };
 

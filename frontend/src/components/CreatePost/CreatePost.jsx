@@ -4,8 +4,8 @@ import { IoImage } from 'react-icons/io5';
 import { BsCloudUpload } from 'react-icons/bs';
 import { RxCrossCircled } from 'react-icons/rx';
 import { RxCross2 } from 'react-icons/rx';
-import { setShowCreatePost } from '../../store/popUpSlice'
-import { useDispatch } from 'react-redux'
+import { setShowCreatePost } from '../../store/slices'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CreatePost = () => {
 
@@ -15,6 +15,7 @@ const CreatePost = () => {
     const [showLimit, setShowLimit] = useState(false)
 
     const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.currentUser.userData)
 
     useEffect(() => {
         if (images.length < 1) return;
@@ -55,7 +56,7 @@ const CreatePost = () => {
             <div className={styles.create_post_header}>
                 <div className={styles.create_post_left}>
                     <div className={styles.photo}></div>
-                    <h5>Umesh Kumar Bhatiya</h5>
+                    <h5>{currentUser.name}</h5>
                 </div>
                <span> <RxCross2 size={20} onClick={() => dispatch(setShowCreatePost())} /></span>
             </div>

@@ -9,7 +9,9 @@ import { BiBriefcase } from 'react-icons/bi';
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux'
-import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
+import { setShowLogin, setShowRegister, setShowEditPopup } from '../../store/slices'
+import Loader from '../../assets/loader.gif'
+import Image from "next/image";
 
 const Signup = () => {
 
@@ -24,6 +26,7 @@ const Signup = () => {
     });
 
     const [isMatch, setIsMatch] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     // toastify
     const toastOptions = {
@@ -52,19 +55,17 @@ const Signup = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        setIsLoading(true);
+
         if (handleValidation()) {
 
-            const data = {
-                name: values.name,
-                username: values.username,
-                password: values.password
-            }
             let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(values),
             })
             let response = await res.json()
             setValues({
@@ -76,13 +77,18 @@ const Signup = () => {
 
             if (response.success) {
                 toast.success('Your account has been created', toastOptions);
-                dispatch(setShowRegister());
-                dispatch(setShowLogin());
+
+                setTimeout(() => {
+                    dispatch(setShowRegister());
+                    dispatch(setShowLogin());
+                }, 1000)
             }
             else {
                 toast.error(response, toastOptions)
             }
         }
+
+        setIsLoading(false)
 
     };
 
@@ -177,9 +183,20 @@ const Signup = () => {
                         {isMatch === false && <p style={{ color: 'red' }}>password and confirm password not matched</p>}
                     </div>
 
-                    <button type="submit" className={styles.btn_primary}>
-                        Register
+                    {isLoading === false ? <button type="submit" className={styles.btn_primary}>
+                        Signup
                     </button>
+                        :
+                        <div className={styles.loader}>
+                            <Image
+                                alt='loader'
+                                src={Loader}
+                                layout='responsive'
+                                objectFit='contain'
+                                width={'100%'}
+                                height={'100%'}
+                            />
+                        </div>}
                     {/* <div className="form-group">
             <GoogleLogin
               clientId="YOUR_GOOGLE_CLIENT_ID"

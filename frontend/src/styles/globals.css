@@ -18,7 +18,7 @@
   --danger-color: #D93025;
   --btn-primary: #1967D2;
   --btn-primary-hover: #1b52a0;
-  --logo-color:#FDC735;
+  --logo-color: #FDC735;
   --photo-back-color: rgb(216, 224, 230);
   --background-color: #26292e;
   --swiper-navigation-size: 15px !important;
@@ -67,7 +67,7 @@ h3 {
 
 h5 {
   font-weight: 600;
-  font-size: 16px ;
+  font-size: 16px;
 }
 
 hr {
@@ -77,35 +77,36 @@ hr {
 }
 
 /* swiper for post */
- .swiper {
+.swiper {
   height: 400px;
   width: 100%;
   border-radius: var(--border-radius);
 }
 
- .swiper-wrapper {
+.swiper-wrapper {
   height: 100%;
   width: 100%;
 }
 
- .swiper-slide {
+.swiper-slide {
   height: 100%;
   width: 100%;
 }
 
- .swiper-slide img {
+.swiper-slide img {
   height: 100% !important;
   object-fit: cover !important;
 }
- .swiper-button-prev,
- .swiper-button-next {
-width: 15px !important;
-height: 15px !important;
-background-color: rgba(255, 255, 255, 0.7);
-border-radius: 50%;
-padding: 5px;
-color:rgba(0, 0, 0, 0.8) ;
-font-weight: 900;
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 15px !important;
+  height: 15px !important;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 5px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 900;
 }
 
 
@@ -121,7 +122,8 @@ font-weight: 900;
   h3 {
     font-size: 16px;
   }
-  .swiper{
+
+  .swiper {
     height: 300px;
   }
 }

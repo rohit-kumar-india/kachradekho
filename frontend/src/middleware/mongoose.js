@@ -7,6 +7,7 @@ const connectDb = handler => async (req,res)=>{
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
+      console.log('database connected successfully')
     return handler(req, res);
 }
 

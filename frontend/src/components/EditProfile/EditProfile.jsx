@@ -1,46 +1,20 @@
-import React, { useState } from "react";
-import jwt from 'jsonwebtoken';
+import React, { useState, useEffect } from "react";
 import styles from "./EditProfile.module.css"; // Import your own CSS styles
 import { RxCross2 } from 'react-icons/rx';
 import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify";
-import { useSelector, useDispatch } from 'react-redux'
-import { setShowLogin, setShowRegister } from '../../store/popUpSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { setShowEditPopup, setUserData } from '../../store/slices'
+import Loader from "../../assets/loader.gif"
+import Image from "next/image";
 
-const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
+const EditProfile = () => {
 
     const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.currentUser.userData)
 
-    // const token = localStorage.getItem("token");
-    // const decodedToken = jwt.decode(token);
-    // // console.log(decodedToken.username);
-    // const { username} = decodedToken;
-
-    // console.log(username)
-
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODc3MTM4OTZ9._4aGZs5qRCWsGV3qGWyJmsV7GRt3TPdVYMzIfJuKQB0';
-
-    try {
-        const decodedToken = jwt.verify(token, 'sabchorhai');
-        const userId = decodedToken.username;
-        console.log('User ID:', userId);
-    } catch (error) {
-        console.error('Token verification failed:', error.message);
-    }
-
-    const [values, setValues] = useState({
-        name: "",
-        bio: "",
-        username: "",
-        gender: "",
-        contact: "",
-        country: "",
-        state: "",
-        city: "",
-        address: "",
-    });
-    const [usertType, setusertType] = useState("candidate")
-
+    const [values, setValues] = useState(currentUser)
+    const [isLoading, setIsLoading] = useState(false)
 
     // toastify
     const toastOptions = {
@@ -55,48 +29,31 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
-    const handleRegister = async (e) => {
+    const handleUpdateUser = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
 
-        console.log(values)
-        const data = {
-            name: values.name,
-            bio: values.bio,
-            username: values.username,
-            gender: values.gender,
-            contact: values.contact,
-            country: values.country,
-            state: values.state,
-            city: values.city,
-            address: values.address,
-        }
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/editProfile`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(values),
         })
         let response = await res.json()
-        setValues({
-            name: "",
-            bio: "",
-            username: "",
-            gender: "",
-            contact: "",
-            country: "",
-            state: "",
-            city: "",
-            address: "",
-        });
 
-        if (response.success) {
+        if (response.success === "success") {
             toast.success('Your Profile has been updated', toastOptions);
-            setShowEditPopup(!showEditPopup);
+            dispatch(setUserData(values))
+            setTimeout(() => {
+                dispatch(setShowEditPopup())
+            }, 1500)
         }
         else {
             toast.error(response, toastOptions)
         }
+
+        setIsLoading(false)
     };
 
     return (
@@ -105,9 +62,9 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                 data-aos-easing="ease"
                 className={styles.edit_container}>
                 <div className={styles.edit_close}>
-                    <span onClick={() => setShowEditPopup(!showEditPopup)}><RxCross2 size={20} /></span>
+                    <span onClick={() => dispatch(setShowEditPopup())}><RxCross2 size={20} /></span>
                 </div>
-                <form action="" onSubmit={(e) => handleRegister(e)}>
+                <form action="" onSubmit={(e) => handleUpdateUser(e)}>
                     <h3>Edit Profile</h3>
 
                     <div className={styles.form_group}>
@@ -119,7 +76,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.name}
                             onChange={handleChange}
                             placeholder="your name"
-
+                            required
                         />
                     </div>
                     <div className={styles.form_group}>
@@ -131,7 +88,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.bio}
                             onChange={handleChange}
                             placeholder="bio"
-
+                            required
                         />
                     </div>
                     <div className={styles.form_group}>
@@ -143,7 +100,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.username}
                             onChange={handleChange}
                             placeholder="user@gmail.com"
-
+                            required
                         />
                     </div>
 
@@ -161,7 +118,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
 
                     <div className={styles.form_group}>
                         <label htmlFor="gender">Gender:</label>
-                        <select name="gender" id="gender" onChange={handleChange}>
+                        <select name="gender" id="gender" onChange={handleChange} value={values.gender} required>
                             <option value="">Select a category</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -170,15 +127,15 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                     </div>
 
                     <div className={styles.form_group}>
-                        <label htmlFor="contact">Contact No:</label>
+                        <label htmlFor="contactNo">Contact No:</label>
                         <input
                             type="number"
-                            id="contact"
-                            name="contact"
-                            value={values.contact}
+                            id="contactNo"
+                            name="contactNo"
+                            value={values.contactNo}
                             onChange={handleChange}
                             placeholder="0123456789"
-
+                            required
                         />
                     </div>
                     <div className={styles.form_group}>
@@ -190,7 +147,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.country}
                             onChange={handleChange}
                             placeholder="india"
-
+                            required
                         />
                     </div>
                     <div className={styles.form_group}>
@@ -202,7 +159,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.state}
                             onChange={handleChange}
                             placeholder="madhya pradesh"
-
+                            required
                         />
                     </div>
                     <div className={styles.form_group}>
@@ -214,7 +171,7 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             value={values.city}
                             onChange={handleChange}
                             placeholder="indore"
-
+                            required
                         />
                     </div>
 
@@ -226,13 +183,25 @@ const EditProfile = ({ showEditPopup, setShowEditPopup }) => {
                             name="address"
                             value={values.address}
                             onChange={handleChange}
-                            placeholder="address"
-
+                            placeholder="xyz"
+                            required
                         />
                     </div>
-                    <button type="submit" className={styles.btn_primary}>
-                        Register
+
+                    {isLoading === false ? <button type="submit" className={styles.btn_primary}>
+                        Update Profile
                     </button>
+                        :
+                        <div className={styles.loader}>
+                            <Image
+                                alt='loader'
+                                src={Loader}
+                                layout='responsive'
+                                objectFit='contain'
+                                width={'100%'}
+                                height={'100%'}
+                            />
+                        </div>}
 
                 </form>
             </div>
