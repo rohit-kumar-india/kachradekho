@@ -24,15 +24,15 @@ const header = () => {
     const showRegister = useSelector((state) => state.register.value)
     const isLoggedIn = useSelector((state) => state.auth.loggedIn);
     const dispatch = useDispatch()
-
+    
     const shoNotification = useCallback(() => {
 
         setIsNotification(!isNotification);
     }, [isNotification])
 
-    useEffect(() => {
-        console.log("isLoggedIn: ", isLoggedIn)
-    },[])
+    // useEffect(() => {
+    //     console.log("isLoggedIn: ", isLoggedIn)
+    // },[])
 
     return (
         <>

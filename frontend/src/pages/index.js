@@ -32,6 +32,18 @@ console.log(currentUser.address)
       }
   }, [])
 
+  const onScroll = () => {
+    console.log("hello")
+  }
+  useEffect(() => {
+    //add eventlistener to window
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // remove event on unmount to prevent a memory leak with the cleanup
+    return () => {
+      window.removeEventListener("scroll", onScroll, { passive: true });
+    }
+  }, []);
+
   return (
     <>
       <Head>

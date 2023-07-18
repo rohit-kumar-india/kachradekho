@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '@/components/header/header'
 import "swiper/css";
 import 'swiper/css/navigation';
@@ -11,6 +11,19 @@ import Notifications from '@/components/Notifications/Notifications';
 import CreatePost from '@/components/CreatePost/CreatePost';
 
 const HomePage = () => {
+
+  const onScroll = () => {
+    console.log("hello")
+  }
+  useEffect(() => {
+    //add eventlistener to window
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // remove event on unmount to prevent a memory leak with the cleanup
+    return () => {
+      window.removeEventListener("scroll", onScroll, { passive: true });
+    }
+  }, []);
+
   return (
     <div className={styles.container}>
       <Header />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styles from './postCard.module.css'
 import Image from 'next/image'
 import { BiBookmarkPlus } from 'react-icons/bi';
@@ -12,21 +12,52 @@ import "swiper/css";
 import kachra1 from '../../assets/kachra1.jpeg'
 import kachra2 from '../../assets/kachra2.jpeg'
 import kachra3 from '../../assets/kachra3.jpeg'
-import user from '../../assets/user.jpg'
+// import user from '../../assets/user.jpg'
 
-const Card = () => {
+const Card = ({ post }) => {
 
-  const images = [kachra1, kachra2, kachra3];
+  const [user, setUser] = useState({})
+  const [images, setImages] = useState([])
 
-  return (
-    <div className={styles.post_container}>
+  const fetchUser = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getUser?userId=${post?.user}`);
+    const userData = await response.json();
+    // console.log(userData)
+    setUser(userData.user)
+  };
+
+  const fetchImages = async () => {
+    const imageUrls = []
+    if(post?.images){
+     await Promise.all(post.images.map(async (imageId) => {
+       const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${imageId}`)
+       const image = await response.json()
+       // console.log(image.image[0].file)
+       imageUrls.push(image.image[0].file)
+     }))
+      
+    }
+    console.log(imageUrls)
+    setImages(imageUrls)
+  }
+ 
+  useEffect(() => {
+    if (Object.keys(user).length === 0) {
+      fetchUser();
+      fetchImages()
+    }
+    console.log(images)
+  }, [user]);
+
+return (
+    <div className={styles.post_container} key={user.id}>
       {/* upper data part */}
       <div className={styles.post_info}>
         <div className={styles.name_photo_hld}>
           <div className={styles.photo}>
             <Image
               alt='user'
-              src={user}
+              src={kachra1}
               layout='responsive'
               objectFit='cover'
               width={'100%'}
@@ -37,11 +68,11 @@ const Card = () => {
           {/* <Image src="" width={20} height={20} />     */}
           <div className={styles.name_address}>
             <div className={styles.name}>
-              <h3>Umesh Bhatiya</h3>
+              <h3>{user.name}</h3>
               <div className={styles.dot}></div>
               <p>2d ago</p>
             </div>
-            <p>indore</p>
+            <p>{user.city}</p>
           </div>
         </div>
         <div className={styles.addToFavourite}>
@@ -68,11 +99,7 @@ const Card = () => {
           {images.map((image) => {
             return (
               <SwiperSlide >
-
-                <Image src={image} alt="poster1" layout='responsive'
-                  objectFit='cover'
-                  width={'100%'}
-                  height={'100%'} />
+                <img src={image} alt="poster1"  />
 
               </SwiperSlide>
             )
@@ -81,7 +108,7 @@ const Card = () => {
       </div>
 
       {/* description */}
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore consequatur aliquam hic, iure deleniti sed blanditiis ea at vel temporibus.</p>
+      <p>{post?.caption}</p>
 
       {/* bottom data part */}
       <div className={styles.contact_action}>

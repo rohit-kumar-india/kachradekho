@@ -1,27 +1,19 @@
 import connectDb from "@/middleware/mongoose";
 import User from "@/models/user";
 
-var jwt = require('jsonwebtoken');
-
 const handler = async (req, res) => {
-    if (req.method == 'POST') {
-        // console.log(req.body)
-        let user = await User.findOne({ "username": req.body.username })
-        var bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
-        var originalText = bytes.toString(CryptoJS.enc.Utf8);
-        console.log(originalText)
+    try {
+        const { userId } = req.query;
+        console.log(userId)
+        let user = await User.findOne({ _id: userId })
         if (user) {
-            if (user.username === req.body.username && originalText === req.body.password) {
-                var token = jwt.sign({ username: user.username, userId: user._id }, process.env.JWT_SECRET);
-                res.status(200).json({ success: "true", token: token })
-            }
-            else {
-                res.status(200).json({ success: "Invalid Credentials" })
-            }
+            res.status(200).json({ user })
         }
         else {
             res.status(200).json({ error: "No user found" })
         }
+    } catch (error) {
+        console.log("error in fetching user from api", error)
     }
 }
 
