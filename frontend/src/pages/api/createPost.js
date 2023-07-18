@@ -7,7 +7,6 @@ const handler = async (req, res) => {
         const { caption, images, user } = req.body;
         let post = new Post({ caption, images, user });
         await post.save();
-
         res.status(200).json({ success: "success" });
     } else {
         res.status(500).json({ error: "This method is not allowed" });

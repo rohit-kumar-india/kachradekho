@@ -82,7 +82,9 @@ const Profile = () => {
         });
 
         const imageId = await response.json()
+        // console.log(imageId.imageId)
         modifyprofilepicture(imageId.imageId)
+        fetchUserImage(imageId.imageId)
 
         console.log('Image uploaded successfully');
       } catch (error) {
@@ -93,7 +95,7 @@ const Profile = () => {
 
   //fetch user image from database
   const fetchUserImage = async (imageId) => {
-    console.log("image", imageId)
+    // console.log("image", imageId)
     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
       method: 'GET',
       headers: {
@@ -123,7 +125,7 @@ const Profile = () => {
   }, [currentUser, userImage])
 
   useEffect(() => {
-    console.log(currentUser.profilePicture)
+    // console.log(currentUser.profilePicture)
   }, [activeComponent])
   return (
     <>
