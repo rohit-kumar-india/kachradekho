@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image';
 import styles from '@/styles/ProfileDashboard.module.css'
 import Head from 'next/head'
@@ -9,13 +9,17 @@ import PostCard from '../components/PostCard/postCard'
 import EditProfile from '../components/EditProfile/EditProfile'
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowEditPopup, logout } from '@/store/slices';
+import { setShowEditPopup, logout, setUserData } from '@/store/slices';
+import userAvatar from '../assets/userAvatar.png'
+import compressAndResizeImage from '@/components/compressFile';
+import Loader from '../assets/loader.gif'
 
 const Profile = () => {
 
   const [activeComponent, setActiveComponent] = useState('posts');
   const [showSettings, setShowSettings] = useState(false)
   const [userImage, setuserImage] = useState()
+  const [isLoading, setIsLoading] = useState(false)
   // const [imageId, setImageId] = useState()
 
   const showEditPopup = useSelector((state) => state.editPopup.value)
@@ -29,24 +33,24 @@ const Profile = () => {
   };
 
   //convert image in base64 format
-  function convertToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        setuserImage(reader.result)
-        resolve(reader.result)
-      };
-      reader.onerror = (error) => {
-        console.error('Error converting image to base64:', error);
-        reject(error)
-      };
-    })
-  };
+  // function convertToBase64(file) {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = async () => {
+  //       // setuserImage(reader.result)
+  //       resolve(reader.result)
+  //     };
+  //     reader.onerror = (error) => {
+  //       console.error('Error converting image to base64:', error);
+  //       reject(error)
+  //     };
+  //   })
+  // };
 
   //modify imageId in the user profile
   const modifyprofilepicture = async (imageId) => {
-    console.log(currentUser.userId, imageId)
+    // console.log(currentUser.userId, imageId)
     try {
       await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/editProfile`, {
         method: 'POST',
@@ -58,44 +62,64 @@ const Profile = () => {
           profilePicture: imageId
         }),
       })
+
+      // update the token data for current user
+      const data = {
+        userId: currentUser.userId,
+        name: currentUser.name,
+        username: currentUser.username,
+        gender: currentUser.gender,
+        contactNo: currentUser.contactNo,
+        bio: currentUser.bio,
+        country: currentUser.country,
+        state: currentUser.state,
+        city: currentUser.city,
+        address: currentUser.address,
+        post: currentUser.post,
+        profilePicture: imageId,
+      }
+      dispatch(setUserData(data))
+      console.log("token updated")
     } catch (error) {
       console.log("error while modify imageId", error)
     }
   }
 
   // for setting the profile picture
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     e.preventDefault();
-    const base64 = convertToBase64(e.target.files[0])
-    base64.then(async (res, req) => {
-      try {
-        const data = {
-          title: "user profile image",
-          file: res,
-        }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
 
-        const imageId = await response.json()
-        // console.log(imageId.imageId)
-        modifyprofilepicture(imageId.imageId)
-        fetchUserImage(imageId.imageId)
 
-        console.log('Image uploaded successfully');
-      } catch (error) {
-        console.error('Error uploading image:', error);
+    const file = e.target.files[0]
+    const compressedImage = await compressAndResizeImage(file, 50)
+    try {
+      const data = {
+        title: "user profile image",
+        file: compressedImage,
       }
-    })
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const imageId = await response.json()
+      modifyprofilepicture(imageId.imageId)
+      alert("Image uploaded successfully")
+      // console.log('Image uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+
   }
 
   //fetch user image from database
   const fetchUserImage = async (imageId) => {
+    setIsLoading(true)
     // console.log("image", imageId)
+    // alert("hello")
     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
       method: 'GET',
       headers: {
@@ -105,28 +129,34 @@ const Profile = () => {
     const image = await response.json()
     // console.log(image.image[0].file)
     if (image.success) {
+
       setuserImage(image.image[0].file)
     }
+
+    setIsLoading(false)
   }
 
-  //fetch user profile from server
-  const fetchtUserProfile = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getUser?userId=${currentUser?.userId}`);
-      const userData = await response.json();
-      fetchUserImage(userData.user.profilePicture)
-    } catch (error) {
-      console.log("error while fetching user profile", error)
-    }
-  }
+  // //fetch user profile from server
+  // const fetchtUserProfile = async () => {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getUser?userId=${currentUser?.userId}`);
+  //     const userData = await response.json();
+  //     fetchUserImage(userData.user.profilePicture)
+  //   } catch (error) {
+  //     console.log("error while fetching user profile", error)
+  //   }
+  // }
 
   useEffect(() => {
-    fetchtUserProfile()
-  }, [currentUser, userImage])
+    // fetchtUserProfile()
 
-  useEffect(() => {
-    // console.log(currentUser.profilePicture)
+    fetchUserImage(currentUser.profilePicture)
+  }, [currentUser, userImage, activeComponent])
+
+  useCallback(() => {
+    // console.log(currentUser)
   }, [activeComponent])
+
   return (
     <>
       <Head>
@@ -153,13 +183,25 @@ const Profile = () => {
 
           {/* upper part for basic details */}
           <div className={styles.details_hld}>
-            <div className={styles.photo}>
-              <img src={userImage} alt="user" />
-            </div>
-            <div className={styles.change_image}>
-              <label htmlFor="icon"><BsFillPencilFill /></label>
-              <input type="file" name="icon" id="icon" accept='.jpeg, .png, .jpg' onChange={handleImageChange} />
-              {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
+            <div className={styles.profleImage_Container}>
+              <div className={styles.photo_hld}>
+                {!userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                <img src={userImage} alt="image not found" className={styles.profile_image} />
+                {!userImage && <div className={styles.loader}>
+                  <Image
+                    alt='loader'
+                    src={Loader}
+                    objectFit='contain'
+                    width={30}
+                    height={30}
+                  />
+                </div>}
+              </div>
+              <div className={styles.change_image}>
+                <label htmlFor="icon"><BsFillPencilFill /></label>
+                <input type="file" name="icon" id="icon" accept='.jpeg, .png, .jpg' onChange={handleImageChange} />
+                {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
+              </div>
             </div>
             <div className={styles.name_post_hld}>
               <div className={styles.name_bio_hld}>
@@ -186,11 +228,13 @@ const Profile = () => {
                     </ul>
                   </div>}
                 </div>
-                <span>{currentUser.bio}</span>
-                {/* <span>date of birth</span> */}
-                <span>{currentUser.gender}</span>
-                <span>{currentUser.contactNo}</span>
-                <span>{currentUser.address}, {currentUser.city}, {currentUser.state}, {currentUser.country}</span>
+                <div className={styles.user_data}>
+                  <span>{currentUser.bio}</span>
+                  {/* <span>date of birth</span> */}
+                  <span>{currentUser.gender}</span>
+                  <span>{currentUser.contactNo}</span>
+                  <span>{currentUser.address}, {currentUser.city}, {currentUser.state}, {currentUser.country}</span>
+                </div>
               </div>
               <div className={styles.post}>
                 <span>100 posts</span>

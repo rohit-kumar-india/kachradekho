@@ -8,6 +8,7 @@ import { setShowCreatePost } from '../../store/slices'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../assets/loader.gif'
 import Image from "next/image";
+import compressAndResizeImage from '../compressFile';
 
 const CreatePost = () => {
 
@@ -29,26 +30,11 @@ const CreatePost = () => {
         theme: "dark",
     }
 
-    //convert an image in base64 format
-    function convertToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                resolve(reader.result)
-            };
-            reader.onerror = (error) => {
-                console.error('Error converting image to base64:', error);
-                reject(error)
-            };
-        })
-    };
-
     // Convert all images to Base64 concurrently using Promise.all
     const convertAllImagesToBase64 = async (images) => {
         try {
-            const base64Array = await Promise.all(images.map((image) => convertToBase64(image)));
-            setImageURLs(base64Array);
+            const compressedImages = await Promise.all(images.map((image) => compressAndResizeImage(image)));
+            setImageURLs(compressedImages);
         } catch (error) {
             console.error('Error converting images to Base64:', error);
             setImageURLs([]);
@@ -74,6 +60,7 @@ const CreatePost = () => {
             // toast.success('Your account has been created', toastOptions);
             console.log("post created")
             dispatch(setShowCreatePost())
+            alert("post created successfully")
         }
         else {
             // toast.error(response, toastOptions)
