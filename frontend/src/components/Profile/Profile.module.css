@@ -17,11 +17,13 @@
     width: 100%;
     height: 40%;
 }
-.share_icon{
+
+.share_icon {
     float: right;
-    transform: translate(-10px,10px);
+    transform: translate(-10px, 10px);
     cursor: pointer;
 }
+
 .below_cover {
     /* background-color: rgb(114, 39, 39); */
     /* border: 1px solid black; */
@@ -45,6 +47,13 @@
     top: -40px;
     overflow: hidden;
 }
-.below_cover h4{
+
+.profile_image {
+    width: 100%;
+    /* height: 100%; */
+    object-fit: contain;
+}
+
+.below_cover h4 {
     margin-top: -20px;
 }

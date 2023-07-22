@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../assets/loader.gif'
 import Image from "next/image";
 import compressAndResizeImage from '../compressFile';
+import userAvatar from '../../assets/userAvatar.png'
 
 const CreatePost = () => {
 
@@ -17,6 +18,7 @@ const CreatePost = () => {
     const [imageURLs, setImageURLs] = useState([]);
     const [showLimit, setShowLimit] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [userImage, setUserImage] = useState()
 
     const dispatch = useDispatch()
     const currentUser = useSelector((state) => state.currentUser.userData)
@@ -120,6 +122,21 @@ const CreatePost = () => {
         setImages(updatedImages);
     }
 
+    //fetch user image from database
+    const fetchImage = async (imageId) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const image = await response.json()
+        // console.log(image.image[0].file)
+        if (image.success) {
+            setUserImage(image.image[0].file)
+        }
+    }
+
     useEffect(() => {
         if (images.length < 1) return;
         if (images.length > 5) {
@@ -127,10 +144,12 @@ const CreatePost = () => {
             setImageURLs([]);
             return;
         }
-
         convertAllImagesToBase64(images);
     }, [images]);
 
+    useEffect(() => {
+    fetchImage(currentUser.profilePicture)
+    }, [])
 
     return (
         <div className={styles.create_post_container}>
@@ -138,7 +157,10 @@ const CreatePost = () => {
             {/* user profile */}
             <div className={styles.create_post_header}>
                 <div className={styles.create_post_left}>
-                    <div className={styles.photo}></div>
+                    <div className={styles.photo}>
+                        {!userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                        <img src={userImage} alt="user not found" className={styles.profile_image} />
+                    </div>
                     <h5>{currentUser.name}</h5>
                 </div>
                 <span> <RxCross2 size={20} onClick={() => dispatch(setShowCreatePost())} /></span>
