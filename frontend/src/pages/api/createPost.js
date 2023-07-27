@@ -4,8 +4,8 @@ import Image from '@/models/image'
 
 const handler = async (req, res) => {
     if (req.method === 'POST') {
-        const { caption, images, user } = req.body;
-        let post = new Post({ caption, images, user });
+        const { productName, caption, images, user } = req.body;
+        let post = new Post({ productName, caption, images, user });
         await post.save();
         res.status(200).json({ success: "success" });
     } else {

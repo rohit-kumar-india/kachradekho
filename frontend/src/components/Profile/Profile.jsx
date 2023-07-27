@@ -28,7 +28,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        fetchImage(currentUser.profilePicture)
+        fetchImage(currentUser?.profilePicture)
     }, [])
 
     return (
@@ -41,8 +41,8 @@ const Profile = () => {
                     {!userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
                     <img src={userImage} alt="user not found" className={styles.profile_image} />
                 </div>
-                <h4>{currentUser.name}</h4>
-                <p>{currentUser.bio}</p>
+                <h4>{currentUser?.name}</h4>
+                <p>{currentUser?.bio}</p>
                 <p>10 posts saved</p>
             </div>
         </div>

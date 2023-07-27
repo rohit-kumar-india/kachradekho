@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from '@/components/header/header'
 import "swiper/css";
 import 'swiper/css/navigation';
@@ -12,17 +12,23 @@ import CreatePost from '@/components/CreatePost/CreatePost';
 
 const HomePage = () => {
 
-  const onScroll = () => {
-    console.log("hello")
-  }
-  useEffect(() => {
-    //add eventlistener to window
-    window.addEventListener("scroll", onScroll, { passive: true });
-    // remove event on unmount to prevent a memory leak with the cleanup
-    return () => {
-      window.removeEventListener("scroll", onScroll, { passive: true });
+  const divRef = useRef()
+  const [prevScrollTop, setprevScrollTop] = useState()
+
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = event.target;
+    console.log("scrollTop", scrollTop)
+    console.log("scrollHeight", scrollHeight)
+    console.log("clientheight", clientHeight)
+
+    // Check if scroll has reached the bottom of the div container
+    if (scrollTop + clientHeight >= scrollHeight - 20 && scrollTop > prevScrollTop) {
+      
+      console.log('Reached the end of the div container!');
+      alert("end")
     }
-  }, []);
+    setprevScrollTop(scrollTop)
+  }
 
   return (
     <div className={styles.container}>
@@ -35,7 +41,8 @@ const HomePage = () => {
           <Profile />
         </div>
         {/* post */}
-        <div className={styles.post}>
+        <div className={styles.post}
+         >
           <Post />
         </div>
         {/* notifications */}

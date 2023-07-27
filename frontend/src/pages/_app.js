@@ -26,13 +26,7 @@ function App({ Component, pageProps }) {
   //   }
   // };
 
-  useEffect(() => {
-    // if (isLoggedIn==='false') {
-    //   router.push('/LandingPage')
-    // }
 
-    // fetchUserData();
-  }, [])
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

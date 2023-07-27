@@ -32,7 +32,8 @@
 
 .profile_image {
     width: 100%;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
 }
 
 .create_post_header span:hover {
@@ -58,17 +59,24 @@
 
 .data_part {
     padding: 20px;
-    /* background-color: rgba(255,255,255,0.8); */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.create_post_container textarea {
+.create_post_container textarea,
+.data_part input {
     width: 100%;
     resize: none;
     border-radius: var(--border-radius);
     padding: 2px;
     font-size: var(--small-font);
     color: dimgray;
-    border-color: dimgray;
+    border:1px solid dimgray;
+}
+
+.data_part input{
+    height: 25 px;
 }
 
 .select_show_images {

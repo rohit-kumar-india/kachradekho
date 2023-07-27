@@ -49,10 +49,28 @@
     overflow: hidden;
 }
 
-.post_images {
+.profile_image {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
+.post_images {
+    width: 100%;
+
+}
+
+.caption {
+    width: 100%;
+    padding: 0 20px;
+    overflow: hidden;
+    text-align: justify;
+}
+
+.caption p{
+    text-align: justify;
+    float: left;
+}
 .contact_action {
     width: 100%;
     display: flex;
@@ -78,8 +96,8 @@
 }
 
 @media screen and (max-width:600px) {
-    .contact{
+    .contact {
         font-size: 12px;
-        
+
     }
 }

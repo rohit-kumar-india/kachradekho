@@ -7,63 +7,63 @@ import { BsChat } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay, Navigation } from "swiper";
+import { Navigation, Pagination } from "swiper";
+import userAvatar from '../../assets/userAvatar.png'
 import "swiper/css";
-import kachra1 from '../../assets/kachra1.jpeg'
-import kachra2 from '../../assets/kachra2.jpeg'
-import kachra3 from '../../assets/kachra3.jpeg'
-// import user from '../../assets/user.jpg'
 
 const Card = ({ post }) => {
 
   const [user, setUser] = useState({})
   const [images, setImages] = useState([])
+  const [postUserImage, setpostUserImage] = useState()
 
   const fetchUser = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getUser?userId=${post?.user}`);
     const userData = await response.json();
-    // console.log(userData)
     setUser(userData.user)
+
+    //fetch user profile image
+    if(userData.user.profilePicture){
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${userData.user.profilePicture}`)
+      const image = await res.json()
+      // console.log(image)
+      setpostUserImage(image.image[0].file)
+    }
   };
 
   const fetchImages = async () => {
     const imageUrls = []
-    if(post?.images){
-     await Promise.all(post.images.map(async (imageId) => {
-       const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${imageId}`)
-       const image = await response.json()
-       // console.log(image.image[0].file)
-       imageUrls.push(image.image[0].file)
-     }))
-      
+    if (post?.images) {
+      await Promise.all(post.images.map(async (imageId) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${imageId}`)
+        const image = await response.json()
+        imageUrls.push(image.image[0].file)
+        // if (image.length > 0) {
+        // }
+      }))
+
     }
-    console.log(imageUrls)
     setImages(imageUrls)
   }
- 
+
+  
   useEffect(() => {
     if (Object.keys(user).length === 0) {
       fetchUser();
       fetchImages()
     }
-    console.log(images)
+
+
   }, [user]);
 
-return (
+  return (
     <div className={styles.post_container} key={user.id}>
       {/* upper data part */}
       <div className={styles.post_info}>
         <div className={styles.name_photo_hld}>
           <div className={styles.photo}>
-            <Image
-              alt='user'
-              src={kachra1}
-              layout='responsive'
-              objectFit='cover'
-              width={'100%'}
-              height={'100%'}
-
-            />
+            {!postUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+            <img src={postUserImage} alt="user not found" className={styles.profile_image} />
           </div>
           {/* <Image src="" width={20} height={20} />     */}
           <div className={styles.name_address}>
@@ -81,26 +81,25 @@ return (
       </div>
       {/* image */}
       <div id='post_images' className={styles.post_images}>
+        {/* product name */}
+        <p style={{color:'gray'}}>{post?.productName}</p>
+
+        {/* product images */}
         <Swiper
           // data-aos-duration="2000"
           spaceBetween={30}
           slidesPerView={1}
           grabCursor={true}
           centeredSlides={true}
-          loop={true}
           effect={'fade'}
           navigation={true}
-          // autoplay={{
-          //     delay: 8000,
-          //     disableOnInteraction: false,
-          // }}
-          modules={[Autoplay, Navigation]}
+          pagination
+          modules={[Navigation, Pagination]}
         >
           {images.map((image) => {
             return (
               <SwiperSlide >
-                <img src={image} alt="poster1"  />
-
+                <img src={image} alt="poster1" />
               </SwiperSlide>
             )
           })}
@@ -108,7 +107,9 @@ return (
       </div>
 
       {/* description */}
-      <p>{post?.caption}</p>
+      <div className={styles.caption}>
+        <p><span style={{ color: 'black', fontWeight: 'bold' }}>{user.name}</span> {post?.caption}</p>
+      </div>
 
       {/* bottom data part */}
       <div className={styles.contact_action}>
@@ -117,7 +118,7 @@ return (
           <BsChat size={25} />
           <IoPaperPlaneOutline size={25} />
         </div>
-        <div className={styles.contact}><IoIosCall size={20} />0123456789</div>
+        <div className={styles.contact}><IoIosCall size={20} />{user.contactNo}</div>
       </div>
     </div>
   )

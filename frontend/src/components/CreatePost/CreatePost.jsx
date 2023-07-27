@@ -14,6 +14,7 @@ import userAvatar from '../../assets/userAvatar.png'
 const CreatePost = () => {
 
     const [desc, setDesc] = useState('');
+    const [productName, setproductName] = useState()
     const [images, setImages] = useState([]);
     const [imageURLs, setImageURLs] = useState([]);
     const [showLimit, setShowLimit] = useState(false)
@@ -46,6 +47,7 @@ const CreatePost = () => {
     // upload post data to the database
     const createPostRequest = async (allImageIds) => {
         const post = {
+            productName: productName,
             caption: desc,
             images: allImageIds,
             user: currentUser.userId,
@@ -72,34 +74,39 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setIsLoading(true);
+        if (imageURLs.length > 0) {
+            setIsLoading(true);
 
-        try {
-            let allImageIds = []
-            await Promise.all(imageURLs.map(async (image) => {
-                const data = {
-                    title: "post image",
-                    file: image,
-                }
-                const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+            try {
+                let allImageIds = []
+                await Promise.all(imageURLs.map(async (image) => {
+                    const data = {
+                        title: "post image",
+                        file: image,
+                    }
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
 
-                const imageId = await response.json()
-                allImageIds.push(imageId.imageId)
-                console.log('Image uploaded successfully');
-            }))
-            createPostRequest(allImageIds)
+                    const imageId = await response.json()
+                    allImageIds.push(imageId.imageId)
+                    console.log('Image uploaded successfully');
+                }))
+                createPostRequest(allImageIds)
 
-        } catch (error) {
-            console.error('Error uploading image:', error);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+
+            setIsLoading(false)
         }
-
-        setIsLoading(false)
+        else {
+            alert("please enter an image!")
+        }
     };
 
     function onImageChange(e) {
@@ -148,7 +155,7 @@ const CreatePost = () => {
     }, [images]);
 
     useEffect(() => {
-    fetchImage(currentUser.profilePicture)
+        fetchImage(currentUser.profilePicture)
     }, [])
 
     return (
@@ -168,14 +175,25 @@ const CreatePost = () => {
 
             <form onSubmit={handleSubmit}>
                 <div className={styles.data_part}>
+                    {/* product name */}
+                    <input
+                        type="text"
+                        onChange={(e) => {
+                            setproductName(e.target.value)
+                        }}
+                        value={productName}
+                        placeholder='write product name...*'
+                        required />
+
                     {/* description */}
                     <textarea
                         type="text"
                         rows="4"
                         className=""
-                        placeholder="write something about your product*"
+                        placeholder="write something about your product...*"
                         value={desc}
                         onChange={(e) => setDesc(e.target.value)}
+                        required
                     ></textarea>
 
                     {/* upload and display images */}

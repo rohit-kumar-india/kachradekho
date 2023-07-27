@@ -229,11 +229,11 @@ const Profile = () => {
                   </div>}
                 </div>
                 <div className={styles.user_data}>
-                  <span>{currentUser.bio}</span>
+                  <span>{currentUser?.bio}</span>
                   {/* <span>date of birth</span> */}
-                  <span>{currentUser.gender}</span>
-                  <span>{currentUser.contactNo}</span>
-                  <span>{currentUser.address}, {currentUser.city}, {currentUser.state}, {currentUser.country}</span>
+                  <span>{currentUser?.gender}</span>
+                  <span>{currentUser?.contactNo}</span>
+                  <span>{currentUser?.address}, {currentUser?.city}, {currentUser?.state}, {currentUser?.country}</span>
                 </div>
               </div>
               <div className={styles.post}>
