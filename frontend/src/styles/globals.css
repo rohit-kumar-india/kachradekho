@@ -108,6 +108,13 @@ hr {
   padding: 5px;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 900;
+  transition: all .3s ease-in-out;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover{
+  background-color:var(--btn-primary-hover);
+  color: white;
 }
 
 

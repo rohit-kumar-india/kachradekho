@@ -21,8 +21,8 @@ const Profile = () => {
             },
         });
         const image = await response.json()
-        // console.log(image.image[0].file)
-        if (image.success) {
+        // console.log(image.image.length)
+        if (image.success && image.image.length>0) {
             setUserImage(image.image[0].file)
         }
     }

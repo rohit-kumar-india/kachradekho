@@ -71,6 +71,10 @@
     text-align: justify;
     float: left;
 }
+
+.bottom_part{
+    width: 100%;
+}
 .contact_action {
     width: 100%;
     display: flex;

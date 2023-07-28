@@ -52,7 +52,7 @@ const CreatePost = () => {
             images: allImageIds,
             user: currentUser.userId,
         }
-        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/createPost`, {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

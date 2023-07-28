@@ -136,20 +136,8 @@ const Profile = () => {
     setIsLoading(false)
   }
 
-  // //fetch user profile from server
-  // const fetchtUserProfile = async () => {
-  //   try {
-  //     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getUser?userId=${currentUser?.userId}`);
-  //     const userData = await response.json();
-  //     fetchUserImage(userData.user.profilePicture)
-  //   } catch (error) {
-  //     console.log("error while fetching user profile", error)
-  //   }
-  // }
 
   useEffect(() => {
-    // fetchtUserProfile()
-
     fetchUserImage(currentUser.profilePicture)
   }, [currentUser, userImage, activeComponent])
 

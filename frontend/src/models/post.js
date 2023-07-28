@@ -21,12 +21,9 @@ const PostSchema = new mongoose.Schema({
             ref: 'Image'
         }
     ],
-    likes: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ],
+    likes: {
+        type: Number,
+    },
     comments: [
         {
             user: {

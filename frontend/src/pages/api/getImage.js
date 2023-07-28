@@ -5,7 +5,7 @@ const handler = async (req, res) => {
     const { imageId } = req.query;
     try {
         const image = await Image.find({_id:imageId});
-        console.log(image)
+        // console.log(image)
         res.status(200).json({image});
     } catch (error) {
         // console.error(error);

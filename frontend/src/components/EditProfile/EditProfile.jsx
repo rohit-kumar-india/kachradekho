@@ -33,8 +33,8 @@ const EditProfile = () => {
         e.preventDefault();
         setIsLoading(true)
 
-        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/editProfile`, {
-            method: 'POST',
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },

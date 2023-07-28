@@ -32,15 +32,21 @@ const Post = () => {
         });
         const image = await response.json()
         // console.log(image.image[0].file)
-        if (image.success) {
+        if (image.success && image.image.length>0) {
             setUserImage(image.image[0].file)
         }
     }
 
     const fetchPosts = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getPost?limit=5&page=${currentPage}`);
+        setisLoading(true)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?limit=5&page=${currentPage}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         const data = await response.json();
-        if(data.length===0){
+        if (data.length === 0) {
             setisNoMore(true)
             setisLoading(false)
         }
@@ -50,7 +56,6 @@ const Post = () => {
 
     const handleScroll = async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.target;
-
         // Check if scroll has reached the bottom of the div container
         if (scrollTop + clientHeight >= scrollHeight - 5 && scrollTop > prevScrollTop) {
             // console.log('Reached the end of the div container!');
@@ -99,7 +104,7 @@ const Post = () => {
                     }
                     )}
                 {posts.length === 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>Nothing to show...</span>}
-                {isNoMore && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
+                {isNoMore && posts.length>0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
                 {isLoading && <div className={styles.loader}>
                     <Image
                         alt='loader'
