@@ -7,29 +7,11 @@ import userAvatar from '../../assets/userAvatar.png'
 import { useSelector } from 'react-redux';
 
 const Profile = () => {
-    const [userImage, setUserImage] = useState()
-
+    
     const router = useRouter();
     const currentUser = useSelector((state) => state.currentUser.userData)
-
-    //fetch user image from database
-    const fetchImage = async (imageId) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const image = await response.json()
-        // console.log(image.image.length)
-        if (image.success && image.image.length>0) {
-            setUserImage(image.image[0].file)
-        }
-    }
-
-    useEffect(() => {
-        fetchImage(currentUser?.profilePicture)
-    }, [])
+    
+    const [userImage, setUserImage] = useState(currentUser.profilePicture)
 
     return (
         <div className={styles.profile_container}>

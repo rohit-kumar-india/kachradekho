@@ -13,24 +13,51 @@ const handler = async (req, res) => {
 
         // for getting the post data
         else if (req.method === 'GET') {
-            const { limit, page } = req.query;
-            const limitValue = parseInt(limit, 10) || 5;
-            const pageValue = parseInt(page, 10) || 1;
+            const { limit, page, postId } = req.query;
 
-            const skip = (pageValue - 1) * limitValue;
-            const posts = await Post.find().sort({ createdAt: -1 }).skip(skip).limit(limitValue);
-            res.status(200).json(posts);
+            if(limit && page){
+                const limitValue = parseInt(limit, 10) || 5;
+                const pageValue = parseInt(page, 10) || 1;
+    
+                const skip = (pageValue - 1) * limitValue;
+                const posts = await Post.find().sort({ createdAt: -1 }).skip(skip).limit(limitValue);
+                res.status(200).json(posts);
+            }
+
+            //fetch single post with id
+           else if(postId){
+               const post = await Post.findOne({"_id" : postId})
+               res.status(200).json(post)
+            }
         }
 
         // for updating likes
         else if (req.method === 'PUT') {
-            const { like } = req.body;
+            const { like, commentId } = req.body;
             // console.log(req.body)
-            const post = await Post.findByIdAndUpdate(req.body.postId, { likes: like }, { new: true });
-            if (!post) {
-                res.status(404).json({ message: 'post not found' });
+            if (like) {
+                const post = await Post.findByIdAndUpdate(req.body.postId, { likes: like }, { new: true });
+                if (!post) {
+                    res.status(404).json({ message: 'post not found' });
+                }
+                res.status(200).json({ success: "success" });
             }
-            res.status(200).json({ success: "success" });
+            else if (commentId) {
+                const post = await Post.findById(req.body.postId);
+
+                // Check if the post exists
+                if (!post) {
+                    return res.status(404).json({ message: "Post not found" });
+                }
+
+                // Add the new commentId to the comments array
+                post.comments.push(commentId);
+
+                // Save the updated post
+                await post.save();
+
+                return res.status(200).json({ message: "Comment added successfully" });
+            }
         }
 
         //for deleting the post

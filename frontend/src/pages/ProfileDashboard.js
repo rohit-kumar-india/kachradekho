@@ -16,40 +16,24 @@ import Loader from '../assets/loader.gif'
 
 const Profile = () => {
 
+  const showEditPopup = useSelector((state) => state.editPopup.value)
+  const currentUser = useSelector((state) => state.currentUser.userData)
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const [activeComponent, setActiveComponent] = useState('posts');
   const [showSettings, setShowSettings] = useState(false)
-  const [userImage, setuserImage] = useState()
+  const [userImage, setuserImage] = useState(currentUser.profilePicture)
   const [isLoading, setIsLoading] = useState(false)
   // const [imageId, setImageId] = useState()
 
-  const showEditPopup = useSelector((state) => state.editPopup.value)
-  const currentUser = useSelector((state) => state.currentUser.userData)
-
-  const router = useRouter();
-  const dispatch = useDispatch();
 
   const handleComponentChange = (componentName) => {
     setActiveComponent(componentName);
   };
 
-  //convert image in base64 format
-  // function convertToBase64(file) {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = async () => {
-  //       // setuserImage(reader.result)
-  //       resolve(reader.result)
-  //     };
-  //     reader.onerror = (error) => {
-  //       console.error('Error converting image to base64:', error);
-  //       reject(error)
-  //     };
-  //   })
-  // };
-
   //modify imageId in the user profile
-  const modifyprofilepicture = async (imageId) => {
+  const modifyprofilepicture = async (imageId, compressedImage) => {
     // console.log(currentUser.userId, imageId)
     try {
       await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/editProfile`, {
@@ -76,10 +60,10 @@ const Profile = () => {
         city: currentUser.city,
         address: currentUser.address,
         post: currentUser.post,
-        profilePicture: imageId,
+        profilePicture: compressedImage,
       }
       dispatch(setUserData(data))
-      console.log("token updated")
+      setuserImage(compressedImage)
     } catch (error) {
       console.log("error while modify imageId", error)
     }
@@ -89,7 +73,7 @@ const Profile = () => {
   const handleImageChange = async (e) => {
     e.preventDefault();
 
-
+    //compress and save image in database
     const file = e.target.files[0]
     const compressedImage = await compressAndResizeImage(file, 50)
     try {
@@ -106,7 +90,7 @@ const Profile = () => {
       });
 
       const imageId = await response.json()
-      modifyprofilepicture(imageId.imageId)
+      modifyprofilepicture(imageId.imageId, compressedImage)
       alert("Image uploaded successfully")
       // console.log('Image uploaded successfully');
     } catch (error) {
@@ -114,32 +98,6 @@ const Profile = () => {
     }
 
   }
-
-  //fetch user image from database
-  const fetchUserImage = async (imageId) => {
-    setIsLoading(true)
-    // console.log("image", imageId)
-    // alert("hello")
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const image = await response.json()
-    // console.log(image.image[0].file)
-    if (image.success) {
-
-      setuserImage(image.image[0].file)
-    }
-
-    setIsLoading(false)
-  }
-
-
-  useEffect(() => {
-    fetchUserImage(currentUser.profilePicture)
-  }, [currentUser, userImage, activeComponent])
 
   useCallback(() => {
     // console.log(currentUser)

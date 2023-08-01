@@ -2,15 +2,17 @@ import React, { useEffect, useState, useCallback } from 'react'
 import styles from './postCard.module.css'
 import Image from 'next/image'
 import { BiBookmarkPlus } from 'react-icons/bi';
-import { IoHeart, IoHeartDislike } from 'react-icons/io5';
+import { IoHeart } from 'react-icons/io5';
 import { AiOutlineHeart } from 'react-icons/ai'
 import { BsChat } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
+import { RxCross2 } from 'react-icons/rx';
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper";
 import userAvatar from '../../assets/userAvatar.png'
 import "swiper/css";
+import Comment from '../commentBox/comment';
 
 const Card = ({ post }) => {
 
@@ -19,6 +21,7 @@ const Card = ({ post }) => {
   const [postUserImage, setpostUserImage] = useState()
   const [isLiked, setIsLiked] = useState(false)
   const [likes, setLikes] = useState(post?.likes || 0)
+  const [showCommentBox, setshowCommentBox] = useState(false)
 
   //fetch user profile of each post
   const fetchUser = async () => {
@@ -91,83 +94,116 @@ const Card = ({ post }) => {
       fetchUser();
       fetchImages()
     }
+
   }, [user]);
 
   return (
-    <div className={styles.post_container} key={user?._id}>
-      {/* upper data part */}
-      <div className={styles.post_info}>
-        <div className={styles.name_photo_hld}>
-          <div className={styles.photo}>
-            {!postUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
-            <img src={postUserImage} alt="user not found" className={styles.profile_image} />
-          </div>
-          {/* <Image src="" width={20} height={20} />     */}
-          <div className={styles.name_address}>
-            <div className={styles.name}>
-              <h3>{user?.name}</h3>
-              <div className={styles.dot}></div>
-              <p>2d ago</p>
+    <>
+      <div className={styles.post_container} key={user?._id}>
+        {/* upper data part */}
+        <div className={styles.post_info}>
+          <div className={styles.name_photo_hld}>
+            <div className={styles.photo}>
+              {!postUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+              <img src={postUserImage} alt="user not found" className={styles.profile_image} />
             </div>
-            <p>{user?.city}</p>
+            {/* <Image src="" width={20} height={20} />     */}
+            <div className={styles.name_address}>
+              <div className={styles.name}>
+                <h3>{user?.name}</h3>
+                <div className={styles.dot}></div>
+                <p>2d ago</p>
+              </div>
+              <p>{user?.city}</p>
+            </div>
+          </div>
+          <div className={styles.addToFavourite}>
+            <BiBookmarkPlus size={25} />
           </div>
         </div>
-        <div className={styles.addToFavourite}>
-          <BiBookmarkPlus size={25} />
+        {/* images */}
+        <div id='post_images' className={styles.post_images}>
+          {/* product name */}
+          <p style={{ color: 'gray' }}>{post?.productName}</p>
+
+          {/* product images */}
+          <Swiper
+            // data-aos-duration="2000"
+            spaceBetween={30}
+            slidesPerView={1}
+            grabCursor={true}
+            centeredSlides={true}
+            effect={'fade'}
+            navigation={true}
+            pagination
+            modules={[Navigation, Pagination]}
+          >
+            {images.map((image) => {
+              return (
+                <SwiperSlide key={image}>
+                  <img src={image} alt="poster1"/>
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
         </div>
-      </div>
-      {/* image */}
-      <div id='post_images' className={styles.post_images}>
-        {/* product name */}
-        <p style={{ color: 'gray' }}>{post?.productName}</p>
 
-        {/* product images */}
-        <Swiper
-          // data-aos-duration="2000"
-          spaceBetween={30}
-          slidesPerView={1}
-          grabCursor={true}
-          centeredSlides={true}
-          effect={'fade'}
-          navigation={true}
-          pagination
-          modules={[Navigation, Pagination]}
-        >
-          {images.map((image) => {
-            return (
-              <SwiperSlide >
-                <img src={image} alt="poster1" />
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
-      </div>
+        {/* description */}
+        <div className={styles.caption}>
+          <p><span style={{ color: 'black', fontWeight: 'bold' }}>{user?.name}</span> {post?.caption}</p>
+        </div>
 
-      {/* description */}
-      <div className={styles.caption}>
-        <p><span style={{ color: 'black', fontWeight: 'bold' }}>{user?.name}</span> {post?.caption}</p>
-      </div>
+        {/* bottom data part */}
+        <div className={styles.bottom_part}>
+          <div className={styles.contact_action}>
+            <div className={styles.like_comment}>
+              {/* like button */}
+              <button
+                style={{ border: 'none', background: 'none', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                onClick={handleLike}>
+                {isLiked && <IoHeart size={30} color='red' />}
+                {!isLiked && < AiOutlineHeart size={30} />}
+              </button>
 
-      {/* bottom data part */}
-      <div className={styles.bottom_part}>
-        <div className={styles.contact_action}>
-          <div className={styles.like_comment}>
-            <button
-              style={{ border: 'none', background: 'none', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              onClick={handleLike}>
-              {isLiked && <IoHeart size={30} color='red' />}
-              {!isLiked && < AiOutlineHeart size={30} />}
-            </button>
-            <BsChat size={25} />
-            <IoPaperPlaneOutline size={25} />
+              {/* comment button */}
+              <BsChat size={25}
+              style={{cursor:'pointer'}}
+                onClick={() => setshowCommentBox(!showCommentBox)} />
+
+              {/* share button */}
+              <IoPaperPlaneOutline size={25} />
+            </div>
+            <div className={styles.contact}><IoIosCall size={20} />{user?.contactNo}</div>
           </div>
-          <div className={styles.contact}><IoIosCall size={20} />{user?.contactNo}</div>
-        </div>
 
-        {/* show likes */}
-        <p>{likes} likes</p>
+          {/* show likes */}
+          <p>{likes} likes</p>
+        </div>
       </div>
-    </div>
+
+      {/* comment box */}
+      {showCommentBox && <div className={styles.comment_box}>
+        <Comment
+          images={images}
+          postUserImage={postUserImage}
+          postUserName={user.name}
+          handleLike={handleLike}
+          isLiked={isLiked}
+          likes={likes}
+          post={post}
+        />
+
+        {/* close comment box */}
+
+        <div className={styles.close_comment_box}>
+          <span>
+            <RxCross2
+              size={40}
+              onClick={() => setshowCommentBox(!showCommentBox)} />
+          </span>
+        </div>
+      </div>}
+    </>
   )
 }
 

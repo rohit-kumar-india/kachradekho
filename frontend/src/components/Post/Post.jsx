@@ -12,30 +12,14 @@ const Post = () => {
 
     const dispatch = useDispatch()
     const divRef = useRef()
+    const currentUser = useSelector((state) => state.currentUser.userData)
 
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [userImage, setUserImage] = useState()
+    const [userImage, setUserImage] = useState(currentUser.profilePicture)
     const [prevScrollTop, setprevScrollTop] = useState()
     const [isLoading, setisLoading] = useState(false)
     const [isNoMore, setisNoMore] = useState(false)
-
-    const currentUser = useSelector((state) => state.currentUser.userData)
-
-    //fetch current user image from database
-    const fetchImage = async (imageId) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const image = await response.json()
-        // console.log(image.image[0].file)
-        if (image.success && image.image.length>0) {
-            setUserImage(image.image[0].file)
-        }
-    }
 
     const fetchPosts = async () => {
         setisLoading(true)
@@ -52,7 +36,6 @@ const Post = () => {
         }
         setPosts(prevPosts => [...prevPosts, ...data]);
     };
-
 
     const handleScroll = async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.target;
@@ -71,9 +54,6 @@ const Post = () => {
         }
     }, [currentPage]);
 
-    useEffect(() => {
-        fetchImage(currentUser?.profilePicture)
-    }, [userImage])
 
     return (
         <>
@@ -99,7 +79,7 @@ const Post = () => {
                     posts?.map((item, index) => {
                         return (
 
-                            <PostCard post={item} />
+                            <PostCard post={item} key={item._id}/>
                         )
                     }
                     )}

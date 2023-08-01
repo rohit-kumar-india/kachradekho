@@ -1,0 +1,140 @@
+.comment_container {
+    width: 100%;
+    display: flex;
+}
+
+.comment_left {
+    width: 55%;
+    height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.comment_right {
+    width: 45%;
+    height: 550px;
+    background-color: black;
+}
+
+.post_info {
+    height: 50px;
+    background-color: var(--background-color);
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.name_photo_hld {
+    /* width: 100%; */
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* padding-left: 10px; */
+}
+
+.photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(216, 224, 230);
+    overflow: hidden;
+}
+
+.profile_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name h3 {
+    font-size: 14px;
+    color: white;
+}
+
+.allComments {
+    /* width: 100%; */
+    height: 370px;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px 20px 20px;
+}
+
+.comment {
+    color: white;
+    display: flex;
+    font-size: 12px;
+    gap: 10px;
+    font-weight: 300;
+}
+
+.comment .photo {
+    width: 25px;
+    height: 25px;
+}
+
+.comment .comment_actions {
+    display: flex;
+    gap: 20px;
+}
+
+.bottom_part {
+    /* height: 100px; */
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+}
+
+.like_share {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: gray;
+}
+
+.addComment {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.addComment input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid gray;
+    color: white;
+}
+
+.sendCmtBtn {
+    color: gray;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    float: right;
+}
+
+.sendCmtBtn:hover {
+    color: white;
+}
+
+.loader,
+.no_comments_show,
+.fetchMoreBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.fetchMoreBtn:hover{
+    cursor: pointer;
+    color: white;
+}

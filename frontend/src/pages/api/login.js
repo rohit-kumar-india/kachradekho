@@ -1,5 +1,6 @@
 import connectDb from "@/middleware/mongoose";
 import User from "@/models/user";
+import Image from '@/models/image'
 var AES = require("crypto-js/aes");
 var CryptoJS = require("crypto-js");
 var jwt = require('jsonwebtoken');
@@ -10,9 +11,15 @@ const handler = async (req, res) => {
         let user = await User.findOne({ "username": req.body.username })
         var bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
-        console.log(originalText)
+        // console.log(originalText)
         if (user) {
             if (user.username === req.body.username && originalText === req.body.password) {
+
+                let profilePicture = ''
+                if (user.profilePicture) {
+                    profilePicture = await Image.findOne({ "_id": user.profilePicture })
+                    // console.log(profilePicture.file)
+                }
                 var token = jwt.sign({
                     userId: user._id,
                     name: user.name,
@@ -25,7 +32,7 @@ const handler = async (req, res) => {
                     city: user.city,
                     address: user.address,
                     post: user.post,
-                    profilePicture: user.profilePicture,
+                    profilePicture: profilePicture.file,
                 },
                     process.env.JWT_SECRET);
 

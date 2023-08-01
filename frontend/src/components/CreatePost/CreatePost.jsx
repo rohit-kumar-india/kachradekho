@@ -13,16 +13,17 @@ import userAvatar from '../../assets/userAvatar.png'
 
 const CreatePost = () => {
 
+    const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.currentUser.userData)
+
     const [desc, setDesc] = useState('');
     const [productName, setproductName] = useState()
     const [images, setImages] = useState([]);
     const [imageURLs, setImageURLs] = useState([]);
     const [showLimit, setShowLimit] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [userImage, setUserImage] = useState()
+    const [userImage, setUserImage] = useState(currentUser.profilePicture)
 
-    const dispatch = useDispatch()
-    const currentUser = useSelector((state) => state.currentUser.userData)
 
     // toastify
     const toastOptions = {
@@ -129,21 +130,6 @@ const CreatePost = () => {
         setImages(updatedImages);
     }
 
-    //fetch user image from database
-    const fetchImage = async (imageId) => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const image = await response.json()
-        // console.log(image.image[0].file)
-        if (image.success) {
-            setUserImage(image.image[0].file)
-        }
-    }
-
     useEffect(() => {
         if (images.length < 1) return;
         if (images.length > 5) {
@@ -153,10 +139,6 @@ const CreatePost = () => {
         }
         convertAllImagesToBase64(images);
     }, [images]);
-
-    useEffect(() => {
-        fetchImage(currentUser.profilePicture)
-    }, [])
 
     return (
         <div className={styles.create_post_container}>
