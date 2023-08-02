@@ -18,16 +18,20 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
   const currentUser = useSelector((state) => state.currentUser.userData)
 
   const [newComment, setNewComment] = useState('')
+  const [newReply, setNewReply] = useState('')
   const [comments, setComments] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
+  const [prevPage, setprevPage] = useState(0)
   const [currUserImage, setCurrUserImage] = useState(currentUser.profilePicture)
   const [isLoading, setisLoading] = useState(false)
   const [isNoMore, setisNoMore] = useState(false)
   const [currPost, setCurrPost] = useState(post)
+  const [isShowReply, setIsShowReply] = useState(false)
+  const [isShowAllReplies, setIsShowAllReplies] = useState(false)
 
   //update the post with comment ids
   const updatePost = async (commentId) => {
-    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
+    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -37,11 +41,19 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
         postId: post._id
       }),
     })
-    let response = await res.json()
 
-    alert("comment added successfully")
+    // alert("comment added successfully")
     setNewComment('')
-    fetchPost()
+
+    // add recent comment
+    const data = {
+      "comment": {
+        "text": newComment
+      },
+      "userName": currentUser.name,
+      "userImage": currentUser.profilePicture
+    }
+    setComments(comments => [...comments, data]);
   }
 
   //save the comments and get response as commentId
@@ -70,11 +82,43 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
     } catch (error) {
       alert(error)
     }
+  }
 
+  // send reply of the comments to the server
+  const handleSendReply = async () => {
+    try {
+      if (Object.keys(newReply).length > 0) {
+        const reply = {
+          text: newReply,
+          userId: currentUser.userId,
+          userName: currentUser.name,
+          userImage: currentUser.profilePicture,
+          replyTo: isShowReply.replyTo
+        }
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/comment?commentId=${isShowReply.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reply),
+        })
+        let response = await res.json()
+        if (response.success) {
+          setNewReply('')
+          setIsShowReply(false)
+        }
+      }
+      else {
+        alert("please write a reply...")
+      }
+    } catch (error) {
+      alert(error)
+    }
   }
 
   //fetch post from postId
   const fetchPost = useCallback(async () => {
+    setprevPage(currentPage)
     setisLoading(true)
     const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${currPost._id}`, {
       method: 'GET',
@@ -84,10 +128,8 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
     });
     const data = await response.json();
     setCurrPost(data)
-    // console.log(data)
-
     fetchComment()
-  }, [currPost, comments]);
+  }, [currentPage]);
 
   //fetch comment
   const fetchComment = async () => {
@@ -101,19 +143,20 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
       body: JSON.stringify({ allCommentIds })
     });
     const data = await response.json();
-    // console.log(data)
     if (data.length === 0) {
       setisNoMore(true)
     }
     if (data.length > 0) {
       setComments(comments => [...comments, ...data]);
+
     }
     setisLoading(false)
   }
 
   useEffect(() => {
-    fetchPost()
-    // console.log(comments)
+    if (currentPage > prevPage) {
+      fetchPost()
+    }
   }, [currentPage])
 
   return (
@@ -167,24 +210,130 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
           {
             comments?.map((comment) => {
               return (
-                <div className={styles.comment} key={comment.comment._id}>
+                <>
+                  <div className={styles.comment} key={comment.comment._id}>
 
-                  <div className={styles.photo}>
-                    {!comment.userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
-                    <img src={comment.userImage} alt="user not found" className={styles.profile_image} />
-                  </div>
-
-                  <div className={styles.comment_text_actions}>
-                    <span style={{ color: 'white', fontWeight: 500 }}> {comment.userName}</span> <span> {comment.comment.text}</span>
-
-                    {/* actions on comment */}
-                    <div className={styles.comment_actions}>
-                      <p>Reply</p>
-                      <p>Edit</p>
-                      <p>Delete</p>
+                    <div className={styles.photo}>
+                      {!comment.userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                      <img src={comment.userImage} alt="user not found" className={styles.profile_image} />
                     </div>
+
+                    <div className={styles.comment_text_actions}>
+                      <span style={{ color: 'white', fontWeight: 500 }}> {comment.userName}</span>
+                      <span> {comment.comment.text}</span>
+
+                      {/* actions on comment */}
+                      <div className={styles.comment_actions}>
+                        <p onClick={() => setIsShowReply({
+                          "id": comment.comment._id,
+                          "replyTo": comment.userName
+                        })}>Reply</p>
+                        <p>Edit</p>
+                        <p>Delete</p>
+                      </div>
+
+                      {/* show all replies button*/}
+                      {
+                        comment.comment.replies.length > 0 &&
+                        !isShowAllReplies &&
+                        <div className={styles.showAllReplyBtn}
+                          onClick={() => setIsShowAllReplies(!isShowAllReplies)}>
+                          <div style={{ width: '40px', height: '0.5px', backgroundColor: 'gray' }}></div>
+                          <p>show all ({comment.comment.replies.length}) replies</p>
+                          <div style={{ width: '40px', height: '0.5px', backgroundColor: 'gray' }}></div>
+                        </div>
+                      }
+                    </div>
+
+                    {/* show all replies */}
+                    {
+                      isShowAllReplies && <div className={styles.allComments}>
+                        {
+                          comment.comment.replies?.map((reply) => {
+                            return (
+                              <>
+                                <div className={styles.comment} key={reply.text}>
+                                  <div className={styles.photo}>
+                                    {!reply.userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                                    <img src={reply.userImage} alt="user not found" className={styles.profile_image} />
+                                  </div>
+
+                                  <div className={styles.comment_text_actions}>
+                                    <span style={{ color: 'white', fontWeight: 500 }}> {reply.userName}</span>
+                                    <span> {reply.text}</span>
+
+                                    {/* actions on comment */}
+                                    <div className={styles.comment_actions}>
+                                      <p onClick={() => setIsShowReply({
+                                        "id": reply.userId,
+                                        "replyTo": reply.userName
+                                      })}>Reply</p>
+                                      <p>Edit</p>
+                                      <p>Delete</p>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                                {/* reply to user */}
+                                {
+                                  isShowReply.id === comment.comment._id && <div className={styles.reply_to}>
+                                    <div className={styles.photo}>
+                                      {!currUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                                      <img src={currUserImage} alt="user not found" className={styles.profile_image} />
+                                    </div>
+                                    <div className={styles.addComment}>
+                                      <input type="text" value={newReply} placeholder={`reply to ${isShowReply.replyTo}...`} onChange={(e) => setNewReply(e.target.value)} />
+
+                                      {/* send button */}
+                                      <div className={styles.sendCmtBtn} onClick={() => handleSendReply()}>
+                                        <IoSendSharp size={15} />
+                                        {/* <p>send</p> */}
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+
+                              </>
+                            )
+                          })
+                        }
+                      </div >
+                    }
+
+                    {/* reply to user */}
+                    {
+                      isShowReply.id === comment.comment._id && <div className={styles.reply_to}>
+                        <div className={styles.photo}>
+                          {!currUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                          <img src={currUserImage} alt="user not found" className={styles.profile_image} />
+                        </div>
+                        <div className={styles.addComment}>
+                          <input type="text" value={newReply} placeholder={`reply to ${isShowReply.replyTo}...`} onChange={(e) => setNewReply(e.target.value)} />
+
+                          {/* send button */}
+                          <div className={styles.sendCmtBtn} onClick={() => handleSendReply()}>
+                            <IoSendSharp size={15} />
+                            {/* <p>send</p> */}
+                          </div>
+                        </div>
+                      </div>
+                    }
+
+                    {/* hide replies button*/}
+                    {
+                      comment.comment.replies.length > 0 &&
+                      isShowAllReplies &&
+                      <div className={styles.showAllReplyBtn}
+                        onClick={() => setIsShowAllReplies(!isShowAllReplies)}>
+                        <div style={{ width: '40px', height: '0.5px', backgroundColor: 'gray' }}></div>
+                        <p>hide all replies</p>
+                        <div style={{ width: '40px', height: '0.5px', backgroundColor: 'gray' }}></div>
+                      </div>
+                    }
                   </div>
-                </div>
+                </>
+
               )
             })
           }
@@ -212,12 +361,11 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
               height={30}
             />
           </div>}
-
-        </div>
+        </div >
 
 
         {/* like and add comment part */}
-        <div className={styles.bottom_part}>
+        <div div className={styles.bottom_part} >
           <div className={styles.like_share}>
             {/* like button */}
             <button
@@ -250,8 +398,8 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
 

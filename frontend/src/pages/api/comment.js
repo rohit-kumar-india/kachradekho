@@ -9,9 +9,9 @@ const handler = async (req, res) => {
         if (req.method === 'POST') {
 
             // for fetching comments with ids, 10 at a time
-            if (req.body.allCommentIds.length>0) {
+            if (req.body.allCommentIds.length > 0) {
                 const allCommentIds = req.body.allCommentIds;
-                console.log(allCommentIds)
+
                 const perPageLimit = parseInt(req.query.limit || 10);
                 const page = parseInt(req.query.page || 1);
 
@@ -22,14 +22,14 @@ const handler = async (req, res) => {
                 const comments = allCommentIds.slice(startIndex, endIndex);
 
                 const commentsData = await Promise.all(comments.map(async (commentId) => {
-                    const comment = await Comment.findOne({ "_id": commentId })
-                    const user = await User.findOne({"_id" : comment.user})
-                    const userImage = await Image.findOne({"_id": user.profilePicture})
+                    const comment = await Comment.findOne({ "_id": commentId }).sort({ createdAt: -1 })
+                    const user = await User.findOne({ "_id": comment.user })
+                    const userImage = await Image.findOne({ "_id": user.profilePicture })
 
                     return {
                         "comment": comment,
                         "userName": user.name,
-                        "userImage": userImage.file 
+                        "userImage": userImage.file
                     }
                 }));
                 // const commentsData = await Comment.find({_id : {$in : comments}})
@@ -38,7 +38,7 @@ const handler = async (req, res) => {
             }
 
             // for creating new post
-            else{
+            else {
                 const newComment = req.body;
                 let cmt = new Comment(newComment);
                 await cmt.save();
@@ -49,13 +49,22 @@ const handler = async (req, res) => {
 
         // for updating likes
         else if (req.method === 'PUT') {
-            const { like } = req.body;
-            // console.log(req.body)
-            const post = await Post.findByIdAndUpdate(req.body.postId, { likes: like }, { new: true });
-            if (!post) {
-                res.status(404).json({ message: 'post not found' });
+            const { commentId } = req.query;
+
+            const comment = await Comment.findById(commentId);
+
+            // Check if the comment exists
+            if (!comment) {
+                return res.status(404).json({ message: "Comment not found" });
             }
-            res.status(200).json({ success: "success" });
+
+            // Add the new reply to replies array
+            comment.replies.push(req.body);
+
+            // Save the updated post
+            await comment.save();
+
+            return res.status(200).json({ success: "success" });
         }
 
         //for deleting the post
