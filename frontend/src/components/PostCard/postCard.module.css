@@ -67,14 +67,15 @@
     text-align: justify;
 }
 
-.caption p{
+.caption p {
     text-align: justify;
     float: left;
 }
 
-.bottom_part{
+.bottom_part {
     width: 100%;
 }
+
 .contact_action {
     width: 100%;
     display: flex;
@@ -100,7 +101,7 @@
 }
 
 /* comment Box */
-.comment_box{
+.comment_box {
     width: 900px;
     height: 550px;
     background-color: black;
@@ -111,11 +112,11 @@
     transform: translate(-50%, -50%);
     border-radius: var(--border-radius);
     overflow: hidden;
-    /* border: 1px solid gray; */
 }
+
 .close_comment_box {
     display: flex;
-    position:absolute;
+    position: absolute;
     top: 0;
     right: 0px;
     z-index: 2;
@@ -139,31 +140,34 @@
     border-radius: 4px;
     transition: all .3s ease-in-out;
     background-color: #F0F5F7;
-}   
+}
 
-.showAllCommentsBtn{
+.showAllCommentsBtn {
     margin-top: -10px;
     width: 100%;
     font-size: 14px;
     color: gray;
 }
-.showAllCommentsBtn span:hover{
+
+.showAllCommentsBtn span:hover {
     color: black;
     cursor: pointer;
 }
 
 /* classes for adding comment */
-.addComment_div{
+.addComment_div {
     width: 100%;
     display: flex;
     gap: 10px;
     align-items: center;
     justify-content: space-between;
 }
-.addComment_div .photo{
+
+.addComment_div .photo {
     width: 30px;
     height: 30px;
 }
+
 .addComment {
     width: 100%;
     display: flex;
@@ -176,7 +180,7 @@
     background: none;
     border: none;
     border-bottom: 1px solid gray;
-    color:gray;
+    color: gray;
 }
 
 .sendCmtBtn {
@@ -204,9 +208,25 @@
     padding: 0;
 }
 
+@media screen and (max-width:992px) {
+    .comment_box {
+        width: 700px;
+        height: 500px;
+    }
+}
+
 @media screen and (max-width:600px) {
     .contact {
         font-size: 12px;
+    }
 
+    .comment_box {
+        height: 60%;
+        width: 99%;
+        transform: none;
+        top:unset;
+        left:unset;
+        bottom: 0;
+        overflow: hidden;
     }
 }

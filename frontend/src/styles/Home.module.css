@@ -46,14 +46,17 @@
  
 }
 @media screen and (max-width:992px) {
-  .profile{
-    display: none;
+  .post{
+    min-width: 60%;
   }
   .notifications{
     display: none;
   }
 }
 @media screen and (max-width:600px) {
+  .profile{
+    display: none;
+  }
   .post{
     min-width: 100%;
   }
