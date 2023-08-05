@@ -3,7 +3,7 @@
     background-color: white;
     border: 1px solid black;
     border-radius: var(--border-radius);
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
@@ -62,7 +62,7 @@
 
 .caption {
     width: 100%;
-    padding: 0 20px;
+    /* padding: 0 20px; */
     overflow: hidden;
     text-align: justify;
 }
@@ -140,6 +140,69 @@
     transition: all .3s ease-in-out;
     background-color: #F0F5F7;
 }   
+
+.showAllCommentsBtn{
+    margin-top: -10px;
+    width: 100%;
+    font-size: 14px;
+    color: gray;
+}
+.showAllCommentsBtn span:hover{
+    color: black;
+    cursor: pointer;
+}
+
+/* classes for adding comment */
+.addComment_div{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+.addComment_div .photo{
+    width: 30px;
+    height: 30px;
+}
+.addComment {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.addComment input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid gray;
+    color:gray;
+}
+
+.sendCmtBtn {
+    color: gray;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    float: right;
+}
+
+.sendCmtBtn:hover {
+    color: black;
+}
+
+.loader,
+.no_comments_show,
+.fetchMoreBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.sendCmtBtn .loader {
+    padding: 0;
+}
 
 @media screen and (max-width:600px) {
     .contact {

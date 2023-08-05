@@ -8,13 +8,18 @@ import { BsChat } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
+import { IoSendSharp } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper";
 import userAvatar from '../../assets/userAvatar.png'
 import "swiper/css";
 import Comment from '../commentBox/comment';
+import { useSelector } from 'react-redux'
+import Loader from '../../assets/loader.gif'
 
 const Card = ({ post }) => {
+
+  const currUser = useSelector((state) => state.currentUser.userData)
 
   const [user, setUser] = useState({})
   const [images, setImages] = useState([])
@@ -22,6 +27,9 @@ const Card = ({ post }) => {
   const [isLiked, setIsLiked] = useState(false)
   const [likes, setLikes] = useState(post?.likes || 0)
   const [showCommentBox, setshowCommentBox] = useState(false)
+  const [newComment, setNewComment] = useState('')
+  const [isSending, setIsSending] = useState(false)
+  const [commentsCnt, setCommentsCnt] = useState(post.comments.length)
 
   //fetch user profile of each post
   const fetchUser = async () => {
@@ -75,7 +83,7 @@ const Card = ({ post }) => {
   let sendLikesToServer = async (like) => {
 
     // Send the like action to the server
-    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
+    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -85,8 +93,51 @@ const Card = ({ post }) => {
         postId: post._id
       })
     })
-    const likeres = await res.json()
-    console.log(likeres)
+  }
+
+  // send comment to the server
+  const handleSendComment = async () => {
+    if (Object.keys(newComment).length > 0) {
+      setIsSending(true)
+      const cmt = {
+        text: newComment,
+        user: currUser.userId,
+        allCommentIds: ''
+      }
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/comment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(cmt),
+        })
+          .then(async (res) => {
+            if (res.ok) {
+              const commentId = await res.json()
+              await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  commentId,
+                  postId: post._id
+                }),
+              })
+            }
+          }).then(() => {
+            setCommentsCnt(commentsCnt + 1)
+            setNewComment('')
+            setIsSending(false);
+          })
+      } catch (error) {
+        alert(error)
+      }
+    }
+    else {
+      alert("please write a comment...")
+    }
   }
 
   useEffect(() => {
@@ -141,7 +192,7 @@ const Card = ({ post }) => {
             {images.map((image) => {
               return (
                 <SwiperSlide key={image}>
-                  <img src={image} alt="poster1"/>
+                  <img src={image} alt="poster1" />
                 </SwiperSlide>
               )
             })}
@@ -167,7 +218,7 @@ const Card = ({ post }) => {
 
               {/* comment button */}
               <BsChat size={25}
-              style={{cursor:'pointer'}}
+                style={{ cursor: 'pointer' }}
                 onClick={() => setshowCommentBox(!showCommentBox)} />
 
               {/* share button */}
@@ -178,6 +229,34 @@ const Card = ({ post }) => {
 
           {/* show likes */}
           <p>{likes} likes</p>
+        </div>
+
+        <div className={styles.showAllCommentsBtn} >
+          <span onClick={() => setshowCommentBox(!showCommentBox)}>show all {commentsCnt} comments</span>
+        </div>
+
+        {/* add comment button */}
+        <div className={styles.addComment_div}>
+          <div className={styles.photo}>
+            {!currUser.profilePicture && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+            <img src={currUser.profilePicture} alt="user not found" className={styles.profile_image} />
+          </div>
+          <div className={styles.addComment}>
+            <input type="text" value={newComment} placeholder="Add a comment..." onChange={(e) => setNewComment(e.target.value)} />
+
+            {/* send button */}
+            <div className={styles.sendCmtBtn} onClick={() => handleSendComment()}>
+              {!isSending && <IoSendSharp size={20} />}
+              {isSending && <div className={styles.loader}>
+                <Image
+                  alt='loader'
+                  src={Loader}
+                  width={20}
+                  height={20}
+                />
+              </div>}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -195,7 +274,6 @@ const Card = ({ post }) => {
         />
 
         {/* close comment box */}
-
         <div className={styles.close_comment_box}>
           <span>
             <RxCross2

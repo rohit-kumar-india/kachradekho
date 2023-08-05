@@ -250,7 +250,7 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
           pagination
           modules={[Navigation, Pagination]}
         >
-          {images?.map((image) => {
+          {images.length > 0 && images?.map((image) => {
             return (
               <SwiperSlide >
                 <img src={image} alt="poster1" />
