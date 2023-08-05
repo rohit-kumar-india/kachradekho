@@ -34,11 +34,11 @@
 }
 
 .reply_to {
-    padding-left: 40px;
+    padding: 10px 0 0 40px;
 }
 
 .reply_to input {
-    border: none !important;
+   
     font-size: 11px;
 }
 
@@ -84,10 +84,23 @@
 .comment {
     color: white;
     display: flex;
+    /* flex-direction: column; */
     font-size: 12px;
     gap: 10px;
     font-weight: 300;
-    align-items: center;
+    /* justify-content: center; */
+}
+
+.replies_div {
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.replies_div .comment_text_actions {
+    display: flex;
+    flex-direction: column;
 }
 
 .comment .photo {
@@ -175,6 +188,10 @@
     align-items: center;
     justify-content: center;
     padding-top: 20px;
+}
+
+.sendCmtBtn .loader {
+    padding: 0;
 }
 
 .fetchMoreBtn:hover {

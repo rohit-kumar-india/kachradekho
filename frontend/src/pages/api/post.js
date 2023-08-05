@@ -56,11 +56,14 @@ const handler = async (req, res) => {
                 // Save the updated post
                 await post.save();
 
-                return res.status(200).json({ message: "Comment added successfully" });
+                return res.status(200).json({  success: "success" });
             }
         }
 
         //for deleting the post
+        else if (req.method ==="DELETE") {
+        
+        }
 
         else {
             res.status(405).json({ error: "This method is not allowed" });

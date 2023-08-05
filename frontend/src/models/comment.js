@@ -12,27 +12,14 @@ const CommentSchema = new mongoose.Schema({
     },
     replies: [
         {
-            userId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
-            },
-            userName: {
-                type: String,
-            },
-            userImage: {
-                type: String
-            },
-            text: {
-                type: String,
-                required: true
-            },
-            replyTo: {
-                type: String,
-                required: true
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'replyId'
         }
     ],
+    replyTo: {
+        type: String,
+        ref: 'replyUser'
+    },
     createdAt: {
         type: Date,
         default: Date.now

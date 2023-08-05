@@ -191,6 +191,7 @@ const Card = ({ post }) => {
           isLiked={isLiked}
           likes={likes}
           post={post}
+          showCommentBox={showCommentBox}
         />
 
         {/* close comment box */}
