@@ -16,7 +16,6 @@ const Post = () => {
 
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [userImage, setUserImage] = useState(currentUser.profilePicture)
     const [prevScrollTop, setprevScrollTop] = useState()
     const [isLoading, setisLoading] = useState(false)
     const [isNoMore, setisNoMore] = useState(false)
@@ -61,8 +60,8 @@ const Post = () => {
             <div className={styles.create_post_btn} onClick={() => dispatch(setShowCreatePost())}>
                 <div className={styles.create_post_left}>
                     <div className={styles.photo}>
-                        {!userImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
-                        <img src={userImage} alt="user not found" className={styles.profile_image} />
+                        {!currentUser.profilePicture && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                        <img src={currentUser.profilePicture} alt="user not found" className={styles.profile_image} />
                     </div>
                     <p>create a post...</p>
                 </div>
@@ -79,12 +78,12 @@ const Post = () => {
                     posts?.map((item, index) => {
                         return (
 
-                            <PostCard post={item} key={item._id}/>
+                            <PostCard post={item} key={item._id} />
                         )
                     }
                     )}
                 {posts.length === 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>Nothing to show...</span>}
-                {isNoMore && posts.length>0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
+                {isNoMore && posts.length > 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
                 {isLoading && <div className={styles.loader}>
                     <Image
                         alt='loader'

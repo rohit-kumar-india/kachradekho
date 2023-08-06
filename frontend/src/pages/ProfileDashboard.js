@@ -208,15 +208,15 @@ const Profile = () => {
                 className={`${styles.sliderWrapper} ${activeComponent === 'posts' ? styles.active : ''
                   }`}
               >
-                <PostCard />
-                <PostCard />
+                {/* <PostCard />
+                <PostCard /> */}
               </div>}
               {activeComponent === "saved" && <div
                 className={`${styles.sliderWrapper} ${activeComponent === 'saved' ? styles.active : ''
                   }`}
               >
-                <PostCard />
-                <PostCard />
+                {/* <PostCard />
+                <PostCard /> */}
               </div>}
             </div>
           </div>

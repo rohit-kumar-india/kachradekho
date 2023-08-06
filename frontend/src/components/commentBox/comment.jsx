@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../assets/loader.gif'
 import Image from 'next/image';
 
-const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, likes, post, showCommentBox }) => {
+const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, likes, post, showCommentBox, commentsCnt, setCommentsCnt }) => {
 
   const currentUser = useSelector((state) => state.currentUser.userData)
 
@@ -103,6 +103,7 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
         if (postUpt.success) {
           await fetchPost('sending')
           setNewComment('')
+          setCommentsCnt(commentsCnt + 1)
         }
       }
     }
@@ -270,7 +271,7 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
               <img src={postUserImage} alt="user not found" className={styles.profile_image} />
             </div>
             <div className={styles.name}>
-              <h3>{postUserName}</h3>
+              <h3>{postUsername}</h3>
             </div>
           </div>
         </div>
@@ -293,14 +294,14 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
                     </div>
 
                     <div className={styles.comment_text_actions}>
-                      <span style={{ color: 'white', fontWeight: 500 }}> {comment.userName}</span>
+                      <span style={{ color: 'white', fontWeight: 500 }}> {comment.username}</span>
                       <span> {comment.comment.text}</span>
 
                       {/* actions on comment */}
                       <div className={styles.comment_actions}>
                         <p onClick={() => setIsShowReply({
                           "id": comment.comment._id,
-                          "replyTo": comment.userName
+                          "replyTo": comment.username
                         })}>Reply</p>
                         {/* <p>Edit</p> */}
                         {currentUser.userId === comment.comment.user &&
@@ -353,7 +354,7 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
                                 </div>
 
                                 <div className={styles.comment_text_actions}>
-                                  <span style={{ color: 'white', fontWeight: 500 }}> {reply.userName}</span>
+                                  <span style={{ color: 'white', fontWeight: 500 }}> {reply.username}</span>
                                   <span><span style={{ color: 'blue' }}>@{reply.comment.replyTo}</span> {reply.comment.text}</span>
 
                                   {/* actions on comment */}
@@ -361,7 +362,7 @@ const comment = ({ images, postUserName, postUserImage, handleLike, isLiked, lik
                                     <p onClick={() => {
                                       setIsShowReply({
                                         "id": reply.comment._id,
-                                        "replyTo": reply.userName
+                                        "replyTo": reply.username
                                       })
                                     }
                                     }>Reply</p>

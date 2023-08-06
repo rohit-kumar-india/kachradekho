@@ -8,10 +8,10 @@ import { setShowEditPopup, setUserData } from '../../store/slices'
 import Loader from "../../assets/loader.gif"
 import Image from "next/image";
 
-const EditProfile = () => {
+const EditProfile = ({ user }) => {
 
     const dispatch = useDispatch()
-    const currentUser = useSelector((state) => state.currentUser.userData)
+    const currentUser = user || useSelector((state) => state.currentUser.userData)
 
     const [values, setValues] = useState(currentUser)
     const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +33,7 @@ const EditProfile = () => {
         e.preventDefault();
         setIsLoading(true)
 
-        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user`, {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${currentUser.userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,15 @@ const EditProfile = () => {
 
         if (response.success === "success") {
             toast.success('Your Profile has been updated', toastOptions);
-            dispatch(setUserData(values))
+            dispatch(setUserData({
+                ...currentUser,
+                userId: user._id,
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                savedPost: user.post
+            }
+            ))
             setTimeout(() => {
                 dispatch(setShowEditPopup())
             }, 1500)
@@ -80,6 +88,18 @@ const EditProfile = () => {
                         />
                     </div>
                     <div className={styles.form_group}>
+                        <label htmlFor="username">Username:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={values.username}
+                            onChange={handleChange}
+                            placeholder="username"
+                            required
+                        />
+                    </div>
+                    <div className={styles.form_group}>
                         <label htmlFor="bio">Bio:</label>
                         <input
                             type="text"
@@ -92,12 +112,12 @@ const EditProfile = () => {
                         />
                     </div>
                     <div className={styles.form_group}>
-                        <label htmlFor="username">Username:</label>
+                        <label htmlFor="email">Email:</label>
                         <input
                             type="email"
-                            id="username"
-                            name="username"
-                            value={values.username}
+                            id="email"
+                            name="email"
+                            value={values.email}
                             onChange={handleChange}
                             placeholder="user@gmail.com"
                             required

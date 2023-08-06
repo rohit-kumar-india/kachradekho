@@ -92,7 +92,8 @@
     left: 10px;
     /* z-index: 10; */
 }
-.change_image label{
+
+.change_image label {
     cursor: pointer;
 }
 
@@ -128,7 +129,15 @@
 .name_bio_hld {
     display: flex;
     flex-direction: column;
-    /* padding: 0 40px; */
+    gap: 5px;
+}
+
+.username {
+    margin-top: -10px;
+    font-style: oblique;
+    font-weight: 500;
+    color: gray;
+    font-size: 16px !important;
 }
 
 .name_bio_hld span {
@@ -260,6 +269,10 @@
 
     .back_button {
         left: 50px;
+    }
+
+    .username {
+        margin-top: -5px;
     }
 }
 

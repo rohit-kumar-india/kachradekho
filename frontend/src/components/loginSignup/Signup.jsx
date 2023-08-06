@@ -20,13 +20,17 @@ const Signup = () => {
 
     const [values, setValues] = useState({
         name: "",
-        username: "",
+        email: "",
         password: "",
         confirmPassword: ""
     });
 
     const [isMatch, setIsMatch] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
+
+    // Change the URL without triggering a full page reload
+    const newUrl = `${process.env.NEXT_PUBLIC_HOST}/signup`;
+    window.history.pushState(null, null, newUrl);
 
     // toastify
     const toastOptions = {
@@ -38,11 +42,11 @@ const Signup = () => {
     }
 
     const handleValidation = () => {
-        const { password, username } = values;
+        const { password, email } = values;
         if (password === "") {
             toast.error("Email and Password is required", toastOptions);
             return false;
-        } else if (username === "") {
+        } else if (email === "") {
             toast.error("Email and Password is required", toastOptions);
             return false;
         }
@@ -70,7 +74,7 @@ const Signup = () => {
             let response = await res.json()
             setValues({
                 name: "",
-                username: "",
+                email: "",
                 password: "",
                 confirmPassword: "",
             });
@@ -84,7 +88,7 @@ const Signup = () => {
                 }, 1000)
             }
             else {
-                toast.error(response, toastOptions)
+                toast.error(response.error, toastOptions)
             }
         }
 
@@ -141,17 +145,17 @@ const Signup = () => {
                             name="name"
                             value={values.name}
                             onChange={handleChange}
-                            placeholder="your name"
+                            placeholder="username"
 
                         />
                     </div>
                     <div className={styles.form_group}>
-                        <label htmlFor="username">Username:</label>
+                        <label htmlFor="email">Email:</label>
                         <input
                             type="email"
-                            id="username"
-                            name="username"
-                            value={values.username}
+                            id="email"
+                            name="email"
+                            value={values.email}
                             onChange={handleChange}
                             placeholder="user@gmail.com"
 

@@ -23,10 +23,14 @@ const Login = () => {
 
 
   const [values, setValues] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false)
+
+  // Change the URL without triggering a full page reload
+  const newUrl = `${process.env.NEXT_PUBLIC_HOST}/login`;
+  window.history.pushState(null, null, newUrl);
 
   // toastify
   const toastOptions = {
@@ -67,18 +71,8 @@ const Login = () => {
       })
       let response = await res.json()
 
-      // setValues({
-      //   name: "",
-      //   email: "",
-      //   password: "",
-      //   confirmPassword: "",
-      // });
-
       if (response.success) {
         toast.success('You are successfully logged in', toastOptions);
-
-        //set token into the redux store and make it logged in
-        // dispatch(setIsLoggedIn(response.token))
         dispatch(login())
 
         //decode token data and store in the redux store
@@ -128,12 +122,12 @@ const Login = () => {
 
           <h3>Welcome to KachraDekho</h3>
           <div className={styles.form_group}>
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
-              id="username"
-              name="username"
-              value={values.username}
+              id="email"
+              name="email"
+              value={values.email}
               onChange={handleChange}
               placeholder="user@gmail.com"
 
@@ -147,7 +141,7 @@ const Login = () => {
               name="password"
               value={values.password}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder="Password..."
 
             />
           </div>

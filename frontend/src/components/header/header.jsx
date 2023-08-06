@@ -16,15 +16,18 @@ import trash from "../../assets/trash2.png";
 import Notifications from '../Notifications/Notifications';
 
 const header = () => {
-    const [showMenu, setShowMenu] = useState(false)
-    const [isNotification, setIsNotification] = useState(false)
     const router = useRouter();
+    const dispatch = useDispatch()
+
     const showCreatePost = useSelector((state) => state.createPost.value)
     const showLogin = useSelector((state) => state.logIn.value)
     const showRegister = useSelector((state) => state.register.value)
     const isLoggedIn = useSelector((state) => state.auth.loggedIn);
-    const dispatch = useDispatch()
-    
+    const currentUser = useSelector((state) => state.currentUser.userData)
+
+    const [showMenu, setShowMenu] = useState(false)
+    const [isNotification, setIsNotification] = useState(false)
+
     const shoNotification = useCallback(() => {
 
         setIsNotification(!isNotification);
@@ -108,7 +111,7 @@ const header = () => {
                         {/* profile menu */}
                         {showMenu && <div className={styles.profile_menu}>
                             <ul>
-                                <li onClick={() => router.push('/ProfileDashboard')}>View Profile</li>
+                                <li onClick={() => router.push(`/profile/${currentUser.username}`)}>View Profile</li>
                                 <li>Change Password</li>
                                 <li>Uppload Kachra</li>
                                 <li onClick={() => {

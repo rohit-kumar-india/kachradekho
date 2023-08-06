@@ -5,10 +5,12 @@ const handler = async (req, res) => {
     try {
         // for getting user by their userId
         if (req.method === 'GET') {
-            const { userId } = req.query;
-            let user = await User.findOne({ _id: userId })
+            let user = await User.findOne({ "username": req.query.username })
+            if(!user){
+                user = await User.findOne({ "_id": req.query.userId })
+            }
             if (user) {
-                res.status(200).json({ user })
+                res.status(200).json(user)
             }
             else {
                 res.status(200).json({ error: "No user found" })
@@ -17,20 +19,17 @@ const handler = async (req, res) => {
 
         //for updating user in database
         else if (req.method === 'PUT') {
-            const updatedFields = {
-                name: req.body.name,
-                bio: req.body.bio,
-                username: req.body.username,
-                gender: req.body.gender,
-                contactNo: req.body.contactNo,
-                country: req.body.country,
-                state: req.body.state,
-                city: req.body.city,
-                address: req.body.address,
-                profilePicture: req.body.profilePicture,
-            }
+            const user = await User.findByIdAndUpdate(req.query.userId, req.body, { new: true });
 
-            const user = await User.findByIdAndUpdate(req.body.userId, updatedFields, { new: true });
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.status(200).json({ success: "success" });
+        }
+
+        // for updating some part of data
+        if (req.method === 'PATCH') {
+            const user = await User.findByIdAndUpdate(req.query.userId, req.body, { new: true });
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });

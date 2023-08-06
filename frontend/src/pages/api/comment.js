@@ -32,7 +32,7 @@ const handler = async (req, res) => {
 
                     return {
                         comment,
-                        "userName": user.name,
+                        "username": user.username,
                         "userImage": userImage.file
                     }
                 }));

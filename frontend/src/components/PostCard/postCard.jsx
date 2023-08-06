@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/router';
 import styles from './postCard.module.css'
 import Image from 'next/image'
 import { BiBookmarkPlus } from 'react-icons/bi';
@@ -19,6 +20,7 @@ import Loader from '../../assets/loader.gif'
 
 const Card = ({ post }) => {
 
+  const router = useRouter()
   const currUser = useSelector((state) => state.currentUser.userData)
 
   const [user, setUser] = useState({})
@@ -40,11 +42,11 @@ const Card = ({ post }) => {
       }
     });
     const userData = await response.json();
-    setUser(userData.user)
+    setUser(userData)
 
     //fetch user profile image
-    if (userData.user && userData.user.profilePicture) {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${userData.user.profilePicture}`)
+    if (userData && userData.profilePicture) {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getImage?imageId=${userData.profilePicture}`)
       const image = await res.json()
       // console.log(image)
       setpostUserImage(image.image[0].file)
@@ -145,7 +147,6 @@ const Card = ({ post }) => {
       fetchUser();
       fetchImages()
     }
-
   }, [user]);
 
   return (
@@ -161,7 +162,10 @@ const Card = ({ post }) => {
             {/* <Image src="" width={20} height={20} />     */}
             <div className={styles.name_address}>
               <div className={styles.name}>
-                <h3>{user?.name}</h3>
+                <h3
+                  onClick={() => router.push(`/profile/${user._id}`)}>
+                  {user?.username}
+                </h3>
                 <div className={styles.dot}></div>
                 <p>2d ago</p>
               </div>
@@ -201,7 +205,7 @@ const Card = ({ post }) => {
 
         {/* description */}
         <div className={styles.caption}>
-          <p><span style={{ color: 'black', fontWeight: 'bold' }}>{user?.name}</span> {post?.caption}</p>
+          <p><span style={{ color: 'black', fontWeight: 'bold' }}>@{user?.username}</span> {post?.caption}</p>
         </div>
 
         {/* bottom data part */}
@@ -265,12 +269,14 @@ const Card = ({ post }) => {
         <Comment
           images={images}
           postUserImage={postUserImage}
-          postUserName={user.name}
+          postUsername={user.username}
           handleLike={handleLike}
           isLiked={isLiked}
           likes={likes}
           post={post}
           showCommentBox={showCommentBox}
+          commentsCnt={commentsCnt}
+          setCommentsCnt={setCommentsCnt}
         />
 
         {/* close comment box */}
