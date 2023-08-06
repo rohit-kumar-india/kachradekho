@@ -8,7 +8,8 @@ const handler = async (req, res) => {
             const { productName, caption, images, user } = req.body;
             let post = new Post({ productName, caption, images, user, likes: 0 });
             await post.save();
-            res.status(200).json({ success: "success" });
+            const postId = post._id
+            res.status(200).json(postId);
         }
 
         // for getting the post data

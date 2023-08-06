@@ -24,7 +24,6 @@ const CreatePost = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [userImage, setUserImage] = useState(currentUser.profilePicture)
 
-
     // toastify
     const toastOptions = {
         position: "bottom-right",
@@ -53,23 +52,31 @@ const CreatePost = () => {
             images: allImageIds,
             user: currentUser.userId,
         }
-        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
+        await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(post),
         })
-        let response = await res.json()
-        if (response.success) {
-            // toast.success('Your account has been created', toastOptions);
-            console.log("post created")
-            dispatch(setShowCreatePost())
-            alert("post created successfully")
-        }
-        else {
-            // toast.error(response, toastOptions)
-        }
+            .then(async (res) => {
+                if (res.ok) {
+                    const postId = await res.json()
+                    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${currentUser.userId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(postId),
+                    })
+                        .then((res) => {
+                            if (res.ok) {
+                                dispatch(setShowCreatePost())
+                                alert("post created successfully")
+                            }
+                        })
+                }
+            })
     }
 
     const handleSubmit = async (e) => {
@@ -98,7 +105,6 @@ const CreatePost = () => {
                     console.log('Image uploaded successfully');
                 }))
                 createPostRequest(allImageIds)
-
             } catch (error) {
                 console.error('Error uploading image:', error);
             }

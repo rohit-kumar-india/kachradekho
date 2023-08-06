@@ -29,11 +29,15 @@ const handler = async (req, res) => {
 
         // for updating some part of data
         if (req.method === 'PATCH') {
-            const user = await User.findByIdAndUpdate(req.query.userId, req.body, { new: true });
+            const user = await User.findById(req.query.userId);
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
+
+            // push postId into posts array
+            user.posts.push(req.body)
+            await user.save()
             res.status(200).json({ success: "success" });
         }
 
