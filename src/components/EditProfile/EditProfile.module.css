@@ -5,13 +5,10 @@
     align-items: center;
     transition: all 1s ease-in-out;
     padding: 20px;
-    /* margin: 20px; */
 }
 
 .edit_container {
     width: 50%;
-    /* max-width: 420px; */
-    /* height: 90vh; */
     background-color: #fff;
     padding: 0 40px 30px 40px;
     margin: 0 10px 0 10px;
@@ -55,7 +52,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 15px;
+    gap: 10px;
     margin-top: -40px;
     align-items: center;
 }
@@ -67,7 +64,6 @@
 
 .edit_container .form_group {
     display: flex;
-    /* flex-direction: column; */
     width: 100%;
     gap: 10px;
     align-items: center;
@@ -75,7 +71,6 @@
 
 .edit_container h3 {
     text-align: center;
-
 }
 
 .edit_container input,
@@ -92,15 +87,10 @@
     outline: none;
 }
 
-/* input[type="checkbox"] {
-     cursor: pointer;
- } */
-
 .edit_container label {
     font-size: 14px;
     width: 110px;
 }
-
 
 .btn_primary {
     width: 100%;
