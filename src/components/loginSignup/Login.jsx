@@ -29,7 +29,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   // Change the URL without triggering a full page reload
-  const newUrl = `${process.env.NEXT_PUBLIC_HOST}/login`;
+  const newUrl = `${process.env.NEXT_PUBLIC_HOST}/LandingPage/login`;
   window.history.pushState(null, null, newUrl);
 
   // toastify
@@ -120,7 +120,7 @@ const Login = () => {
         </div>
         <form onSubmit={handleLogin}>
 
-          <h3>Welcome to KachraDekho</h3>
+          <h3>Welcome to KD</h3>
           <div className={styles.form_group}>
             <label htmlFor="email">Email:</label>
             <input

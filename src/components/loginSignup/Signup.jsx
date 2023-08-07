@@ -29,7 +29,7 @@ const Signup = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     // Change the URL without triggering a full page reload
-    const newUrl = `${process.env.NEXT_PUBLIC_HOST}/signup`;
+    const newUrl = `${process.env.NEXT_PUBLIC_HOST}/LandingPage/signup`;
     window.history.pushState(null, null, newUrl);
 
     // toastify
