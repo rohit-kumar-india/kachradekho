@@ -16,19 +16,19 @@ const handler = async (req, res) => {
         else if (req.method === 'GET') {
             const { limit, page, postId } = req.query;
 
-            if(limit && page){
+            if (limit && page) {
                 const limitValue = parseInt(limit, 10) || 5;
                 const pageValue = parseInt(page, 10) || 1;
-    
+
                 const skip = (pageValue - 1) * limitValue;
                 const posts = await Post.find().sort({ createdAt: -1 }).skip(skip).limit(limitValue);
                 res.status(200).json(posts);
             }
 
             //fetch single post with id
-           else if(postId){
-               const post = await Post.findOne({"_id" : postId})
-               res.status(200).json(post)
+            else if (postId) {
+                const post = await Post.findOne({ "_id": postId })
+                res.status(200).json(post)
             }
         }
 
@@ -57,13 +57,13 @@ const handler = async (req, res) => {
                 // Save the updated post
                 await post.save();
 
-                return res.status(200).json({  success: "success" });
+                return res.status(200).json({ success: "success" });
             }
         }
 
         //for deleting the post
-        else if (req.method ==="DELETE") {
-        
+        else if (req.method === "DELETE") {
+
         }
 
         else {

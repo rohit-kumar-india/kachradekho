@@ -18,7 +18,7 @@ import Comment from '../commentBox/comment';
 import { useSelector } from 'react-redux'
 import Loader from '../../assets/loader.gif'
 
-const Card = ({ post }) => {
+const Card = ({ post, mode }) => {
 
   const router = useRouter()
   const currUser = useSelector((state) => state.currentUser.userData)
@@ -31,7 +31,7 @@ const Card = ({ post }) => {
   const [showCommentBox, setshowCommentBox] = useState(false)
   const [newComment, setNewComment] = useState('')
   const [isSending, setIsSending] = useState(false)
-  const [commentsCnt, setCommentsCnt] = useState(post.comments.length)
+  const [commentsCnt, setCommentsCnt] = useState(post.comments?.length || 0)
 
   //fetch user profile of each post
   const fetchUser = async () => {
@@ -148,6 +148,14 @@ const Card = ({ post }) => {
       fetchImages()
     }
   }, [user]);
+
+  useEffect(() => {
+    if (mode === 'profile') {
+    console.log(post)
+      fetchUser();
+      fetchImages()
+    }
+  }, [])
 
   return (
     <>

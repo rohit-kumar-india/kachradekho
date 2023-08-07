@@ -16,6 +16,10 @@ const EditProfile = ({ user }) => {
     const [values, setValues] = useState(currentUser)
     const [isLoading, setIsLoading] = useState(false)
 
+    // Change the URL without triggering a full page reload
+    const newUrl = `${process.env.NEXT_PUBLIC_HOST}/profile/${user.username}/editProfile`;
+    window.history.pushState(null, null, newUrl);
+
     // toastify
     const toastOptions = {
         position: "bottom-right",

@@ -25,8 +25,15 @@ const Profile = ({ user, profilePicture }) => {
     const [activeComponent, setActiveComponent] = useState('posts');
     const [showSettings, setShowSettings] = useState(false)
     const [userImage, setuserImage] = useState(profilePicture)
-    const [isLoading, setIsLoading] = useState(false)
-   
+    const [isPostsFetching, setIsPostsFetching] = useState(false)
+    const [isSavedPostsFetching, setIsSavedPostsFetching] = useState(false)
+    const [savedPosts, setSavedPosts] = useState([])
+    const [posts, setPosts] = useState([])
+
+    // Change the URL without triggering a full page reload
+    const newUrl = `${process.env.NEXT_PUBLIC_HOST}/profile/${user.username}`;
+    window.history.pushState(null, null, newUrl);
+
     const handleComponentChange = (componentName) => {
         setActiveComponent(componentName);
     };
@@ -81,8 +88,41 @@ const Profile = ({ user, profilePicture }) => {
         } catch (error) {
             console.error('Error uploading image:', error);
         }
-
     }
+
+    // for fetching posts
+    const fetchPost = async (postId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${postId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            return await response.json();
+        } catch (error) {
+            alert(error)
+        }
+
+    };
+
+    const handleUserPostFetch = async () => {
+        setIsPostsFetching(true)
+        const posts = await Promise.all(user.posts?.map((postId) => fetchPost(postId)))
+        setPosts(posts);
+        setIsPostsFetching(false)
+    }
+    const handleSavedPostFetch = async () => {
+        setIsSavedPostsFetching(true)
+        const posts = await Promise.all(user.savedPosts?.map((postId) => fetchPost(postId)))
+        setSavedPosts(posts);
+        setIsSavedPostsFetching(false)
+    }
+
+    useEffect(() => {
+        handleUserPostFetch()
+        handleSavedPostFetch()
+    }, [activeComponent]);
 
     return (
         <>
@@ -175,8 +215,8 @@ const Profile = ({ user, profilePicture }) => {
                                 </div>
                             </div>
                             <div className={styles.post}>
-                                <span>100 posts</span>
-                                {currentUser.userId === user._id && <span>100 saved</span>}
+                                <span>{user.posts.length || 0} posts</span>
+                                {currentUser.userId === user._id && <span>{user.savedPosts.length || 0} saved</span>}
                             </div>
                         </div>
                     </div>
@@ -200,15 +240,63 @@ const Profile = ({ user, profilePicture }) => {
                                 className={`${styles.sliderWrapper} ${activeComponent === 'posts' ? styles.active : ''
                                     }`}
                             >
-                                {/* <PostCard />
-                <PostCard /> */}
+                                {
+                                    posts?.map((post, index) => {
+                                        return (
+                                            <PostCard
+                                                mode={'profile'}
+                                                post={post} />
+                                        )
+                                    })
+                                }
+
+                                {/* when nothing to show */}
+                                {
+                                    !isPostsFetching &&
+                                    posts.length === 0 &&
+                                    <p>Nothing posted yet...</p>
+                                }
+
+                                {/* loader */}
+                                {isSavedPostsFetching && <div className={styles.loader}>
+                                    <Image
+                                        alt='loader'
+                                        src={Loader}
+                                        width={40}
+                                        height={40}
+                                    />
+                                </div>}
                             </div>}
                             {activeComponent === "saved" && <div
                                 className={`${styles.sliderWrapper} ${activeComponent === 'saved' ? styles.active : ''
                                     }`}
                             >
-                                {/* <PostCard />
-                <PostCard /> */}
+                                {
+                                    savedPosts?.map((post, index) => {
+                                        return (
+                                            <PostCard
+                                                mode={'profile'}
+                                                post={post} />
+                                        )
+                                    })
+                                }
+
+                                {/* when nothing to show */}
+                                {
+                                    !isSavedPostsFetching &&
+                                    savedPosts.length === 0 &&
+                                    <p style={{textAlign:'center'}}>No saved post...</p>
+                                }
+
+                                {/* loader */}
+                                {isSavedPostsFetching && <div className={styles.loader}>
+                                    <Image
+                                        alt='loader'
+                                        src={Loader}
+                                        width={40}
+                                        height={40}
+                                    />
+                                </div>}
                             </div>}
                         </div>
                     </div>

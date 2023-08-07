@@ -2,9 +2,9 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Homepage from './HomePage'
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { setShowEditPopup} from '@/store/slices';
+import { setShowEditPopup } from '@/store/slices';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,24 +12,21 @@ export default function Home() {
 
   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
   const currentUser = useSelector((state) => state.currentUser.userData)
- 
+
   const router = useRouter()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (isLoggedIn===false) {
+    if (isLoggedIn === false) {
       router.push('/LandingPage')
     }
 
-console.log(currentUser.address)
-
-    if(!currentUser.address && isLoggedIn===true){
-        router.push('/ProfileDashboard')
-        setTimeout(()=>{
-
-          dispatch(setShowEditPopup())
-        },1000)
-      }
+    if (!currentUser.address && isLoggedIn === true) {
+      router.push(`/profile/${currentUser.username}`)
+      setTimeout(() => {
+        dispatch(setShowEditPopup())
+      }, 1000)
+    }
   }, [])
 
 
@@ -42,7 +39,7 @@ console.log(currentUser.address)
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className>
-        <Homepage/>
+        <Homepage />
       </main>
     </>
   )
