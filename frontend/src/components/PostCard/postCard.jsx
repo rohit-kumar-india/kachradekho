@@ -171,7 +171,7 @@ const Card = ({ post, mode }) => {
             <div className={styles.name_address}>
               <div className={styles.name}>
                 <h3
-                  onClick={() => router.push(`/profile/${user._id}`)}>
+                  onClick={() => router.push(`/profile/${user.username}`)}>
                   {user?.username}
                 </h3>
                 <div className={styles.dot}></div>

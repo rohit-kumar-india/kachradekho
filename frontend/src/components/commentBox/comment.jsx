@@ -12,10 +12,12 @@ import { IoHeart } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../assets/loader.gif'
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, likes, post, showCommentBox, commentsCnt, setCommentsCnt }) => {
 
   const currentUser = useSelector((state) => state.currentUser.userData)
+  const router = useRouter()
 
   const [newComment, setNewComment] = useState('')
   const [newReply, setNewReply] = useState('')
@@ -271,7 +273,7 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
               <img src={postUserImage} alt="user not found" className={styles.profile_image} />
             </div>
             <div className={styles.name}>
-              <h3>{postUsername}</h3>
+              <h3 onClick={() => router.push(`/profile/${postUsername}`)}>{postUsername}</h3>
             </div>
           </div>
         </div>
@@ -294,7 +296,9 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
                     </div>
 
                     <div className={styles.comment_text_actions}>
-                      <span style={{ color: 'white', fontWeight: 500 }}> {comment.username}</span>
+                      <span onClick={() => router.push(`/profile/${comment.username}`)}
+                        style={{ color: 'white', fontWeight: 500 }}>
+                        {comment.username}</span>
                       <span> {comment.comment.text}</span>
 
                       {/* actions on comment */}
@@ -354,8 +358,16 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
                                 </div>
 
                                 <div className={styles.comment_text_actions}>
-                                  <span style={{ color: 'white', fontWeight: 500 }}> {reply.username}</span>
-                                  <span><span style={{ color: 'blue' }}>@{reply.comment.replyTo}</span> {reply.comment.text}</span>
+                                  <span onClick={() => router.push(`/profile/${reply.username}`)}
+                                    style={{ color: 'white', fontWeight: 500 }}>
+                                    {reply.username}</span>
+                                  <span>
+                                    <span onClick={() => router.push(`/profile/${reply.comment.replyTo}`)}
+                                      style={{ color: 'blue' }}>
+                                      @{reply.comment.replyTo}
+                                    </span>
+                                    {reply.comment.text}
+                                  </span>
 
                                   {/* actions on comment */}
                                   <div className={styles.comment_actions}>
