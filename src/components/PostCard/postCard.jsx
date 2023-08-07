@@ -144,9 +144,44 @@ const Card = ({ post, mode }) => {
     }
   }
 
-  // delete post
-  const handleDeletePost = () => {
+  // delete comment
+  const deleteComment = async (commentId) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/comment?commentId=${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const replies = await res.json()
+    return replies
+  }
 
+  // delete post
+  const handleDeletePost = async (postId) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(async (res) => {
+          if (res.ok) {
+            // delete all comments related to this post
+            post.comments?.map(async (commentId) => {
+              const deleteCmt = await deleteComment(commentId)
+              deleteCmt?.map(async (replyId) => {
+                const deleteRpl = await deleteComment(replyId)
+              })
+            })
+          }
+        })
+        .then(() => {
+          alert("post deleted succesfully!, please reload the page.")
+        })
+    } catch (error) {
+      alert(error)
+    }
   }
 
   useEffect(() => {
@@ -201,7 +236,7 @@ const Card = ({ post, mode }) => {
           {/* settings div */}
           {
             isShowSetting && <ul className={styles.showSetting}>
-              <li onClick={() => handleDeletePost()}
+              <li onClick={() => handleDeletePost(post._id)}
               >Delete</li>
             </ul>
           }

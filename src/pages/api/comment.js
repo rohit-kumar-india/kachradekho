@@ -72,10 +72,20 @@ const handler = async (req, res) => {
         else if (req.method === 'DELETE') {
             const { commentId, postId, replyId } = req.query
 
+            // find comment and send replyId when delete the post
+            const cmt = await Comment.findById(commentId)
+            const cmtReplies = cmt.replies || ''
+
             //delete the comment
             const result = await Comment.deleteOne({ "_id": replyId || commentId });
             if (result.deletedCount === 0) {
                 return res.status(404).json({ message: 'comment not found' });
+            }
+
+            console.log(cmtReplies)
+            // at the time of post deletion
+            if(!postId){
+                return res.status(200).json(cmtReplies)
             }
 
             if (replyId) {
@@ -102,7 +112,7 @@ const handler = async (req, res) => {
 
                 // Check if the post exists
                 if (!post) {
-                    return res.status(404).json({ message: "post not found" });
+                    return res.status(404).json({ message: "post not found"});
                 }
 
                 // Find the index of the comment within comments array

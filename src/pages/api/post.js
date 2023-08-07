@@ -63,7 +63,11 @@ const handler = async (req, res) => {
 
         //for deleting the post
         else if (req.method === "DELETE") {
-
+            const result = await Post.findByIdAndDelete(req.query.postId)
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ message: 'comment not found' });
+            }
+            return res.status(200).json({ success: true })
         }
 
         else {
