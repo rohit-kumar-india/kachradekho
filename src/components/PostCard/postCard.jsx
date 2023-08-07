@@ -9,6 +9,7 @@ import { BsChat } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
 import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { IoSendSharp } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper";
@@ -32,6 +33,7 @@ const Card = ({ post, mode }) => {
   const [newComment, setNewComment] = useState('')
   const [isSending, setIsSending] = useState(false)
   const [commentsCnt, setCommentsCnt] = useState(post.comments?.length || 0)
+  const [isShowSetting, setIsShowSetting] = useState(false)
 
   //fetch user profile of each post
   const fetchUser = async () => {
@@ -142,6 +144,11 @@ const Card = ({ post, mode }) => {
     }
   }
 
+  // delete post
+  const handleDeletePost = () => {
+
+  }
+
   useEffect(() => {
     if (user && Object.keys(user).length === 0) {
       fetchUser();
@@ -151,7 +158,6 @@ const Card = ({ post, mode }) => {
 
   useEffect(() => {
     if (mode === 'profile') {
-    console.log(post)
       fetchUser();
       fetchImages()
     }
@@ -180,11 +186,28 @@ const Card = ({ post, mode }) => {
               <p>{user?.city}</p>
             </div>
           </div>
-          <div className={styles.addToFavourite}>
+
+          {/* save post into account */}
+          {currUser.userId !== user._id && <div className={styles.settings}>
             <BiBookmarkPlus size={25} />
-          </div>
+          </div>}
+
+          {/* settings dot if current users post */}
+          {currUser.userId === user._id &&
+            <div className={styles.settings}
+              onClick={() => setIsShowSetting(!isShowSetting)}>
+              <BiDotsVerticalRounded size={25} />
+            </div>}
+          {/* settings div */}
+          {
+            isShowSetting && <ul className={styles.showSetting}>
+              <li onClick={() => handleDeletePost()}
+              >Delete</li>
+            </ul>
+          }
         </div>
-        {/* images */}
+
+        {/* post images */}
         <div id='post_images' className={styles.post_images}>
           {/* product name */}
           <p style={{ color: 'gray' }}>{post?.productName}</p>
