@@ -11,14 +11,19 @@ import Image from "next/image";
 const EditProfile = ({ user }) => {
 
     const dispatch = useDispatch()
-    const currentUser = user || useSelector((state) => state.currentUser.userData)
+    const currentUser =  useSelector((state) => state.currentUser.userData)
 
-    const [values, setValues] = useState(currentUser)
+
+    const [values, setValues] = useState(user)
     const [isLoading, setIsLoading] = useState(false)
 
     // Change the URL without triggering a full page reload
     const newUrl = `${process.env.NEXT_PUBLIC_HOST}/profile/${user.username}/editProfile`;
     window.history.pushState(null, null, newUrl);
+
+    useEffect(()=>{
+        console.log("from editprofile" ,user);
+    })
 
     // toastify
     const toastOptions = {
@@ -37,7 +42,7 @@ const EditProfile = ({ user }) => {
         e.preventDefault();
         setIsLoading(true)
 
-        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${currentUser.userId}`, {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${user._id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,11 +55,12 @@ const EditProfile = ({ user }) => {
             toast.success('Your Profile has been updated', toastOptions);
             dispatch(setUserData({
                 ...currentUser,
-                userId: user._id,
-                name: user.name,
-                username: user.username,
-                email: user.email,
-                savedPost: user.post
+                userId: values._id,
+                name: values.name,
+                username: values.username,
+                email: values.email,
+                savedPost: values.post,
+                gender: values.gender,
             }
             ))
             setTimeout(() => {

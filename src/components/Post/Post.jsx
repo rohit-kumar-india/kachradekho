@@ -60,8 +60,8 @@ const Post = () => {
             <div className={styles.create_post_btn} onClick={() => dispatch(setShowCreatePost())}>
                 <div className={styles.create_post_left}>
                     <div className={styles.photo}>
-                        {!currentUser.profilePicture && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
-                        <img src={currentUser.profilePicture} alt="user not found" className={styles.profile_image} />
+                        {!currentUser?.profilePicture && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+                        <img src={currentUser?.profilePicture} alt="user not found" className={styles.profile_image} />
                     </div>
                     <p>create a post...</p>
                 </div>

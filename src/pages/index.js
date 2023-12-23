@@ -24,8 +24,9 @@ export default function Home() {
     if (isLoggedIn === false) {
       router.push('/LandingPage')
     }
-
-    if (!currentUser.address && isLoggedIn === true) {
+  console.log(currentUser)
+    if (!currentUser.gender && isLoggedIn === true) {
+      console.log(currentUser)
       router.push(`/profile/${currentUser.username}`)
       setTimeout(() => {
         dispatch(setShowEditPopup())

@@ -25,6 +25,7 @@ const handler = async (req, res) => {
                     email:user.email,
                     savedPost: user.post,
                     profilePicture: profilePicture.file,
+                    gender: user.gender,
                 },
                     process.env.JWT_SECRET);
 

@@ -19,7 +19,10 @@ const handler = async (req, res) => {
 
         //for updating user in database
         else if (req.method === 'PUT') {
+            console.log(req.body)
             const user = await User.findByIdAndUpdate(req.query.userId, req.body, { new: true });
+
+            console.log(user)
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });

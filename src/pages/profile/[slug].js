@@ -14,7 +14,7 @@ import userAvatar from '../../assets/userAvatar.png'
 import compressAndResizeImage from '@/components/compressFile';
 import Loader from '../../assets/loader.gif'
 
-const Profile = ({ user, profilePicture }) => {
+const Profile = ({ user}) => {
 
     const showEditPopup = useSelector((state) => state.editPopup.value)
     const currentUser = useSelector((state) => state.currentUser.userData)
@@ -24,7 +24,7 @@ const Profile = ({ user, profilePicture }) => {
 
     const [activeComponent, setActiveComponent] = useState('posts');
     const [showSettings, setShowSettings] = useState(false)
-    const [userImage, setuserImage] = useState(profilePicture)
+    const [userImage, setuserImage] = useState(currentUser.profilePicture)
     const [isPostsFetching, setIsPostsFetching] = useState(false)
     const [isSavedPostsFetching, setIsSavedPostsFetching] = useState(false)
     const [savedPosts, setSavedPosts] = useState([])
@@ -122,6 +122,8 @@ const Profile = ({ user, profilePicture }) => {
     useEffect(() => {
         handleUserPostFetch()
         handleSavedPostFetch()
+
+        console.log("from profile ",user)
     }, [activeComponent]);
 
     return (

@@ -32,7 +32,7 @@ const Card = ({ post, mode }) => {
   const [showCommentBox, setshowCommentBox] = useState(false)
   const [newComment, setNewComment] = useState('')
   const [isSending, setIsSending] = useState(false)
-  const [commentsCnt, setCommentsCnt] = useState(post.comments?.length || 0)
+  const [commentsCnt, setCommentsCnt] = useState(post?.comments?.length || 0)
   const [isShowSetting, setIsShowSetting] = useState(false)
 
   //fetch user profile of each post
@@ -174,6 +174,19 @@ const Card = ({ post, mode }) => {
                 const deleteRpl = await deleteComment(replyId)
               })
             })
+
+            // delete all images related to this post
+            post.images?.map( async (imageId) => {
+              await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+            })
+
+            // remove postId from user schema
+
           }
         })
         .then(() => {

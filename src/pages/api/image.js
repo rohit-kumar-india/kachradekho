@@ -21,8 +21,16 @@ const handler = async (req, res) => {
             console.log(error)
         }
     }
+    else if (req.method === 'DELETE') {
+        try {
+            await Image.findByIdAndDelete(req.query.imageId)
+            return res.status(200).json({ success: true })
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
     else {
-        res.status(500).json({ error: "This method is not allowed" })
+        res.status(405).json({ error: "This method is not allowed" })
     }
 }
 
