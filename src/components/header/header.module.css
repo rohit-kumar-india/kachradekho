@@ -1,17 +1,14 @@
 .container {
-    color: #fff;
+    color: var(--primary-color);
     width: 100%;
-    /* background-color: var(--primary-color); */
     height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: var(--mob-font-size);
-    /* padding: 0 50px; */
-    /* gap: 20px; */
     position:fixed;
     z-index: 1;
-    
+    transition: all .3s ease-in-out;
 }
 
 .mobile_logo {
@@ -26,6 +23,7 @@
     border-radius: 36px;
     margin-left: 40px;
     margin-top: 10px;
+    cursor: pointer;
 }
 .img{
     width: 100%;
@@ -44,7 +42,6 @@
     color: black;
     padding: 10px;
     gap: 10px;
-    /* margin-left: -400px; */
 }
 
 .search_bar input[type="search"] {
@@ -60,8 +57,6 @@
 .search_icon {
     display: flex;
     align-items: center;
-    /* background-color: #fff; */
-    /* border-left: 1px solid rgba(255, 255, 255, 0.7); */
 }
 
 .search_bar input[type="search"]:focus {
@@ -69,14 +64,34 @@
 }
 
 /* styles for landing page options only */
+
 .landing_options{
 display: flex;
 gap: 50px;
-/* color: var(--primary-color); */
-color: blue;
 font-weight: 600;
 font-size: 18px;
+transition: all .3s ease-in-out;
 }
+.landing_links{
+    cursor: pointer;
+    position: relative;
+}
+.landing_links::after{
+    content: '';
+    height: 2px;
+    width: 100%;
+    position:absolute;
+    background-color: var(--primary-color);
+    bottom: 0;
+    left:0;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+.landing_links:hover::after{
+    opacity: 1;
+}
+
+/* profile section */
 
 .profile_auth {
     display: flex;
@@ -87,6 +102,7 @@ font-size: 18px;
 
 .btn {
     border-radius: var(--border-radius);
+    color: #fff;
     border: 1px solid #fff;
     padding: 10px 20px;
     display: flex;

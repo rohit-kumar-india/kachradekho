@@ -4,6 +4,7 @@
     justify-content: space-around;
     align-items: center;
     margin: 40px 0;
+    height: 500px;
   }
   
   .feature {
@@ -18,7 +19,8 @@
   }
   
   .feature:hover {
-    transform: scale(1.05); /* Scale up on hover */
+    cursor: pointer;
+    transform: scale(1.2) rotateZ(-5deg); /* Scale up on hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a deeper shadow on hover */
   }
   
@@ -29,12 +31,12 @@
   }
   
   .feature p {
-    font-size: 1.2rem;
+    font-size: 16px;
     color: #666;
   }
   
   .icon {
-    color: #00bcd4; /* Icon color */
+    color: var(--primary-color); /* Icon color */
     font-size: 2rem;
     margin-bottom: 10px;
   }
@@ -47,7 +49,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, #00bcd4, #007d8c);
+    /* background: linear-gradient(45deg, #00bcd4, #007d8c); */
     opacity: 0.2;
     border-radius: 10px;
     pointer-events: none; /* Allow interaction with the content beneath the gradient */

@@ -29,8 +29,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   // Change the URL without triggering a full page reload
-  const newUrl = `${process.env.NEXT_PUBLIC_HOST}/LandingPage/login`;
-  window.history.pushState(null, null, newUrl);
+  // const newUrl = `${process.env.NEXT_PUBLIC_HOST}/LandingPage/login`;
+  // window.history.pushState(null, null, newUrl);
 
   // toastify
   const toastOptions = {

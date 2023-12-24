@@ -3,29 +3,31 @@ import React from 'react';
 import styles from './HeroSection.module.css'; // Import the styles
 import Phone from '../../assets/phone.png'
 import Image from 'next/image';
-import Header from '../header/header';
+import { useDispatch } from 'react-redux'
+import { setShowLogin} from '../../store/slices'
 
 const HeroSection = () => {
+    const dispatch = useDispatch()
+    
   return (
     <>
         {/* <Header/> */}
-    <section className={styles.hero}>
+    <section id='hero' className={styles.hero}>
       <div className={styles.heroContent}>
         <div className={styles.textContent}>
           <h1 className={styles.h1}>Discover and Share Hidden Treasures</h1>
           <p className={styles.p}>Explore unique products and connect with sellers. Your journey begins here.</p>
-          <div className={styles.ctaButtons}>
-            <a href="#explore" className={styles.exploreButton}>
-              Explore Now
-            </a>
-            <a href="#signup" className={styles.signupButton}>
+            <button 
+            onClick={() => dispatch(setShowLogin())}
+            className={styles.signupButton}>
               Sign Up
-            </a>
+            </button>
+          <div className={styles.ctaButtons}>
           </div>
         </div>
         <div className={styles.imageContainer}>
           {/* Placeholder Image (replace with your 3D visual or image) */}
-          {/* <Image className={styles.img} src={Phone} /> */}
+          <Image className={styles.img} src={Phone}/>
         </div>
       </div>
     </section>

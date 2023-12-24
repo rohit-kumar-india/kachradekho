@@ -5,7 +5,7 @@ import styles from './FeaturesSection.module.css'; // Import the styles
 
 const FeaturesSection = () => {
   return (
-    <section className={styles.features}>
+    <section id='features' className={styles.features}>
       <div className={styles.feature}>
         <FaGem className={styles.icon} />
         <h2>Explore Unique Products</h2>

@@ -29,14 +29,36 @@ const header = () => {
     const [showMenu, setShowMenu] = useState(false)
     const [isNotification, setIsNotification] = useState(false)
 
+    const [scrollPosition, setScrollPosition] = useState(0);
+
     const shoNotification = useCallback(() => {
 
         setIsNotification(!isNotification);
     }, [isNotification])
 
-    // useEffect(() => {
-    //     console.log("isLoggedIn: ", isLoggedIn)
-    // },[])
+   
+  useEffect(() => {
+    const handleScroll = () => {
+      // Update the scroll position state when scrolling
+      setScrollPosition(window.scrollY);
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // Empty dependency array to run the effect only once
+
+  const divContainer = {
+    backgroundColor: scrollPosition > 700 || isLoggedIn===true ? '#3F3BAA' : 'transparent',
+  };
+  const divLandingOptions = {
+    display: isLoggedIn===true ? 'none' : 'visible',
+    color: scrollPosition > 700 ? '#fff' : '#3F3BAA',
+  };
 
     return (
         <>
@@ -55,13 +77,17 @@ const header = () => {
             </div>}
 
             <nav>
-                <div className={styles.container}>
+                <div style={divContainer} className={styles.container}>
 
                     {/* logo */}
-                    <div className={styles.mobile_logo}>
+                    <div
+                    onClick={()=>router.push('/')}
+                    className={styles.mobile_logo}>
                         <Image src={trash} layout='responsive' width="100%" height="100%" objectFit='contain' />
                     </div>
-                    <div className={styles.logo}>
+                    <div
+                    onClick={()=>router.push('/')}
+                    className={styles.logo}>
                         <Image className={styles.img} src={KDL} layout='responsive' width="100%" height="100%" objectFit='cover' />
                     </div>
 
@@ -91,17 +117,16 @@ const header = () => {
                     </div>}
 
                     {/* optins which will show only on landing page */}
-                    <div className={styles.landing_options}>
-                        <Link to="/hero" legacyBehavior>
-                            <a>Home</a>
+                    <div style={divLandingOptions} className={styles.landing_options}>
+                        <Link to="hero" className={styles.landing_links} smooth={true} duration={500}>
+                            Home
                         </Link>
-                        <Link to="/features" legacyBehavior>
-                            <a>Features</a>
+                        <Link to="features" className={styles.landing_links} smooth={true} duration={500}>
+                            Features
                         </Link>
-                        <Link to="/about" legacyBehavior>
-                            <a>About Us</a>
+                        <Link to="about" className={styles.landing_links} smooth={true} duration={500}>
+                            About Us
                         </Link>
-                       
                     </div>
 
                     {/* profile section */}

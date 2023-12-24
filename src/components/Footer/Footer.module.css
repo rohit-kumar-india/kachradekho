@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     padding: 20px;
-    background-color: dimgray;
+    background-color: #141316;
 }
 .container p{
     color: rgba(255, 255, 255, 0.6) !important;

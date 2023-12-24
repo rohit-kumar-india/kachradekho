@@ -23,12 +23,7 @@ export default function Home() {
   window.history.pushState(null, null, newUrl);
 
   useEffect(() => {
-    // if (isLoggedIn === false) {
-    //   router.push('/LandingPage')
-    // }
-  console.log(currentUser)
     if (!currentUser.gender && isLoggedIn === true) {
-      console.log(currentUser)
       router.push(`/profile/${currentUser.username}`)
       setTimeout(() => {
         dispatch(setShowEditPopup())
