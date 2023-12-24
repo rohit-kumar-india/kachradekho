@@ -32,7 +32,7 @@ const HomePage = () => {
 
   return (
     <div className={styles.container}>
-      <Header />
+      {/* <Header /> */}
 
       {/* post profile container */}
       <div className={styles.profile_post_container}>

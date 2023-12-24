@@ -5,6 +5,8 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { setShowEditPopup } from '@/store/slices';
+import LandingPage from './LandingPage';
+import Header from '@/components/header/header';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,9 +23,9 @@ export default function Home() {
   window.history.pushState(null, null, newUrl);
 
   useEffect(() => {
-    if (isLoggedIn === false) {
-      router.push('/LandingPage')
-    }
+    // if (isLoggedIn === false) {
+    //   router.push('/LandingPage')
+    // }
   console.log(currentUser)
     if (!currentUser.gender && isLoggedIn === true) {
       console.log(currentUser)
@@ -44,7 +46,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className>
-        <Homepage />
+        <Header/>
+        {isLoggedIn==false ? <LandingPage/>
+        : <Homepage />}
       </main>
     </>
   )

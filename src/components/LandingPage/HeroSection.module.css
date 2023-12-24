@@ -1,0 +1,76 @@
+/* styles/HeroSection.module.css */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/background.png'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    overflow: hidden;
+    /* top: -75px; */
+  }
+
+  .heroContent {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .textContent {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .ctaButtons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .exploreButton,
+  .signupButton {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 0 15px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .exploreButton:hover,
+  .signupButton:hover {
+    background-color: #00bcd4; /* Hover background color */
+    color: #333; /* Hover text color */
+  }
+  
+  .imageContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Style for the placeholder image */
+  .imageContainer .img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  

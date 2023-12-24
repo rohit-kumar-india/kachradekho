@@ -1,13 +1,17 @@
 .container {
     color: #fff;
-    background-color: var(--primary-color);
+    width: 100%;
+    /* background-color: var(--primary-color); */
     height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: var(--mob-font-size);
-    padding: 0 50px;
+    /* padding: 0 50px; */
     /* gap: 20px; */
+    position:fixed;
+    z-index: 1;
+    
 }
 
 .mobile_logo {
@@ -16,9 +20,17 @@
 
 .logo {
     width: 300px;
-    height: 200px;
+    height: 65px;
     overflow: hidden;
-    margin-left: -50px;
+    background-color: #3F3BAA;
+    border-radius: 36px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+.img{
+    width: 100%;
+    position: relative;
+    top: -72px;
 }
 
 .search_bar {
@@ -56,10 +68,21 @@
     width: 600px;
 }
 
+/* styles for landing page options only */
+.landing_options{
+display: flex;
+gap: 50px;
+/* color: var(--primary-color); */
+color: blue;
+font-weight: 600;
+font-size: 18px;
+}
+
 .profile_auth {
     display: flex;
     gap: 40px;
     align-items: center;
+    margin-right: 40px;
 }
 
 .btn {

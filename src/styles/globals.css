@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-
+  scrollbar-width: none;
 }
 
 :root {
@@ -13,7 +13,7 @@
   --web-font-size: 18px;
   --menu-font-size: 14px;
   --small-font: 12px;
-  --primary-color: #0000FF;
+  --primary-color: #3F3BAA;
   --success-color: #35A953;
   --danger-color: #D93025;
   --btn-primary: #1967D2;

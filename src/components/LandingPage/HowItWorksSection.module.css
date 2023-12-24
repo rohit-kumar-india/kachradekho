@@ -1,0 +1,22 @@
+/* styles/HowItWorksSection.module.css */
+.howItWorks {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 40px 0;
+  }
+  
+  .step {
+    text-align: center;
+  }
+  
+  .step img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .step p {
+    font-size: 1rem;
+  }
+  

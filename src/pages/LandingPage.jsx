@@ -1,6 +1,10 @@
 import React from 'react'
 import styles from '../styles/LandingPage.module.css';
-import Header from '../components/header/header'
+import Head from 'next/head';
+import Header from '../components/header/header';
+import HeroSection from '../components/LandingPage/HeroSection';
+import FeaturesSection from '../components/LandingPage/FeaturesSection';
+import HowItWorksSection from '../components/LandingPage/HowItWorksSection'
 import Footer from '@/components/Footer/Footer';
 import Image from 'next/image';
 import vec from '../assets/landingVector.png'
@@ -11,12 +15,16 @@ const LandingPage = () => {
     window.history.pushState(null, null, newUrl);
     return (
         <>
-            <Header />
-            <div className={styles.container}>
-                <Image src={vec} layout='responsive' width='100%' height='100%' />
+            <div>
+                <Head>
+                    <title>KachraDekho - See and Share Unique Products</title>
+                </Head>
+                {/* <Header /> */}
+                <HeroSection />
+                {/* <FeaturesSection />
+                <HowItWorksSection /> */}
+                {/* <SignUpButton /> */}
             </div>
-
-            <Footer />
         </>
     )
 }
