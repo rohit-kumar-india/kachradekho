@@ -13,6 +13,7 @@
 
 .mobile_logo {
     display: none;
+    cursor: pointer;
 }
 
 .logo {
