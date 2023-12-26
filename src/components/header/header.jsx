@@ -36,7 +36,31 @@ const header = () => {
         setIsNotification(!isNotification);
     }, [isNotification])
 
-   
+  let toggle = false;
+  const handleHamburger = ()=>{
+    const parentDiv = document.getElementById("hamburger");
+
+    // Check if the parent div exists
+    if (parentDiv) {
+      // Get all children elements of the parent div
+      const children = parentDiv.children;
+
+      // Loop through the children elements and add a class
+      for (let i = 0; i < children.length; i++) {
+        children[i].classList.toggle(styles.mobileHam);
+      }
+    }
+    
+    // toggle sidebar
+    toggle = !toggle;
+    const myDiv = document.getElementById("landingOptions");
+    if(myDiv){
+        myDiv.style.right = toggle==true ? 0 : '-220px';
+    }
+
+
+  }
+    
   useEffect(() => {
     const handleScroll = () => {
       // Update the scroll position state when scrolling
@@ -77,7 +101,7 @@ const header = () => {
             </div>}
 
             <nav>
-                <div style={divContainer} className={styles.container}>
+                <div id='container' style={divContainer} className={styles.container}>
 
                     {/* logo */}
                     <div
@@ -117,7 +141,7 @@ const header = () => {
                     </div>}
 
                     {/* optins which will show only on landing page */}
-                    <div style={divLandingOptions} className={styles.landing_options}>
+                    <div id='landingOptions' style={divLandingOptions} className={styles.landing_options}>
                         <Link to="hero" className={styles.landing_links} smooth={true} duration={500}>
                             Home
                         </Link>
@@ -127,13 +151,26 @@ const header = () => {
                         <Link to="about" className={styles.landing_links} smooth={true} duration={500}>
                             About Us
                         </Link>
+
+                        {isLoggedIn === false && <div className={styles.btn} onClick={() => dispatch(setShowLogin())}>
+                            Login / Signup
+                        </div>}
                     </div>
+
+                    {/* hamburger for landing page */}
+                    {
+                       isLoggedIn==false && <div
+                       id='hamburger'
+                       onClick={()=>handleHamburger()}
+                       className={styles.hamburger}>
+                            <div className={styles.line}></div>
+                            <div className={styles.line}></div>
+                            <div className={styles.line}></div>
+                        </div>
+                    }
 
                     {/* profile section */}
                     <div className={styles.profile_auth}>
-                        {isLoggedIn === false && <div className={styles.btn} onClick={() => dispatch(setShowLogin())}>
-                            Login / Register
-                        </div>}
 
                         {isLoggedIn !== false && <div className={`${styles.btn} ${styles.upload}`} onClick={() => dispatch(setShowCreatePost())}>
                             <BsCloudUpload />

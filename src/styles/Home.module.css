@@ -2,6 +2,8 @@
   width: 100%;
   background-color: black;
   height: 100vh;
+  padding: 75px;
+  position: fixed;
 }
 
 .profile_post_container {

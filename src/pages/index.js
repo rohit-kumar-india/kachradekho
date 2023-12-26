@@ -19,17 +19,17 @@ export default function Home() {
   const dispatch = useDispatch()
 
   // Change the URL without triggering a full page reload
-  const newUrl = `${process.env.NEXT_PUBLIC_HOST}`;
-  window.history.pushState(null, null, newUrl);
+  // const newUrl = `${process.env.NEXT_PUBLIC_HOST}`;
+  // window.history.pushState(null, null, newUrl);
 
-  useEffect(() => {
-    if (!currentUser.gender && isLoggedIn === true) {
-      router.push(`/profile/${currentUser.username}`)
-      setTimeout(() => {
-        dispatch(setShowEditPopup())
-      }, 1000)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!currentUser.gender && isLoggedIn === true) {
+  //     router.push(`/profile/${currentUser.username}`)
+  //     setTimeout(() => {
+  //       dispatch(setShowEditPopup())
+  //     }, 1000)
+  //   }
+  // }, [])
 
 
   return (

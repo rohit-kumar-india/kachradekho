@@ -1,5 +1,5 @@
 .container {
-    color: var(--primary-color);
+    /* color: var(--primary-color); */
     width: 100%;
     height: 75px;
     display: flex;
@@ -67,6 +67,7 @@
 
 .landing_options{
 display: flex;
+margin-left: -200px;
 gap: 50px;
 font-weight: 600;
 font-size: 18px;
@@ -90,16 +91,6 @@ transition: all .3s ease-in-out;
 .landing_links:hover::after{
     opacity: 1;
 }
-
-/* profile section */
-
-.profile_auth {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    margin-right: 40px;
-}
-
 .btn {
     border-radius: var(--border-radius);
     color: #fff;
@@ -111,12 +102,53 @@ transition: all .3s ease-in-out;
     gap: 10px;
     transition: .3s ease-in-out;
     font-size: 15px;
+    position: absolute;
+    right: 40px;
+    top: 10px;
 }
 
 .btn:hover {
     background-color: #000;
     border-color: #000;
     cursor: pointer;
+}
+.hamburger{
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    right: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
+.hamburger .line{
+    width: 20px;
+    height: 2px;
+    background-color: #fff;
+    transition: all .3s ease-in-out;
+}
+.mobileHam:first-child{
+    transform: rotateZ(45deg);
+    background-color: #000;
+}
+.mobileHam:nth-child(2){
+    transform: translateX(50px);
+    background-color: #000;
+}
+.mobileHam:nth-child(3){
+    transform: translateY(-13px) rotate(135deg);
+    background-color: #000;
+}
+
+
+/* profile section */
+
+.profile_auth {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    margin-right: 40px;
+    color: #fff;
 }
 
 .profile_menu {
@@ -185,20 +217,31 @@ transition: all .3s ease-in-out;
 }
 
 @media screen and (max-width:992px) {
-    .mobile_logo {
-        display: block;
-        /* mix-blend-mode: color-burn; */
-        width: 60px;
-        margin-left: -10px;
+    .btn{
+        right: 20px;
+    }
+    .logo {
+        margin-left: 20px;
+        width: 250px;
+        height: 50px;
     }
 
-    .logo {
-        display: none;
+    .img{
+        top: -60px;
+    }
+
+    .profile_auth{
+        margin-right: 10px;
+        gap: 20px;
+    }
+    .landing_options{
+        gap: 20px;
+        font-size: 16px;
     }
 
     .container {
-        padding: 0 10px;
         gap: 10px;
+        height: 60px;
     }
 
     .search_bar {
@@ -252,5 +295,38 @@ transition: all .3s ease-in-out;
         right: 9px;
         font-size: 50px;
         color: #000;
+    }
+}
+
+@media screen and (max-width:720px){
+    .container{
+        background-color: var(--primary-color) !important;
+    }
+    .landing_options{
+        position: absolute;
+        right: -220px;
+        top: 0;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #fff;
+        padding: 30px;
+        gap: 50px;
+        text-align: center;
+    }
+    .btn{
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        position:unset;
+    }
+    .hamburger{
+        display: flex;
+    }
+    .logo{
+        display: none;
+    }
+    .mobile_logo {
+        display: block;
+        width: 60px;
+        /* margin-left: -10px; */
     }
 }
