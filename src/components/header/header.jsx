@@ -57,8 +57,6 @@ const header = () => {
     if(myDiv){
         myDiv.style.right = toggle==true ? 0 : '-220px';
     }
-
-
   }
     
   useEffect(() => {

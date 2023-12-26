@@ -309,6 +309,7 @@ transition: all .3s ease-in-out;
         flex-direction: column;
         height: 100vh;
         background-color: #fff;
+        color: var(--primary-color);
         padding: 30px;
         gap: 50px;
         text-align: center;

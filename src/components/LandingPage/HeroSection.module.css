@@ -15,7 +15,6 @@
   }
 
   .heroContent {
-    display: flex;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -23,8 +22,8 @@
   }
   
   .textContent {
-      display: flex;
-      flex: 1;
+    display: flex;
+    flex: 1;
     flex-direction: column;
     /* text-align: center; */
     justify-content: center;
@@ -63,20 +62,56 @@
   }
   
   .imageContainer {
-    /* width: 50%; */
+    width: 50%;
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 450px;
   }
   
   /* Style for the placeholder image */
 .img {
-    /* max-width: 100%; */
+    margin-left: -100px;
     height: 100%;
     border-radius: 10px;
-    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
     object-fit: contain;
+  }
+   
+  @media screen and (max-width:992px) {
+    .imageContainer{
+      height: 400px;
+    }
+    .img{
+      margin-left: 20px;
+    }
+    .h1{
+      font-size: 45px;
+    }
+  }
+
+  @media screen and (max-width:720px) {
+    .imageContainer{
+      display: none;
+    }
+    .heroContent{
+      margin-top: 50px;
+      align-items: center;
+    }
+    .textContent{
+      padding: 20px;
+      align-items: center;
+      text-align: center;
+    }
+    .signupButton{
+      margin-top: 50px;
+      color: #fff;
+      border-color: #fff;
+      font-weight: 600;
+    }
+    .signupButton:hover{
+      background-color: #fff;
+      color: #000;
+    }
   }
   
