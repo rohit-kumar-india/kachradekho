@@ -22,7 +22,7 @@
     overflow: hidden;
     background-color: #3F3BAA;
     border-radius: 36px;
-    margin-left: 40px;
+    margin-left: 10px;
     margin-top: 10px;
     cursor: pointer;
 }
@@ -92,6 +92,7 @@ transition: all .3s ease-in-out;
 .landing_links:hover::after{
     opacity: 1;
 }
+.uploadBtn,
 .btn {
     border-radius: var(--border-radius);
     color: #fff;
@@ -103,11 +104,14 @@ transition: all .3s ease-in-out;
     gap: 10px;
     transition: .3s ease-in-out;
     font-size: 15px;
+}
+.btn{
     position: absolute;
     right: 40px;
     top: 10px;
 }
 
+.uploadBtn:hover,
 .btn:hover {
     background-color: #000;
     border-color: #000;
@@ -141,7 +145,6 @@ transition: all .3s ease-in-out;
     background-color: #000;
 }
 
-
 /* profile section */
 
 .profile_auth {
@@ -157,10 +160,10 @@ transition: all .3s ease-in-out;
     padding: 20px;
     /* border: 1px solid #000; */
     border-radius: var(--border-radius);
-    border-top-right-radius: 0;
+    /* border-top-right-radius: 0; */
     background-color: #fff;
     color: #000;
-    right: 60px;
+    right: 50px;
     z-index: 2;
     top: 80px;
     font-size: var(--menu-font-size);
@@ -171,7 +174,7 @@ transition: all .3s ease-in-out;
     content: '\25B2';
     position: absolute;
     top: -34px;
-    right: -4px;
+    right: 0px;
     font-size: 30px;
     color: #fff;
 }

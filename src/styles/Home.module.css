@@ -2,7 +2,7 @@
   width: 100%;
   background-color: black;
   height: 100vh;
-  padding: 75px;
+  padding-top: 75px;
   position: fixed;
 }
 
@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: fit-content;
+  /* height: fit-content; */
   scrollbar-width: none;
 }
 
@@ -55,6 +55,9 @@
   .notifications{
     display: none;
   }
+  .container{
+    padding-top:55px;
+  }
 }
 @media screen and (max-width:600px) {
   .profile{
@@ -66,4 +69,5 @@
   .profile_post_container{
     padding: 20px 2px 0 2px;
   }
+
 }

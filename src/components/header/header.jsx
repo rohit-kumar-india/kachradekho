@@ -170,7 +170,7 @@ const header = () => {
                     {/* profile section */}
                     <div className={styles.profile_auth}>
 
-                        {isLoggedIn !== false && <div className={`${styles.btn} ${styles.upload}`} onClick={() => dispatch(setShowCreatePost())}>
+                        {isLoggedIn !== false && <div className={`${styles.uploadBtn} ${styles.upload}`} onClick={() => dispatch(setShowCreatePost())}>
                             <BsCloudUpload />
                             Upload Kachra
                         </div>}
