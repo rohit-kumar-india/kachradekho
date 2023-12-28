@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Header from '@/components/header/header'
 import "swiper/css";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import styles from '../styles/Home.module.css'
-import Profile from '@/components/Profile/Profile';
-import Post from '@/components/Post/Post';
-import Notifications from '@/components/Notifications/Notifications';
-import CreatePost from '@/components/CreatePost/CreatePost';
+import Profile from './Profile';
+import Posts from './Posts';
+import Notifications from './Notification';
+import { useSelector } from 'react-redux'
 
 const HomePage = () => {
 
   const divRef = useRef()
   const [prevScrollTop, setprevScrollTop] = useState()
+
+  const showNotification = useSelector((state) => state.notification.value)
 
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = event.target;
@@ -32,7 +33,6 @@ const HomePage = () => {
 
   return (
     <div className={styles.container}>
-      {/* <Header /> */}
 
       {/* post profile container */}
       <div className={styles.profile_post_container}>
@@ -40,13 +40,16 @@ const HomePage = () => {
         <div className={styles.profile}>
           <Profile />
         </div>
+
         {/* post */}
-        <div className={styles.post}
-         >
-          <Post />
+        <div className={styles.post}>
+          {showNotification==='false' ? <Posts /> :
+          <Notifications/>}
         </div>
+
         {/* notifications */}
         <div className={styles.notifications}>
+          <h4>Notifications</h4>
           <Notifications />
 
           {/* copyright */}

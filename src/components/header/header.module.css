@@ -280,26 +280,6 @@ transition: all .3s ease-in-out;
         top: -5px;
         right: -2px;
     }
-
-    .notification_container {
-        width: 280px;
-        position: absolute;
-        top: 70px;
-        right: -20px;
-        background-color: #000;
-        color: #000;
-        padding: 20px;
-        z-index: 2;
-    }
-
-    .notification_container::after {
-        content: '\25B2';
-        position: absolute;
-        top: -60px;
-        right: 9px;
-        font-size: 50px;
-        color: #000;
-    }
 }
 
 @media screen and (max-width:720px){

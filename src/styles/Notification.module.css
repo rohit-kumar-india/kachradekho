@@ -1,0 +1,70 @@
+.notifications_container{
+    padding:5px;
+}
+
+.back_button {
+    border-radius: var(--border-radius);
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.back_button:hover {
+    cursor: pointer;
+    background-color: dimgray;
+}
+
+.notifi_container{
+    height: 80vh;
+    border: 1px solid dimgray;
+    border-radius: var(--border-radius);
+    padding: 0 10px;
+    overflow-y: scroll;
+}
+
+.notification{
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    gap: 10px;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(39, 38, 38);
+}
+.photo_notification_hld{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.photo_notification_hld p{
+    font-size: 14px;
+    color: #fff;
+}
+
+.photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(216, 224, 230);
+    overflow: hidden;
+}
+
+.profile_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.notification_post{
+    width: 35px;
+    height: 35px;
+    background-color: gray;
+    border-radius: var(--border-radius);
+
+}
+

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { setShowEditPopup } from '@/store/slices';
 import LandingPage from './LandingPage';
 import Header from '@/components/header/header';
+import Notifications from './Notification';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -44,6 +45,7 @@ export default function Home() {
         <Header/>
         {isLoggedIn==false ? <LandingPage/>
         : <Homepage />}
+        {/* <Notifications/> */}
       </main>
     </>
   )

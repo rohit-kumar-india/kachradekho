@@ -10,11 +10,10 @@ import Signup from '../loginSignup/Signup';
 import CreatePost from '../CreatePost/CreatePost';
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
-import { setShowCreatePost, setShowLogin, setShowRegister, logout } from '../../store/slices'
+import { setShowCreatePost, setShowLogin, setShowNotification, setShowRegister, logout } from '../../store/slices'
 import KDL from '../../assets/KDL1.png'
 import Image from 'next/image';
 import trash from "../../assets/trash2.png";
-import Notifications from '../Notifications/Notifications';
 
 const header = () => {
     const router = useRouter();
@@ -27,14 +26,9 @@ const header = () => {
     const currentUser = useSelector((state) => state.currentUser.userData)
 
     const [showMenu, setShowMenu] = useState(false)
-    const [isNotification, setIsNotification] = useState(false)
 
     const [scrollPosition, setScrollPosition] = useState(0);
 
-    const shoNotification = useCallback(() => {
-
-        setIsNotification(!isNotification);
-    }, [isNotification])
 
   let toggle = false;
   const handleHamburger = ()=>{
@@ -124,18 +118,10 @@ const header = () => {
                     {/* mobile notification */}
                     {isLoggedIn !== false && <div className={styles.mobile_notification}
                         onClick={() => {
-                            shoNotification();
-                            if (showMenu) {
-                                setShowMenu(!showMenu);
-                            }
-                        }}
-                    >
+                            dispatch(setShowNotification())
+                        }}>
                         <FiBell size={25} />
                         <div className={styles.notification_light}></div>
-
-                        {isNotification && isLoggedIn !== false && <div className={styles.notification_container}>
-                            <Notifications />
-                        </div>}
                     </div>}
 
                     {/* optins which will show only on landing page */}

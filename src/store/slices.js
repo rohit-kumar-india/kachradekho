@@ -20,6 +20,20 @@ export const createPostSlice = createSlice({
 export const { setShowCreatePost } = createPostSlice.actions
 export const CreatePostReducer = createPostSlice.reducer;
 
+export const NotificationSlice = createSlice({
+  name: 'notification',
+  initialState,
+  reducers: {
+    setShowNotification: (state) => {
+      state.value = state.value==="false" ? "true" : "false"
+    }
+  },
+})
+
+// Action creators are generated for each case reducer function
+export const { setShowNotification } = NotificationSlice.actions
+export const NotificationReducer = NotificationSlice.reducer;
+
 
 // login reducer
 export const LoginSlice = createSlice({
@@ -67,10 +81,6 @@ export const { setShowEditPopup } = EditPopUpSlice.actions
 export const EditPopUpReducer = EditPopUpSlice.reducer
 
 // user auth
-// const loginState = {
-//   loggedIn: false,
-// };
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
