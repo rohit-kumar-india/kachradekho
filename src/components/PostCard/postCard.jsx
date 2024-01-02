@@ -24,7 +24,7 @@ const Card = ({ post, mode }) => {
   const router = useRouter()
   const currUser = useSelector((state) => state.currentUser.userData)
 
-  const [user, setUser] = useState({})
+  const [postUser, setPostUser] = useState({})
   const [images, setImages] = useState([])
   const [postUserImage, setpostUserImage] = useState()
   const [isLiked, setIsLiked] = useState(false)
@@ -35,16 +35,31 @@ const Card = ({ post, mode }) => {
   const [commentsCnt, setCommentsCnt] = useState(post?.comments?.length || 0)
   const [isShowSetting, setIsShowSetting] = useState(false)
 
+  //send notification to the post user
+  const sendNotification = async(notifi) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/notification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notifi),
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   //fetch user profile of each post
   const fetchUser = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${post?.user}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user?userId=${post.user}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
     });
     const userData = await response.json();
-    setUser(userData)
+    setPostUser(userData)
 
     //fetch user profile image
     if (userData && userData.profilePicture) {
@@ -74,11 +89,26 @@ const Card = ({ post, mode }) => {
     try {
       let like = likes;
       like = isLiked ? like - 1 : like + 1;
-      await setIsLiked(prevIsLiked => !prevIsLiked);
-      setLikes(like); // Update the local likes state
-      sendLikesToServer(like);
+      sendLikesToServer(like)
+      .then(async() => {
+        await setIsLiked(prevIsLiked => !prevIsLiked);
+        setLikes(like); // Update the local likes state
+        
+        //send notification when you liked a message
+        if(isLiked===false){
+          const notification = {
+            sender: currUser.username,
+            receiver: postUser.username,
+            text: "liked your post",
+            commentText: "",
+            postId: post._id,
+          }
+          sendNotification(notification)
+        }
+      })
     } catch (error) {
-      console.error('Error updating like:', error);
+      alert(error)
+      // console.error('Error updating like:', error);
       // Handle error here, such as showing a notification or alert
     }
   };
@@ -132,6 +162,17 @@ const Card = ({ post, mode }) => {
             }
           }).then(() => {
             setCommentsCnt(commentsCnt + 1)
+            
+            //send notification when you comment on a post
+            const notification = {
+              sender: currUser.username,
+              receiver: postUser.username,
+              text: "commented",
+              commentText: newComment,
+              postId: post._id,
+            }
+            sendNotification(notification)
+
             setNewComment('')
             setIsSending(false);
           })
@@ -198,11 +239,11 @@ const Card = ({ post, mode }) => {
   }
 
   useEffect(() => {
-    if (user && Object.keys(user).length === 0) {
+    if (postUser && Object.keys(postUser).length === 0) {
       fetchUser();
       fetchImages()
     }
-  }, [user]);
+  }, [postUser]);
 
   useEffect(() => {
     if (mode === 'profile') {
@@ -213,7 +254,7 @@ const Card = ({ post, mode }) => {
 
   return (
     <>
-      <div className={styles.post_container} key={user?._id}>
+      <div className={styles.post_container} key={postUser?._id}>
         {/* upper data part */}
         <div className={styles.post_info}>
           <div className={styles.name_photo_hld}>
@@ -225,23 +266,23 @@ const Card = ({ post, mode }) => {
             <div className={styles.name_address}>
               <div className={styles.name}>
                 <h3
-                  onClick={() => router.push(`/profile/${user.username}`)}>
-                  {user?.username}
+                  onClick={() => router.push(`/profile/${postUser.username}`)}>
+                  {postUser?.username}
                 </h3>
                 <div className={styles.dot}></div>
                 <p>2d ago</p>
               </div>
-              <p>{user?.city}</p>
+              <p>{postUser?.city}</p>
             </div>
           </div>
 
           {/* save post into account */}
-          {currUser.userId !== user._id && <div className={styles.settings}>
+          {currUser.userId !== postUser._id && <div className={styles.settings}>
             <BiBookmarkPlus size={25} />
           </div>}
 
           {/* settings dot if current users post */}
-          {currUser.userId === user._id &&
+          {currUser.userId === postUser._id &&
             <div className={styles.settings}
               onClick={() => setIsShowSetting(!isShowSetting)}>
               <BiDotsVerticalRounded size={25} />
@@ -272,9 +313,9 @@ const Card = ({ post, mode }) => {
             pagination
             modules={[Navigation, Pagination]}
           >
-            {images.map((image) => {
+            {images.map((image, index) => {
               return (
-                <SwiperSlide key={image}>
+                <SwiperSlide key={index}>
                   <img src={image} alt="poster1" />
                 </SwiperSlide>
               )
@@ -284,7 +325,7 @@ const Card = ({ post, mode }) => {
 
         {/* description */}
         <div className={styles.caption}>
-          <p><span style={{ color: 'black', fontWeight: 'bold' }}>@{user?.username}</span> {post?.caption}</p>
+          <p><span style={{ color: 'black', fontWeight: 'bold' }}>@{postUser?.username}</span> {post?.caption}</p>
         </div>
 
         {/* bottom data part */}
@@ -307,7 +348,7 @@ const Card = ({ post, mode }) => {
               {/* share button */}
               <IoPaperPlaneOutline size={25} />
             </div>
-            <div className={styles.contact}><IoIosCall size={20} />{user?.contactNo}</div>
+            <div className={styles.contact}><IoIosCall size={20} />{postUser?.contactNo}</div>
           </div>
 
           {/* show likes */}
@@ -348,7 +389,7 @@ const Card = ({ post, mode }) => {
         <Comment
           images={images}
           postUserImage={postUserImage}
-          postUsername={user.username}
+          postUsername={postUser.username}
           handleLike={handleLike}
           isLiked={isLiked}
           likes={likes}

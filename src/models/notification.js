@@ -1,14 +1,24 @@
 const mongoose = require('mongoose');
 
 const NotificationSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    sender: {
+        type: String,
+        required: true
+    },
+    receiver: {
+        type: String,
         required: true
     },
     text: {
         type: String,
         required: true
+    },
+    commentText: {
+        type: String,
+    },
+    postId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
     },
     createdAt: {
         type: Date,
@@ -19,4 +29,4 @@ const NotificationSchema = new mongoose.Schema({
 
 
 mongoose.models = {}
-export default mongoose.model("notificaion", NotificationSchema)
+export default mongoose.model("notification", NotificationSchema)

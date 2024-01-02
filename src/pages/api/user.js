@@ -19,7 +19,6 @@ const handler = async (req, res) => {
 
         //for updating user in database
         else if (req.method === 'PUT') {
-            console.log(req.body)
             const user = await User.findByIdAndUpdate(req.query.userId, req.body, { new: true });
 
             console.log(user)
@@ -31,7 +30,7 @@ const handler = async (req, res) => {
         }
 
         // for updating some part of data
-        if (req.method === 'PATCH') {
+        else if (req.method === 'PATCH') {
             const user = await User.findById(req.query.userId);
 
             if (!user) {

@@ -162,9 +162,7 @@ const header = () => {
                         </div>}
                         {isLoggedIn !== false && <div className="profile-icon">
                             <CgProfile onClick={() => {
-                                if (isNotification) {
-                                    shoNotification();
-                                }
+                               
                                 setShowMenu(!showMenu)
                             }}
                                 size={35} style={{ cursor: "pointer" }} />

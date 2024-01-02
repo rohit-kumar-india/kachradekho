@@ -11,10 +11,6 @@ const Profile = () => {
     const router = useRouter();
     const currentUser = useSelector((state) => state.currentUser.userData)
 
-    useEffect(()=>{
-        console.log(currentUser)
-    })
-
     return (
         <div className={styles.profile_container}>
             <div className={styles.cover_photo}>
