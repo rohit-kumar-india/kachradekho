@@ -50,14 +50,14 @@ const handler = async (req, res) => {
         .skip(skip)
         .limit(limitValue);
       
-       //formulate notifications with senderImage and post image 
+       //formulate notifications with senderImage and project image 
       const NotificationsData = await Promise.all(notifications.map(async(notifi) => {
         const senderImage =  await findUserProfileImage(notifi?.sender);
-        const postImage = await findPostImage(notifi?.postId)
+        const projectImage = await findProjectImage(notifi?.projectId)
         return { 
                notifi, 
                "senderImage": senderImage, 
-               "postImage": postImage
+               "projectImage": projectImage
               }; 
       }));
 
@@ -81,15 +81,16 @@ async function findUserProfileImage(username) {
   }
 }
 
-//find post image from postId
-async function findPostImage(postId) {
+//find project image from projectId
+async function findProjectImage(projectId) {
+  console.log(projectId);
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${postId}`);
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/project?projectId=${projectId}`);
     const imageId = response.data.images[0]; 
     const image = await axios.get(`${process.env.NEXT_PUBLIC_HOST}/api/image?imageId=${imageId}`);
     return await image.data.image[0].file;
   } catch (error) {
-    console.error('Error finding user profile image in notification route:', error.message);
+    console.error('Error finding project image in notification route:', error.message);
     throw error;
   }
 }

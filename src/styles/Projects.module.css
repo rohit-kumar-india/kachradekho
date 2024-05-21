@@ -1,5 +1,5 @@
-/* create post */
-.create_post_btn{
+/* create project */
+.create_project_btn{
     background-color: white;
     border-radius: var(--border-radius);
     display: flex;
@@ -13,12 +13,12 @@
     height: 100%;
     object-fit: cover;
 }
-.create_post_left{
+.create_project_left{
     display: flex;
     align-items: center;
     gap: 10px;
 }
-.create_post_left .photo{
+.create_project_left .photo{
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -27,8 +27,8 @@
 }
 
 
-/* show post */
-.post {
+/* show project */
+.project {
     width: 100%;
     /* min-width: 500px; */
     display: flex;
@@ -47,7 +47,7 @@
 }
 
 @media screen and (max-width: 992px) {
-    .post{
+    .project{
         height: calc(100vh - 140px);
     }
 }

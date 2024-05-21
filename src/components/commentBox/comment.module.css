@@ -22,7 +22,7 @@
     position: relative;
 }
 
-.post_info {
+.project_info {
     height: 50px;
     background-color: var(--background-color);
     display: flex;

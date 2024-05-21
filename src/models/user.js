@@ -44,16 +44,16 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image'
   },
-  posts: [
+  projects: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'PostId'
+      ref: 'ProjectId'
     }
   ],
-  savedPosts: [
+  savedProjects: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'PostId'
+      ref: 'ProjectId'
     }
   ],
 

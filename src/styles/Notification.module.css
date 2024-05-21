@@ -40,13 +40,16 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-.photo_notification_hld p{
-    font-size: 14px;
     color: #fff;
+    font-size: 12px;
 }
+/* .photo_notification_hld p{
+    font-size: 12px;
+    color: #fff;
+} */
 
 .photo {
+    /* flex-shrink: 0; */
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -60,11 +63,10 @@
     object-fit: cover;
 }
 
-.notification_post{
+.notification_project{
     width: 35px;
     height: 35px;
     background-color: gray;
     border-radius: var(--border-radius);
 
 }
-

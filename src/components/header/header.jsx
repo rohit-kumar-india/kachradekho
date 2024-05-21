@@ -7,11 +7,13 @@ import { FiBell } from 'react-icons/fi';
 import { BsCloudUpload } from 'react-icons/bs';
 import Login from '../loginSignup/Login';
 import Signup from '../loginSignup/Signup';
-import CreatePost from '../CreatePost/CreatePost';
+import CreateProject from '../CreateProject/CreateProject';
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
-import { setShowCreatePost, setShowLogin, setShowNotification, setShowRegister, logout } from '../../store/slices'
+import { setShowCreateProject, setShowLogin, setShowNotification, setShowRegister, logout } from '../../store/slices'
 import KDL from '../../assets/KDL1.png'
+import LOGO1 from '../../assets/logo.png'
+import LOGO from '../../assets/InvestoGemsLogo.png';
 import Image from 'next/image';
 import trash from "../../assets/trash2.png";
 
@@ -19,7 +21,7 @@ const header = () => {
     const router = useRouter();
     const dispatch = useDispatch()
 
-    const showCreatePost = useSelector((state) => state.createPost.value)
+    const showCreateProject = useSelector((state) => state.createProject.value)
     const showLogin = useSelector((state) => state.logIn.value)
     const showRegister = useSelector((state) => state.register.value)
     const isLoggedIn = useSelector((state) => state.auth.loggedIn);
@@ -80,8 +82,8 @@ const header = () => {
         <>
 
             {/* create post popup */}
-            {showCreatePost === "true" && <div className={styles.create_post_popup}>
-                <CreatePost />
+            {showCreateProject === "true" && <div className={styles.create_post_popup}>
+                <CreateProject />
             </div>}
 
             {/* show login signup pages */}
@@ -104,7 +106,7 @@ const header = () => {
                     <div
                     onClick={()=>router.push('/')}
                     className={styles.logo}>
-                        <Image className={styles.img} src={KDL} layout='responsive' width="100%" height="100%" objectFit='cover' />
+                        <Image className={styles.img} src={LOGO} layout='responsive' width="100%" height="100%" objectFit='cover' />
                     </div>
 
                     {/* search bar */}
@@ -156,9 +158,9 @@ const header = () => {
                     {/* profile section */}
                     <div className={styles.profile_auth}>
 
-                        {isLoggedIn !== false && <div className={`${styles.uploadBtn} ${styles.upload}`} onClick={() => dispatch(setShowCreatePost())}>
+                        {isLoggedIn !== false && <div className={`${styles.uploadBtn} ${styles.upload}`} onClick={() => dispatch(setShowCreateProject())}>
                             <BsCloudUpload />
-                            Upload Kachra
+                            Upload Project
                         </div>}
                         {isLoggedIn !== false && <div className="profile-icon">
                             <CgProfile onClick={() => {
@@ -172,7 +174,7 @@ const header = () => {
                                 <ul>
                                     <li onClick={() => router.push(`/profile/${currentUser.username}`)}>View Profile</li>
                                     <li>Change Password</li>
-                                    <li>Uppload Kachra</li>
+                                    <li>Uppload Project</li>
                                     <li onClick={() => {
                                         dispatch(logout())
                                         window.location.reload()

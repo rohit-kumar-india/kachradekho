@@ -81,13 +81,11 @@ const Notifications = () => {
               <div className={styles.photo}>
                 <Image src={data.senderImage} width={100} height={100} alt="user not found" className={styles.profile_image} />
               </div>
-              <span>{data.notifi.sender}</span>
-              <p>{data.notifi.text}</p>
-              <span>{data.notifi.commentText}</span>
+                <p>{data.notifi.sender} {data.notifi.text} {data.notifi.commentText}</p>
             </div>
-            <div className={styles.notification_post}>
-              {/* Display post content here */}
-              <Image src={data.postImage} width={100} height={100} alt="post not found" />
+            <div className={styles.notification_project}>
+              {/* Display project content here */}
+              <Image src={data.projectImage} width={100} height={100} alt="project not found" className={styles.profile_image} />
             </div>
           </div>
         ))}

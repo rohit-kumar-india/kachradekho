@@ -23,7 +23,7 @@ const Profile = () => {
                 </div>
                 <h4>{currentUser?.name}</h4>
                 <p>@{currentUser?.username}</p>
-                <p>{currentUser?.savedPost || 0} posts saved</p>
+                <p>{currentUser?.savedProjects || 0} projects saved</p>
             </div>
         </div>
     )

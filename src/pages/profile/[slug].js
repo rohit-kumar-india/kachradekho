@@ -5,7 +5,7 @@ import Head from 'next/head'
 import { IoMdSettings } from 'react-icons/io';
 import { BsBoxArrowLeft } from 'react-icons/bs';
 import { BsFillPencilFill } from 'react-icons/bs';
-import PostCard from '../../components/PostCard/postCard'
+import ProjectCard from '../../components/ProjectCard/projectCard'
 import EditProfile from '../../components/EditProfile/EditProfile'
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,13 +22,13 @@ const Profile = ({ user}) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const [activeComponent, setActiveComponent] = useState('posts');
+    const [activeComponent, setActiveComponent] = useState('projects');
     const [showSettings, setShowSettings] = useState(false)
     const [userImage, setuserImage] = useState(currentUser.profilePicture)
-    const [isPostsFetching, setIsPostsFetching] = useState(false)
-    const [isSavedPostsFetching, setIsSavedPostsFetching] = useState(false)
-    const [savedPosts, setSavedPosts] = useState([])
-    const [posts, setPosts] = useState([])
+    const [isProjectsFetching, setIsProjectsFetching] = useState(false)
+    const [isSavedProjectsFetching, setIsSavedProjectsFetching] = useState(false)
+    const [savedProjects, setSavedProjects] = useState([])
+    const [projects, setProjects] = useState([])
 
     // Change the URL without triggering a full page reload
     const newUrl = `${process.env.NEXT_PUBLIC_HOST}/profile/${user.username}`;
@@ -90,10 +90,10 @@ const Profile = ({ user}) => {
         }
     }
 
-    // for fetching posts
-    const fetchPost = async (postId) => {
+    // for fetching projects
+    const fetchProject = async (projectId) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${postId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/project?projectId=${projectId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,22 +106,22 @@ const Profile = ({ user}) => {
 
     };
 
-    const handleUserPostFetch = async () => {
-        setIsPostsFetching(true)
-        const posts = await Promise.all(user.posts?.map((postId) => fetchPost(postId)))
-        setPosts(posts);
-        setIsPostsFetching(false)
+    const handleUserProjectFetch = async () => {
+        setIsProjectsFetching(true)
+        const projects = await Promise.all(user.projects?.map((projectId) => fetchProject(projectId)))
+        setProjects(projects);
+        setIsProjectsFetching(false)
     }
-    const handleSavedPostFetch = async () => {
-        setIsSavedPostsFetching(true)
-        const posts = await Promise.all(user.savedPosts?.map((postId) => fetchPost(postId)))
-        setSavedPosts(posts);
-        setIsSavedPostsFetching(false)
+    const handleSavedProjectFetch = async () => {
+        setIsSavedProjectsFetching(true)
+        const projects = await Promise.all(user.savedProjects?.map((projectId) => fetchProject(projectId)))
+        setSavedProjects(projects);
+        setIsSavedProjectsFetching(false)
     }
 
     useEffect(() => {
-        handleUserPostFetch()
-        handleSavedPostFetch()
+        handleUserProjectFetch()
+        handleSavedProjectFetch()
 
         console.log("from profile ",user)
     }, [activeComponent]);
@@ -174,7 +174,7 @@ const Profile = ({ user}) => {
                                 {/* <div className={styles.change_popup}><p>Change Photo jjjg</p></div> */}
                             </div>}
                         </div>
-                        <div className={styles.name_post_hld}>
+                        <div className={styles.name_project_hld}>
                             <div className={styles.name_bio_hld}>
                                 <div className={styles.name}>
                                     <span>{user.name}</span>
@@ -216,51 +216,51 @@ const Profile = ({ user}) => {
                                     <span>{user?.address}, {user?.city}, {user?.state}, {user?.country}</span>
                                 </div>
                             </div>
-                            <div className={styles.post}>
-                                <span>{user.posts.length || 0} posts</span>
-                                {currentUser.userId === user._id && <span>{user.savedPosts.length || 0} saved</span>}
+                            <div className={styles.project}>
+                                <span>{user.projects.length || 0} projects</span>
+                                {currentUser.userId === user._id && <span>{user.savedProjects.length || 0} saved</span>}
                             </div>
                         </div>
                     </div>
 
-                    {/* bottom part for posts */}
-                    <div className={styles.post_details}>
+                    {/* bottom part for projects */}
+                    <div className={styles.project_details}>
                         <div className={styles.details_type}>
                             <span
-                                className={`${activeComponent === 'posts' ? styles.activePost : ''
+                                className={`${activeComponent === 'projects' ? styles.activeProject : ''
                                     }`}
-                                onClick={() => handleComponentChange('posts')}>Posts</span>
+                                onClick={() => handleComponentChange('projects')}>Projects</span>
                             <span
-                                className={`${activeComponent === 'saved' ? styles.activePost : ''
+                                className={`${activeComponent === 'saved' ? styles.activeProject : ''
                                     }`}
                                 onClick={() => handleComponentChange('saved')}>Saved</span>
                         </div>
 
-                        {/* show posts */}
+                        {/* show projects */}
                         <div className={styles.slider}>
-                            {activeComponent === "posts" && <div
-                                className={`${styles.sliderWrapper} ${activeComponent === 'posts' ? styles.active : ''
+                            {activeComponent === "projects" && <div
+                                className={`${styles.sliderWrapper} ${activeComponent === 'projects' ? styles.active : ''
                                     }`}
                             >
                                 {
-                                    posts?.map((post, index) => {
+                                    projects?.map((project, index) => {
                                         return (
-                                            <PostCard
+                                            <ProjectCard
                                                 mode={'profile'}
-                                                post={post} />
+                                                project={project} />
                                         )
                                     })
                                 }
 
                                 {/* when nothing to show */}
                                 {
-                                    !isPostsFetching &&
-                                    posts.length === 0 &&
-                                    <p>Nothing posted yet...</p>
+                                    !isProjectsFetching &&
+                                    projects.length === 0 &&
+                                    <p>Nothing projected yet...</p>
                                 }
 
                                 {/* loader */}
-                                {isSavedPostsFetching && <div className={styles.loader}>
+                                {isSavedProjectsFetching && <div className={styles.loader}>
                                     <Image
                                         alt='loader'
                                         src={Loader}
@@ -274,24 +274,24 @@ const Profile = ({ user}) => {
                                     }`}
                             >
                                 {
-                                    savedPosts?.map((post, index) => {
+                                    savedProjects?.map((project, index) => {
                                         return (
-                                            <PostCard
+                                            <ProjectCard
                                                 mode={'profile'}
-                                                post={post} />
+                                                project={project} />
                                         )
                                     })
                                 }
 
                                 {/* when nothing to show */}
                                 {
-                                    !isSavedPostsFetching &&
-                                    savedPosts.length === 0 &&
-                                    <p style={{textAlign:'center'}}>No saved post...</p>
+                                    !isSavedProjectsFetching &&
+                                    savedProjects.length === 0 &&
+                                    <p style={{textAlign:'center'}}>No saved project...</p>
                                 }
 
                                 {/* loader */}
-                                {isSavedPostsFetching && <div className={styles.loader}>
+                                {isSavedProjectsFetching && <div className={styles.loader}>
                                     <Image
                                         alt='loader'
                                         src={Loader}

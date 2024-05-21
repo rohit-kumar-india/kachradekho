@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { CreatePostReducer, LoginReducer, RegisterReducer, EditPopUpReducer, authReducer, CurrentUserReducer, NotificationReducer } from './slices';
+import { CreateProjectReducer, LoginReducer, RegisterReducer, EditPopUpReducer, authReducer, CurrentUserReducer, NotificationReducer } from './slices';
 // import { CurrentUserReducer } from './currentUserData';
 
 const rootReducer = combineReducers({
-  createPost: CreatePostReducer,
+  createProject: CreateProjectReducer,
   notification: NotificationReducer,
   logIn: LoginReducer,
   register: RegisterReducer,

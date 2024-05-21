@@ -1,0 +1,264 @@
+.project_container {
+    /* width: 100%; */
+    background-color: white;
+    border: 1px solid black;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    gap: 10px;
+    align-items: center;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.name h3:hover{
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: all .3s ease-in-out;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.name_address p {
+    font-size: var(--small-font);
+}
+
+.project_info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.name_photo_hld {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgb(216, 224, 230);
+    overflow: hidden;
+}
+
+.profile_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.settings{
+    cursor: pointer;
+}
+.showSetting{
+    position: absolute;
+    right: 5px;
+    top: 40px;
+    background-color: var(--background-color);
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+}
+.showSetting::before{
+    content: '\25B2';
+    position: absolute;
+    top: -20px;
+    right: -2px;
+    font-size: 20px;
+    color: var(--background-color);
+}
+.showSetting li{
+    cursor: pointer;
+}
+
+.project_images {
+    width: 100%;
+
+}
+
+.caption {
+    width: 100%;
+    /* padding: 0 20px; */
+    overflow: hidden;
+    text-align: justify;
+}
+
+.caption p {
+    text-align: justify;
+    float: left;
+}
+
+.bottom_part {
+    width: 100%;
+}
+
+.contact_action {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.like_comment {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.contact {
+    padding: 5px 10px;
+    color: white;
+    background-color: dimgray;
+    border-radius: var(--border-radius);
+    font-size: var(--mob-font-size);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+/* comment Box */
+.comment_box {
+    width: 900px;
+    height: 550px;
+    background-color: black;
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.close_comment_box {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0px;
+    z-index: 2;
+}
+
+.close_comment_box span:hover {
+    background-color: #1b52a0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.close_comment_box span {
+    margin-right: 12px;
+    margin-top: 12px;
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    transition: all .3s ease-in-out;
+    background-color: #F0F5F7;
+}
+
+.showAllCommentsBtn {
+    margin-top: -10px;
+    width: 100%;
+    font-size: 14px;
+    color: gray;
+}
+
+.showAllCommentsBtn span:hover {
+    color: black;
+    cursor: pointer;
+}
+
+/* classes for adding comment */
+.addComment_div {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addComment_div .photo {
+    width: 30px;
+    height: 30px;
+}
+
+.addComment {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.addComment input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid gray;
+    color: gray;
+}
+
+.sendCmtBtn {
+    color: gray;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    float: right;
+}
+
+.sendCmtBtn:hover {
+    color: black;
+}
+
+.loader,
+.no_comments_show,
+.fetchMoreBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.sendCmtBtn .loader {
+    padding: 0;
+}
+
+@media screen and (max-width:992px) {
+    .comment_box {
+        width: 700px;
+        height: 500px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .contact {
+        font-size: 12px;
+    }
+
+    .comment_box {
+        height: 60%;
+        width: 99%;
+        transform: none;
+        top:unset;
+        left:unset;
+        bottom: 0;
+        overflow: hidden;
+    }
+}

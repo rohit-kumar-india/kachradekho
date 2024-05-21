@@ -6,19 +6,19 @@ const initialState = {
   userData: null,
 }
 
-export const createPostSlice = createSlice({
-  name: 'createpost',
+export const createProjectSlice = createSlice({
+  name: 'createproject',
   initialState,
   reducers: {
-    setShowCreatePost: (state) => {
+    setShowCreateProject: (state) => {
       state.value = state.value==="false" ? "true" : "false"
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setShowCreatePost } = createPostSlice.actions
-export const CreatePostReducer = createPostSlice.reducer;
+export const { setShowCreateProject } = createProjectSlice.actions
+export const CreateProjectReducer = createProjectSlice.reducer;
 
 export const NotificationSlice = createSlice({
   name: 'notification',

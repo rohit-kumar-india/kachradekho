@@ -5,7 +5,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import styles from '../styles/Home.module.css'
 import Profile from './Profile';
-import Posts from './Posts';
+import Projects from './Projects';
 import Notifications from './Notification';
 import { useSelector } from 'react-redux'
 
@@ -34,16 +34,16 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
 
-      {/* post profile container */}
-      <div className={styles.profile_post_container}>
+      {/* project profile container */}
+      <div className={styles.profile_project_container}>
         {/* profile */}
         <div className={styles.profile}>
           <Profile />
         </div>
 
-        {/* post */}
-        <div className={styles.post}>
-          {showNotification==='false' ? <Posts /> :
+        {/* project */}
+        <div className={styles.project}>
+          {showNotification==='false' ? <Projects /> :
           <Notifications/>}
         </div>
 

@@ -16,7 +16,7 @@ const NotificationSchema = new mongoose.Schema({
     commentText: {
         type: String,
     },
-    postId: {
+    projectId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },

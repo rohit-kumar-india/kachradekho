@@ -37,8 +37,8 @@ const handler = async (req, res) => {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            // push postId into posts array
-            user.posts.push(req.body)
+            // push projectId into projects array
+            user.projects.push(req.body)
             await user.save()
             res.status(200).json({ success: "success" });
         }

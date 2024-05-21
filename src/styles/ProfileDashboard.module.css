@@ -121,7 +121,7 @@
     display: none;
 }
 
-.name_post_hld {
+.name_project_hld {
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -186,12 +186,12 @@
     flex-direction: column;
 }
 
-.post {
+.project {
     display: flex;
     gap: 50px;
 }
 
-.post_details {
+.project_details {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -217,7 +217,7 @@
     cursor: pointer;
 }
 
-/* post slider */
+/* project slider */
 .slider {
     margin-top: 20px;
     width: 100%;
@@ -290,7 +290,7 @@
         font-size: 18px;
     }
 
-    .name_post_hld {
+    .name_project_hld {
         gap: 20px;
     }
 

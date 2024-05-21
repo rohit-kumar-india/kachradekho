@@ -2,7 +2,7 @@ import connectDb from "@/middleware/mongoose";
 import Comment from "@/models/comment";
 import User from '@/models/user'
 import Image from '@/models/image'
-import Post from '@/models/post'
+import Project from '@/models/project'
 
 const handler = async (req, res) => {
     try {
@@ -40,7 +40,7 @@ const handler = async (req, res) => {
                 res.status(200).json(commentsData);
             }
 
-            // for creating new post
+            // for creating new project
             else {
                 const newComment = req.body;
                 let cmt = new Comment(newComment);
@@ -62,17 +62,17 @@ const handler = async (req, res) => {
             // Add the new reply to replies array
             comment.replies.push(req.body);
 
-            // Save the updated post
+            // Save the updated project
             await comment.save();
             const allIds = await comment.replies
             return res.status(200).json(allIds);
         }
 
-        //for deleting the post
+        //for deleting the project
         else if (req.method === 'DELETE') {
-            const { commentId, postId, replyId } = req.query
+            const { commentId, projectId, replyId } = req.query
 
-            // find comment and send replyId when delete the post
+            // find comment and send replyId when delete the project
             const cmt = await Comment.findById(commentId)
             const cmtReplies = cmt.replies || ''
 
@@ -83,8 +83,8 @@ const handler = async (req, res) => {
             }
 
             console.log(cmtReplies)
-            // at the time of post deletion
-            if(!postId){
+            // at the time of project deletion
+            if(!projectId){
                 return res.status(200).json(cmtReplies)
             }
 
@@ -107,21 +107,21 @@ const handler = async (req, res) => {
                 }
             }
             else {
-                // find post
-                const post = await Post.findById({ "_id": postId });
+                // find project
+                const project = await Project.findById({ "_id": projectId });
 
-                // Check if the post exists
-                if (!post) {
-                    return res.status(404).json({ message: "post not found"});
+                // Check if the project exists
+                if (!project) {
+                    return res.status(404).json({ message: "project not found"});
                 }
 
                 // Find the index of the comment within comments array
-                const commentIndex = post.comments.findIndex(cmtId => cmtId.toString() === commentId.toString())
+                const commentIndex = project.comments.findIndex(cmtId => cmtId.toString() === commentId.toString())
 
                 // If the comment exists in the array, remove it
                 if (commentIndex >= 0) {
-                    post.comments.splice(commentIndex, 1);
-                    await post.save();
+                    project.comments.splice(commentIndex, 1);
+                    await project.save();
                     return res.status(200).json({ success: "comment deleted successfully" });
                 } else {
                     return res.status(404).json({ message: "comment not found" });

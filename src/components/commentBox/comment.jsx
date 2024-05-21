@@ -14,7 +14,7 @@ import Loader from '../../assets/loader.gif'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, likes, post, showCommentBox, commentsCnt, setCommentsCnt }) => {
+const comment = ({ images, projectUsername, projectUserImage, handleLike, isLiked, likes, project, showCommentBox, commentsCnt, setCommentsCnt }) => {
 
   const currentUser = useSelector((state) => state.currentUser.userData)
   const router = useRouter()
@@ -40,17 +40,17 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
   const [cmtReplies, setCmtReplies] = useState()
   const [isReplyFetching, setIsReplyFetching] = useState(false)
 
-  //update the post with comment ids
-  const updatePost = async (commentId) => {
+  //update the project with comment ids
+  const updateProject = async (commentId) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/project`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           commentId,
-          postId: post._id
+          projectId: project._id
         }),
       })
       return await res.json()
@@ -101,9 +101,9 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
       }
       const commentId = await SendComment(cmt)
       if (commentId) {
-        const postUpt = await updatePost(commentId)
-        if (postUpt.success) {
-          await fetchPost('sending')
+        const projectUpt = await updateProject(commentId)
+        if (projectUpt.success) {
+          await fetchProject('sending')
           setNewComment('')
           setCommentsCnt(commentsCnt + 1)
         }
@@ -128,7 +128,7 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
         const allIds = await updateComment(commentId, replyId)
         setNewReply('')
         setIsShowReply(false)
-        fetchPost('sending')
+        fetchProject('sending')
         handleFetchReply(allIds, 'sending')
       }
     }
@@ -160,14 +160,14 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
 
   // delete comment from the server
   const handleDeleteCmnt = async (commentId, replyId) => {
-    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/comment?commentId=${commentId}&postId=${post._id}&replyId=${replyId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/comment?commentId=${commentId}&projectId=${project._id}&replyId=${replyId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(async (res) => {
-        fetchPost({
+        fetchProject({
           mode: 'deleting',
           commentId: commentId
         })
@@ -178,12 +178,12 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
       })
   }
 
-  //fetch post from postId
-  const fetchPost = useCallback(async (mode) => {
+  //fetch project from projectId
+  const fetchProject = useCallback(async (mode) => {
     if (mode === 'fetching') {
       setisLoading(true)
     }
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?postId=${post._id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/project?projectId=${project._id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
 
   useEffect(() => {
     if (currentPage > prevPage) {
-      fetchPost('fetching')
+      fetchProject('fetching')
     }
   }, [currentPage])
 
@@ -239,7 +239,7 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
   return (
     <div className={styles.comment_container}>
       {/* images */}
-      <div id='post_images' className={styles.comment_left}>
+      <div id='project_images' className={styles.comment_left}>
 
         {/* product images */}
         <Swiper
@@ -256,7 +256,7 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
           {images.length > 0 && images?.map((image) => {
             return (
               <SwiperSlide >
-                <img src={image} alt="poster1" />
+                <img src={image} alt="projecter1" />
               </SwiperSlide>
             )
           })}
@@ -265,15 +265,15 @@ const comment = ({ images, postUsername, postUserImage, handleLike, isLiked, lik
 
       {/* comment section */}
       <div className={styles.comment_right}>
-        {/* post info part */}
-        <div className={styles.post_info}>
+        {/* project info part */}
+        <div className={styles.project_info}>
           <div className={styles.name_photo_hld}>
             <div className={styles.photo}>
-              {!postUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
-              <img src={postUserImage} alt="user not found" className={styles.profile_image} />
+              {!projectUserImage && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
+              <img src={projectUserImage} alt="user not found" className={styles.profile_image} />
             </div>
             <div className={styles.name}>
-              <h3 onClick={() => router.push(`/profile/${postUsername}`)}>{postUsername}</h3>
+              <h3 onClick={() => router.push(`/profile/${projectUsername}`)}>{projectUsername}</h3>
             </div>
           </div>
         </div>

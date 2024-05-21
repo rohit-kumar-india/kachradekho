@@ -29,7 +29,7 @@
 .img{
     width: 100%;
     position: relative;
-    top: -72px;
+    /* top: -72px; */
 }
 
 .search_bar {

@@ -1,28 +1,28 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image';
-import styles from '../styles/Posts.module.css'
+import styles from '../styles/Projects.module.css'
 import { IoImage } from 'react-icons/io5';
-import PostCard from '../components/PostCard/postCard'
+import ProjectCard from '../components/ProjectCard/projectCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { setShowCreatePost } from '../store/slices'
+import { setShowCreateProject } from '../store/slices'
 import userAvatar from '../assets/userAvatar.png'
 import Loader from '../assets/loader.gif'
 
-const Post = () => {
+const Project = () => {
 
     const dispatch = useDispatch()
     const divRef = useRef()
     const currentUser = useSelector((state) => state.currentUser.userData)
 
-    const [posts, setPosts] = useState([]);
+    const [projects, setProjects] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [prevScrollTop, setprevScrollTop] = useState()
     const [isLoading, setisLoading] = useState(false)
     const [isNoMore, setisNoMore] = useState(false)
 
-    const fetchPosts = async () => {
+    const fetchProjects = async () => {
         setisLoading(true)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/post?limit=5&page=${currentPage}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/project?limit=5&page=${currentPage}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const Post = () => {
             setisNoMore(true)
             setisLoading(false)
         }
-        setPosts(prevPosts => [...prevPosts, ...data]);
+        setProjects(prevProjects => [...prevProjects, ...data]);
     };
 
     const handleScroll = async (event) => {
@@ -49,41 +49,41 @@ const Post = () => {
 
     useEffect(() => {
         if (currentPage >= 1) {
-            fetchPosts();
+            fetchProjects();
         }
     }, [currentPage]);
 
 
     return (
         <>
-            {/* create a post */}
-            <div className={styles.create_post_btn} onClick={() => dispatch(setShowCreatePost())}>
-                <div className={styles.create_post_left}>
+            {/* create a project */}
+            <div className={styles.create_project_btn} onClick={() => dispatch(setShowCreateProject())}>
+                <div className={styles.create_project_left}>
                     <div className={styles.photo}>
                         {!currentUser?.profilePicture && <Image src={userAvatar} alt="avatar" width={"100%"} height={"100%"} layout='responsive' />}
                         <img src={currentUser?.profilePicture} alt="user not found" className={styles.profile_image} />
                     </div>
-                    <p>create a post...</p>
+                    <p>create a project...</p>
                 </div>
                 <IoImage size={25} />
             </div>
 
 
-            {/* show post */}
+            {/* show project */}
             <div
-                className={styles.post}
+                className={styles.project}
                 ref={divRef}
                 onScroll={handleScroll}>
                 {
-                    posts?.map((item, index) => {
+                    projects?.map((item, index) => {
                         return (
 
-                            <PostCard post={item} key={item._id} />
+                            <ProjectCard project={item} key={item._id} />
                         )
                     }
                     )}
-                {posts.length === 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>Nothing to show...</span>}
-                {isNoMore && posts.length > 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
+                {projects.length === 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>Nothing to show...</span>}
+                {isNoMore && projects.length > 0 && <span style={{ color: 'white', textAlign: 'center', fontSize: '14px' }}>No more content...</span>}
                 {isLoading && <div className={styles.loader}>
                     <Image
                         alt='loader'
@@ -97,4 +97,4 @@ const Post = () => {
     )
 }
 
-export default Post
+export default Project
